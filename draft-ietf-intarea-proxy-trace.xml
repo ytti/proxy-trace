@@ -716,9 +716,9 @@
         operations.
       </t>
       <t>
-        Proxy Trace Server SHOULD give up after 1 second of waiting for a
-        Proxy Trace Probe Reply Packet and MAY give up earlier. Proxy Trace
-        SHOULD NOT send Proxy Trace Reply message if it gave up.
+        Proxy Trace Server SHOULD timeout after 1 second of waiting for a
+        Proxy Trace Probe Reply Packet and MAY timeout earlier. Proxy Trace
+        Server SHOULD NOT send Proxy Trace Reply message if it timed out.
       </t>
     </section>
 
