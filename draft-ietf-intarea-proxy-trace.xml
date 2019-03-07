@@ -691,7 +691,7 @@
             to the Proxy Trace Response message.
           </t>
           <t>
-            Set the Code field to 0 if TLV 0 is present, otherwise 1.
+            Set the Code field to 0.
           </t>
           <t>
             Set the Checksum appropriately.
