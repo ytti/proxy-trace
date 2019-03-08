@@ -13,167 +13,166 @@
 <?rfc strict="yes"?>
 
 
-<rfc category="std"
-  docName="draft-ytti-intarea-proxy-trace-00">
-  <front>
-    <title abbrev="Proxy Trace">
-      Proxy Trace: A Utility for Programmatic Discovery of Forward and Reverse Path
-    </title>
+<rfc category="std" docName="draft-ytti-intarea-proxy-trace-00">
+    <front>
+        <title abbrev="Proxy Trace">
+            Proxy Trace: A Utility for Programmatic Discovery of Forward and Reverse Path
+        </title>
 
-    <author fullname="Saku Ytti" initials="S." surname="Ytti">
-      <organization abbrev="NTT">NTT Communications</organization>
-      <address>
-        <email>ytti@ntt.net</email>
-      </address>
-    </author>
+        <author fullname="Saku Ytti" initials="S." surname="Ytti">
+            <organization abbrev="NTT">NTT Communications</organization>
+            <address>
+                <email>ytti@ntt.net</email>
+            </address>
+        </author>
 
-    <date />
+        <date />
 
-    <area>Internet</area>
-    <workgroup>intarea</workgroup>
-    <keyword>ProxyTrace</keyword>
- 
-    <abstract>
-      <t>
-        This document describes a network diagnostic tool called Proxy Trace.
-        Proxy Trace has similarities with PING and TRACEROUTE in that it uses PING style ICMP request to ask remote host to trigger a single packet TRACEROUTE query and deliver the response in PING style ICMP response.
-      </t>
-    </abstract>
+        <area>Internet</area>
+        <workgroup>intarea</workgroup>
+        <keyword>ProxyTrace</keyword>
 
-    <note title="Requirements Language">
-          <t>
-            The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/> when, and only when, they appear in all capitals, as shown here.
-      </t>
-    </note>
+        <abstract>
+            <t>
+                This document describes a network diagnostic tool called Proxy Trace.
+                Proxy Trace has similarities with PING and TRACEROUTE in that it uses PING style ICMP request to ask remote host to trigger a single packet TRACEROUTE query and deliver the response in PING style ICMP response.
+            </t>
+        </abstract>
 
-  </front>
+        <note title="Requirements Language">
+            <t>
+                The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/> when, and only when, they appear in all capitals, as shown here.
+            </t>
+        </note>
 
-  <middle>
-    <section anchor="intro" title="Introduction">
-      <t>
-          Network operators use TRACEROUTE to discover path between client host and a target host.
-          Operator does this by running the traceroute software on the client host and giving as an argument target host to which operator wants to discover the network path.
-          This information helps network operator to understand and troubleshoot issues on the network.
-      </t>
-      <t>
-        This document describes a network diagnostic tool called Proxy Trace.
-        Proxy Trace is similar to TRACEROUTE in that it can be used to discover path between two hosts, but it differs from TRACEROUTE in that it can discover the path between two arbitrary host, allowing operator not only discover the reverse path but also removes the requirement that operator must have access to a host in the path.
-      </t>
-      <t>
-          Further unlike alternative solutions such as looking glasses, Proxy Trace responses are formal and machine parseable.
-          This enables programmatic discovery of both directions of the path.
-      </t>
-    </section>
+    </front>
 
-    <section anchor="terminology" title="Terminology">
-      <t>
-        This document uses following terms:
-        <list style="hanging">
-          <t hangText="Proxy Trace Request:">
-            An ICMP packet Proxy Trace Client sends to a Proxy Trace Server.
-          </t>
-          <t></t>
-          <t hangText="Proxy Trace Reply:">
-            An ICMP packet Proxy Trace Server sends to a Proxy Trace Client.
-          </t>
-          <t></t>
-          <t hangText="Proxy Trace Client:">
-            Client host requesting for a Proxy Trace
-          </t>
-          <t></t>
-          <t hangText="Proxy Trace Server:">
-            Server listening to a Proxy Trace Requests, sending Proxy Trace Probe Request, receiving Proxy Trace Probe Reply and sending Proxy Trace Reply
-          </t>
-          <t></t>
-          <t hangText="Proxy Trace Target:">
-            Destination address of the Proxy Trace Probe Request
-          </t>
-          <t></t>
-          <t hangText="Proxy Trace Probe Request:">
-            Packet Proxy Trace Server sends towards the Proxy Trace Target.
-            Equivalent to the packet generated by TRACEROUTE
-          </t>
-          <t></t>
-          <t hangText="Proxy Trace Probe Reply:">
-            Packet received from the network as response to the Proby Trace Probe Request, usually ICMP TTL Exceeded or ICMP Host Unreachable message
-          </t>
-        </list>
-      </t>
-    </section>
+    <middle>
+        <section anchor="intro" title="Introduction">
+            <t>
+                Network operators use TRACEROUTE to discover path between client host and a target host.
+                Operator does this by running the traceroute software on the client host and giving as an argument target host to which operator wants to discover the network path.
+                This information helps network operator to understand and troubleshoot issues on the network.
+            </t>
+            <t>
+                This document describes a network diagnostic tool called Proxy Trace.
+                Proxy Trace is similar to TRACEROUTE in that it can be used to discover path between two hosts, but it differs from TRACEROUTE in that it can discover the path between two arbitrary host, allowing operator not only discover the reverse path but also removes the requirement that operator must have access to a host in the path.
+            </t>
+            <t>
+                Further unlike alternative solutions such as looking glasses, Proxy Trace responses are formal and machine parseable.
+                This enables programmatic discovery of both directions of the path.
+            </t>
+        </section>
 
-    <section anchor="operation" title="Operation">
-      <figure anchor="topology" align="center"><artwork><![CDATA[
-  +-----------+
-  | PT Client |
-  +-----------+
-        |
-  ~~~~~~~~~~~~
-  ~ internet ~
-  ~~~~~~~~~~~~
-        |
-  +-----------+    +------+    +------+    +-------+   +-----------+
-  | PT Server |----| Hop1 |----| Hop2 |----| Hop3  |---| PT Target |
-  +-----------+    +------+    +------+    +-------+   +-----------+
-  ]]></artwork></figure>
+        <section anchor="terminology" title="Terminology">
+            <t>
+                This document uses following terms:
+                <list style="hanging">
+                    <t hangText="Proxy Trace Request:">
+                        An ICMP packet Proxy Trace Client sends to a Proxy Trace Server.
+                    </t>
+                    <t></t>
+                    <t hangText="Proxy Trace Reply:">
+                        An ICMP packet Proxy Trace Server sends to a Proxy Trace Client.
+                    </t>
+                    <t></t>
+                    <t hangText="Proxy Trace Client:">
+                        Client host requesting for a Proxy Trace
+                    </t>
+                    <t></t>
+                    <t hangText="Proxy Trace Server:">
+                        Server listening to a Proxy Trace Requests, sending Proxy Trace Probe Request, receiving Proxy Trace Probe Reply and sending Proxy Trace Reply
+                    </t>
+                    <t></t>
+                    <t hangText="Proxy Trace Target:">
+                        Destination address of the Proxy Trace Probe Request
+                    </t>
+                    <t></t>
+                    <t hangText="Proxy Trace Probe Request:">
+                        Packet Proxy Trace Server sends towards the Proxy Trace Target.
+                        Equivalent to the packet generated by TRACEROUTE
+                    </t>
+                    <t></t>
+                    <t hangText="Proxy Trace Probe Reply:">
+                        Packet received from the network as response to the Proby Trace Probe Request, usually ICMP TTL Exceeded or ICMP Host Unreachable message
+                    </t>
+                </list>
+            </t>
+        </section>
 
-      <t>
-          In attached diagram PT Client wants to discover path from PT Server to a PT Target.
-          The same process is repeated for each Hop:
+        <section anchor="operation" title="Operation">
+            <figure anchor="topology" align="center"><artwork><![CDATA[
++-----------+
+| PT Client |
++-----------+
+|
+~~~~~~~~~~~~
+~ internet ~
+~~~~~~~~~~~~
+|
++-----------+    +------+    +------+    +-------+   +-----------+
+| PT Server |----| Hop1 |----| Hop2 |----| Hop3  |---| PT Target |
++-----------+    +------+    +------+    +-------+   +-----------+
+]]></artwork></figure>
 
-        <list style="hanging">
-          <t hangText="Send Proxy Trace Request:">
-            PT Client sends Proxy Trace Request to PT Server with Hop-Limit '1' and Destination Address 'PT Target.
-          </t>
-          <t></t>
-          <t hangText="Receive Proxy Trace Request:">
-            PT Server receives Proxy Trace Request, verifies its size and TLVs.
-          </t>
-          <t></t>
-          <t hangText="Send Proxy Trace Probe Request:">
-            PT Server sends Proxy Trace Probe Request towards PT Target out from the Interface where FIB informs PT Target to be located.
-          </t>
-          <t></t>
-          <t hangText="Receive Proxy Trace Probe Request:">
-            Hop1 received the Proxy Trace Probe Request, because TTL has expired it punts the packet from data-plane to control-plane.
-          </t>
-          <t></t>
-          <t hangText="Send Proxy Trace Probe Response:">
-            Hop1 sends ICMP TTL Exceeded message to the PT Server
-          </t>
-          <t></t>
-          <t hangText="Receive Proxy Trace Probe Response:">
-            PT Server received the Proxy Trace Probe Response and relates it to the open Proxy Trace Request.
-          </t>
-          <t></t>
-          <t hangText="Send Proxy Trace Response:">
-            PT Server generates Proxy Trace Response packets and adds Proxy Trace Probe Response packet as TLV 0 to the Proxy Trace Response packet.
-            PT Server sends the Proxy Trace Response packet to the PT Client.
-          </t>
-          <t></t>
-          <t hangText="Receice Proxy Trace Response:">
-            PT Client receives the Proxy Trace Response from PT Server learning that Hop Limit 1 in the path between PT Server and PT Target it Hop1
-          </t>
-        </list>
-      </t>
-      <t>
-        PT Client is free to send multiple Proxy Trace Request packets without waiting for an Proxy Trace Response.
-      </t>
-    </section>
+            <t>
+                In attached diagram PT Client wants to discover path from PT Server to a PT Target.
+                The same process is repeated for each Hop:
 
-    <section anchor="request" title="ICMP Proxy Trace Request">
-      <t>
-          The ICMP Proxy Trace Request is defined for both ICMPv4 and ICMPv6.
-          Like any ICMP message, the ICMP Proxy Trace Request is encapsulated in an IP header.
-          The ICMPv4 version of the ICMP Proxy Trace Request message is encapsulated in an IPv4 header, while the ICMPv6 version is encapsulated in an IPv6 header.
+                <list style="hanging">
+                    <t hangText="Send Proxy Trace Request:">
+                        PT Client sends Proxy Trace Request to PT Server with Hop-Limit '1' and Destination Address 'PT Target.
+                    </t>
+                    <t></t>
+                    <t hangText="Receive Proxy Trace Request:">
+                        PT Server receives Proxy Trace Request, verifies its size and TLVs.
+                    </t>
+                    <t></t>
+                    <t hangText="Send Proxy Trace Probe Request:">
+                        PT Server sends Proxy Trace Probe Request towards PT Target out from the Interface where FIB informs PT Target to be located.
+                    </t>
+                    <t></t>
+                    <t hangText="Receive Proxy Trace Probe Request:">
+                        Hop1 received the Proxy Trace Probe Request, because TTL has expired it punts the packet from data-plane to control-plane.
+                    </t>
+                    <t></t>
+                    <t hangText="Send Proxy Trace Probe Response:">
+                        Hop1 sends ICMP TTL Exceeded message to the PT Server
+                    </t>
+                    <t></t>
+                    <t hangText="Receive Proxy Trace Probe Response:">
+                        PT Server received the Proxy Trace Probe Response and relates it to the open Proxy Trace Request.
+                    </t>
+                    <t></t>
+                    <t hangText="Send Proxy Trace Response:">
+                        PT Server generates Proxy Trace Response packets and adds Proxy Trace Probe Response packet as TLV 0 to the Proxy Trace Response packet.
+                        PT Server sends the Proxy Trace Response packet to the PT Client.
+                    </t>
+                    <t></t>
+                    <t hangText="Receice Proxy Trace Response:">
+                        PT Client receives the Proxy Trace Response from PT Server learning that Hop Limit 1 in the path between PT Server and PT Target it Hop1
+                    </t>
+                </list>
+            </t>
+            <t>
+                PT Client is free to send multiple Proxy Trace Request packets without waiting for an Proxy Trace Response.
+            </t>
+        </section>
 
-          ICMP Proxy Trace Request packet's minimum size on IPv4 level is 576B and on IPv6 level 1280B.
+        <section anchor="request" title="ICMP Proxy Trace Request">
+            <t>
+                The ICMP Proxy Trace Request is defined for both ICMPv4 and ICMPv6.
+                Like any ICMP message, the ICMP Proxy Trace Request is encapsulated in an IP header.
+                The ICMPv4 version of the ICMP Proxy Trace Request message is encapsulated in an IPv4 header, while the ICMPv6 version is encapsulated in an IPv6 header.
 
-          Figure 1. decipts the ICMP Proxy Trace Request message.
-      </t>
+                ICMP Proxy Trace Request packet's minimum size on IPv4 level is 576B and on IPv6 level 1280B.
 
-      <figure anchor="requestencoding" align="center"><artwork><![CDATA[
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+                Figure 1. decipts the ICMP Proxy Trace Request message.
+            </t>
+
+            <figure anchor="requestencoding" align="center"><artwork><![CDATA[
+0                   1                   2                   3
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |     Type      |     Code      |          Checksum             |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -182,238 +181,238 @@
 |  ICMP Proxy Trace Request TLV Structure
 ]]></artwork></figure>
 
-      <t>
-        IP Header fields:
-        <list style="hanging">
-          <t hangText="Source Address:">
-            The Source Address identifies the Proxy Trace Client.
-            It MUST be a valid IPv4 or IPv6 unicast addresse.
-          </t>
-          <t></t>
-          <t hangText="Desination Address:">
-            The Destination Address identifies the Proxy Trace Server.
-            It MUST be a valid IPv4 or IPv6 unicast addresse.
-          </t>
-        </list>
-      </t>
-      <t></t>
-      <t>
-        ICMP fields:
-        <list style="hanging">
-          <t hangText="Type:">
-              Proxy Trace Request.
-              The value for ICMPv4 is FIX44.
-              The value for ICMPv6 is FIX162.
-          </t>
-          <t></t>
-          <t hangText="Code:">
-            MUST be set to 0 and MUST be ignored upon receipt.
-          </t>
-          <t></t>
-          <t hangText="Checksum:">
-            For ICMPv4, see <xref target="RFC0792" />.  For ICMPv6, see <xref target="RFC4443" />.
-          </t>
-          <t></t>
-          <t hangText="Identifier:">
-            And Identifier to aid in matching ICMP Proxy Trace Replies to ICMP Proxy Trace Requests.
-            May be 0.
-            See <xref target="RFC0792" /> Echo/Echo Reply.
-          </t>
-          <t></t>
-          <t hangText="Sequence Number:">
-            A Sequence Number to aid in matching ICMP Proxy Trace Replies to ICMP PRoxy Trace Requests.
-            May be 0.
-            See <xref target="RFC0792" /> Echo/Echo Reply.
-          </t>
-          <t></t>
-        </list>
-      </t>
-      <t>
-        TLVs:
-        <list style="hanging">
+            <t>
+                IP Header fields:
+                <list style="hanging">
+                    <t hangText="Source Address:">
+                        The Source Address identifies the Proxy Trace Client.
+                        It MUST be a valid IPv4 or IPv6 unicast addresse.
+                    </t>
+                    <t></t>
+                    <t hangText="Desination Address:">
+                        The Destination Address identifies the Proxy Trace Server.
+                        It MUST be a valid IPv4 or IPv6 unicast addresse.
+                    </t>
+                </list>
+            </t>
+            <t></t>
+            <t>
+                ICMP fields:
+                <list style="hanging">
+                    <t hangText="Type:">
+                        Proxy Trace Request.
+                        The value for ICMPv4 is FIX44.
+                        The value for ICMPv6 is FIX162.
+                    </t>
+                    <t></t>
+                    <t hangText="Code:">
+                        MUST be set to 0 and MUST be ignored upon receipt.
+                    </t>
+                    <t></t>
+                    <t hangText="Checksum:">
+                        For ICMPv4, see <xref target="RFC0792" />.  For ICMPv6, see <xref target="RFC4443" />.
+                    </t>
+                    <t></t>
+                    <t hangText="Identifier:">
+                        And Identifier to aid in matching ICMP Proxy Trace Replies to ICMP Proxy Trace Requests.
+                        May be 0.
+                        See <xref target="RFC0792" /> Echo/Echo Reply.
+                    </t>
+                    <t></t>
+                    <t hangText="Sequence Number:">
+                        A Sequence Number to aid in matching ICMP Proxy Trace Replies to ICMP PRoxy Trace Requests.
+                        May be 0.
+                        See <xref target="RFC0792" /> Echo/Echo Reply.
+                    </t>
+                    <t></t>
+                </list>
+            </t>
+            <t>
+                TLVs:
+                <list style="hanging">
 
-          <t hangText="Padding:">
-            Client added padding to reach desired request packet size.
-            <list style="hanging">
-              <t hangText="Type:">0</t>
-              <t hangText="Length:">Any</t>
-              <t hangText="Value:">Any</t>
-              <t hangText="Times:">0 or 1</t>
-              <t hangText="Implementation:">Mandatory</t>
-              <t hangText="Honor:">Yes</t>
-              <t hangText="Locaton:">Last</t>
-              <t hangText="Default:">None</t>
-            </list>
-          </t>
-          <t></t>
+                    <t hangText="Padding:">
+                        Client added padding to reach desired request packet size.
+                        <list style="hanging">
+                            <t hangText="Type:">0</t>
+                            <t hangText="Length:">Any</t>
+                            <t hangText="Value:">Any</t>
+                            <t hangText="Times:">0 or 1</t>
+                            <t hangText="Implementation:">Mandatory</t>
+                            <t hangText="Honor:">Yes</t>
+                            <t hangText="Locaton:">Last</t>
+                            <t hangText="Default:">None</t>
+                        </list>
+                    </t>
+                    <t></t>
 
-          <t hangText="Source Address:">
-            Source Address of the Proxy Trace Probe Request Packet.
-            <list style="hanging">
-              <t hangText="Type:">1</t>
-              <t hangText="Length:">4 or 16 Bytes, depending on AFI</t>
-              <t hangText="Value:">Any</t>
-              <t hangText="Times:">0 or 1</t>
-              <t hangText="Implementation:">Optional</t>
-              <t hangText="Honor:">Opt-In</t>
-              <t hangText="Location:">Any</t>
-              <t hangText="Default:">Destination Address of ICMP Proxy Trace Request</t>
-            </list>
-          </t>
-          <t></t>
+                    <t hangText="Source Address:">
+                        Source Address of the Proxy Trace Probe Request Packet.
+                        <list style="hanging">
+                            <t hangText="Type:">1</t>
+                            <t hangText="Length:">4 or 16 Bytes, depending on AFI</t>
+                            <t hangText="Value:">Any</t>
+                            <t hangText="Times:">0 or 1</t>
+                            <t hangText="Implementation:">Optional</t>
+                            <t hangText="Honor:">Opt-In</t>
+                            <t hangText="Location:">Any</t>
+                            <t hangText="Default:">Destination Address of ICMP Proxy Trace Request</t>
+                        </list>
+                    </t>
+                    <t></t>
 
-          <t hangText="Destination Address:">
-            Destination Address of the Proxy Trace Probe Request Packet.
-            <list style="hanging">
-              <t hangText="Type:">2</t>
-              <t hangText="Length:">4 or 16 Bytes, depending on AFI</t>
-              <t hangText="Value:">Any</t>
-              <t hangText="Times:">0 or 1</t>
-              <t hangText="Implementation:">Mandatory</t>
-              <t hangText="Honor:">Opt-Out</t>
-              <t hangText="Location:">Any</t>
-              <t hangText="Default:">Source Address of ICMP Proxy Trace Request</t>
-            </list>
-          </t>
-          <t></t>
+                    <t hangText="Destination Address:">
+                        Destination Address of the Proxy Trace Probe Request Packet.
+                        <list style="hanging">
+                            <t hangText="Type:">2</t>
+                            <t hangText="Length:">4 or 16 Bytes, depending on AFI</t>
+                            <t hangText="Value:">Any</t>
+                            <t hangText="Times:">0 or 1</t>
+                            <t hangText="Implementation:">Mandatory</t>
+                            <t hangText="Honor:">Opt-Out</t>
+                            <t hangText="Location:">Any</t>
+                            <t hangText="Default:">Source Address of ICMP Proxy Trace Request</t>
+                        </list>
+                    </t>
+                    <t></t>
 
-          <t hangText="Hop Limit:">
-            Hop Limit of the Proxy Trace Probe Request Packet.
-            <list style="hanging">
-              <t hangText="Type:">3</t>
-              <t hangText="Length:">1 Byte</t>
-              <t hangText="Value:">1-255, NOT 0</t>
-              <t hangText="Times:">1</t>
-              <t hangText="Implementation:">Mandatory</t>
-              <t hangText="Honor:">Yes</t>
-              <t hangText="Location:">Any</t>
-              <t hangText="Default:">None</t>
-            </list>
-          </t>
-          <t></t>
+                    <t hangText="Hop Limit:">
+                        Hop Limit of the Proxy Trace Probe Request Packet.
+                        <list style="hanging">
+                            <t hangText="Type:">3</t>
+                            <t hangText="Length:">1 Byte</t>
+                            <t hangText="Value:">1-255, NOT 0</t>
+                            <t hangText="Times:">1</t>
+                            <t hangText="Implementation:">Mandatory</t>
+                            <t hangText="Honor:">Yes</t>
+                            <t hangText="Location:">Any</t>
+                            <t hangText="Default:">None</t>
+                        </list>
+                    </t>
+                    <t></t>
 
-          <t hangText="IP Protocol:">
-            IP Protocol number of the Proxy Trace Probe Request Packet.
-            <list style="hanging">
-              <t hangText="Type:">4</t>
-              <t hangText="Length:">1 Byte</t>
-              <t hangText="Value:">Any</t>
-              <t hangText="Times:">0 or 1</t>
-              <t hangText="Implementation:">Optional</t>
-              <t hangText="Honor:">Opt-In</t>
-              <t hangText="Location:">Any</t>
-              <t hangText="Default:">17 (UDP)</t>
-            </list>
-          </t>
-          <t></t>
+                    <t hangText="IP Protocol:">
+                        IP Protocol number of the Proxy Trace Probe Request Packet.
+                        <list style="hanging">
+                            <t hangText="Type:">4</t>
+                            <t hangText="Length:">1 Byte</t>
+                            <t hangText="Value:">Any</t>
+                            <t hangText="Times:">0 or 1</t>
+                            <t hangText="Implementation:">Optional</t>
+                            <t hangText="Honor:">Opt-In</t>
+                            <t hangText="Location:">Any</t>
+                            <t hangText="Default:">17 (UDP)</t>
+                        </list>
+                    </t>
+                    <t></t>
 
-          <t hangText="Source Port:">
-            L4 Source Port number of the Proxy Trace Probe Request Packet.
-            <list style="hanging">
-              <t hangText="Type:">5</t>
-              <t hangText="Length:">2 Bytes</t>
-              <t hangText="Value:">Any</t>
-              <t hangText="Times:">0 or 1</t>
-              <t hangText="Implementation:">Optional</t>
-              <t hangText="Honor:">Opt-In</t>
-              <t hangText="Location:">Any</t>
-              <t hangText="Default:">Ephemeral (<xref target="RFC6056" />)</t>
-            </list>
-          </t>
-          <t></t>
+                    <t hangText="Source Port:">
+                        L4 Source Port number of the Proxy Trace Probe Request Packet.
+                        <list style="hanging">
+                            <t hangText="Type:">5</t>
+                            <t hangText="Length:">2 Bytes</t>
+                            <t hangText="Value:">Any</t>
+                            <t hangText="Times:">0 or 1</t>
+                            <t hangText="Implementation:">Optional</t>
+                            <t hangText="Honor:">Opt-In</t>
+                            <t hangText="Location:">Any</t>
+                            <t hangText="Default:">Ephemeral (<xref target="RFC6056" />)</t>
+                        </list>
+                    </t>
+                    <t></t>
 
-          <t hangText="Destination Port:">
-            L4 Destination Port number of the Proxy Trace Probe Request Packet.
-            <list style="hanging">
-              <t hangText="Type:">6</t>
-              <t hangText="Length:">2 Bytes</t>
-              <t hangText="Value:">Any</t>
-              <t hangText="Times:">0 or 1</t>
-              <t hangText="Implementation:">Optional</t>
-              <t hangText="Honor:">Opt-In</t>
-              <t hangText="Location:">Any</t>
-              <t hangText="Default:">33433 + hopt-limit (33434 to 33688)</t>
-            </list>
-          </t>
-          <t></t>
+                    <t hangText="Destination Port:">
+                        L4 Destination Port number of the Proxy Trace Probe Request Packet.
+                        <list style="hanging">
+                            <t hangText="Type:">6</t>
+                            <t hangText="Length:">2 Bytes</t>
+                            <t hangText="Value:">Any</t>
+                            <t hangText="Times:">0 or 1</t>
+                            <t hangText="Implementation:">Optional</t>
+                            <t hangText="Honor:">Opt-In</t>
+                            <t hangText="Location:">Any</t>
+                            <t hangText="Default:">33433 + hopt-limit (33434 to 33688)</t>
+                        </list>
+                    </t>
+                    <t></t>
 
-          <t hangText="Payload Length:">
-            Payload Length in bytes of the Proxy Trace Probe Request Packet.
-            <list style="hanging">
-              <t hangText="Type:">7</t>
-              <t hangText="Length:">2 Bytes</t>
-              <t hangText="Value:">Any</t>
-              <t hangText="Times:">0 or 1</t>
-              <t hangText="Implementation:">Optional</t>
-              <t hangText="Honor:">Opt-In</t>
-              <t hangText="Location:">Any</t>
-              <t hangText="Default:">Local choice, typically just as needed for a timestamp</t>
-            </list>
-          </t>
-          <t></t>
+                    <t hangText="Payload Length:">
+                        Payload Length in bytes of the Proxy Trace Probe Request Packet.
+                        <list style="hanging">
+                            <t hangText="Type:">7</t>
+                            <t hangText="Length:">2 Bytes</t>
+                            <t hangText="Value:">Any</t>
+                            <t hangText="Times:">0 or 1</t>
+                            <t hangText="Implementation:">Optional</t>
+                            <t hangText="Honor:">Opt-In</t>
+                            <t hangText="Location:">Any</t>
+                            <t hangText="Default:">Local choice, typically just as needed for a timestamp</t>
+                        </list>
+                    </t>
+                    <t></t>
 
-          <t hangText="Traffic Class:">
-            Traffic Class byte of the Proxy Trace Probe Request Packet.
-            <list style="hanging">
-              <t hangText="Type:">8</t>
-              <t hangText="Length:">1 Byte</t>
-              <t hangText="Value:">Any</t>
-              <t hangText="Times:">0 or 1</t>
-              <t hangText="Implementation:">Optional</t>
-              <t hangText="Honor:">Opt-In</t>
-              <t hangText="Location:">Any</t>
-              <t hangText="Default:">Local choice</t>
-            </list>
-          </t>
-          <t></t>
+                    <t hangText="Traffic Class:">
+                        Traffic Class byte of the Proxy Trace Probe Request Packet.
+                        <list style="hanging">
+                            <t hangText="Type:">8</t>
+                            <t hangText="Length:">1 Byte</t>
+                            <t hangText="Value:">Any</t>
+                            <t hangText="Times:">0 or 1</t>
+                            <t hangText="Implementation:">Optional</t>
+                            <t hangText="Honor:">Opt-In</t>
+                            <t hangText="Location:">Any</t>
+                            <t hangText="Default:">Local choice</t>
+                        </list>
+                    </t>
+                    <t></t>
 
-          <t hangText="Bit Pattern:">
-            Bit Pattern of a payload of the Proxy Trace Probe Request Packet.
-            <list style="hanging">
-              <t hangText="Type:">9</t>
-              <t hangText="Length:">Any, implementation MAY choose to limit arbitrarily what it accepts</t>
-              <t hangText="Value:">Any</t>
-              <t hangText="Times:">0 or 1</t>
-              <t hangText="Implementation:">Optional</t>
-              <t hangText="Honor:">Opt-In</t>
-              <t hangText="Location:">Any</t>
-              <t hangText="Default:">Local choice, typically random, 0 or 1</t>
-            </list>
-          </t>
-          <t></t>
+                    <t hangText="Bit Pattern:">
+                        Bit Pattern of a payload of the Proxy Trace Probe Request Packet.
+                        <list style="hanging">
+                            <t hangText="Type:">9</t>
+                            <t hangText="Length:">Any, implementation MAY choose to limit arbitrarily what it accepts</t>
+                            <t hangText="Value:">Any</t>
+                            <t hangText="Times:">0 or 1</t>
+                            <t hangText="Implementation:">Optional</t>
+                            <t hangText="Honor:">Opt-In</t>
+                            <t hangText="Location:">Any</t>
+                            <t hangText="Default:">Local choice, typically random, 0 or 1</t>
+                        </list>
+                    </t>
+                    <t></t>
 
-          <t hangText="Future Use:">
-            <list style="hanging">
-              <t hangText="Type:">10-59999</t>
-            </list>
-          </t>
-          <t></t>
+                    <t hangText="Future Use:">
+                        <list style="hanging">
+                            <t hangText="Type:">10-59999</t>
+                        </list>
+                    </t>
+                    <t></t>
 
-          <t hangText="Local Use:">
-            <list style="hanging">
-              <t hangText="Type:">60000-65535</t>
-            </list>
-          </t>
-          <t></t>
+                    <t hangText="Local Use:">
+                        <list style="hanging">
+                            <t hangText="Type:">60000-65535</t>
+                        </list>
+                    </t>
+                    <t></t>
 
-        </list>
-      </t>
-    </section>
+                </list>
+            </t>
+        </section>
 
 
-    <section anchor="reply" title="ICMP Proxy Trace Reply">
-      <t>
-          The ICMP Proxy Trace Reply is defined for both ICMPv4 and ICMPv6.
-          Like any ICMP message, the ICMP Proxy Trace Reply is encapsulated in an IP header.
-          The ICMPv4 version of the ICMP Proxy Trace Reply message is encapsulated in an IPv4 header, while the ICMPv6 version is encapsulated in an IPv6 header.
-      </t>
-      <t>
-        Figure 2. decipts the ICMP Proxy Trace Reply message.
-      </t>
+        <section anchor="reply" title="ICMP Proxy Trace Reply">
+            <t>
+                The ICMP Proxy Trace Reply is defined for both ICMPv4 and ICMPv6.
+                Like any ICMP message, the ICMP Proxy Trace Reply is encapsulated in an IP header.
+                The ICMPv4 version of the ICMP Proxy Trace Reply message is encapsulated in an IPv4 header, while the ICMPv6 version is encapsulated in an IPv6 header.
+            </t>
+            <t>
+                Figure 2. decipts the ICMP Proxy Trace Reply message.
+            </t>
 
-      <figure anchor="replyencoding" align="center"><artwork><![CDATA[
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+            <figure anchor="replyencoding" align="center"><artwork><![CDATA[
+0                   1                   2                   3
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |     Type      |     Code      |          Checksum             |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -422,329 +421,329 @@
 |  ICMP Proxy Trace Reply TLV Structure
 ]]></artwork></figure>
 
-      <t>
-        IP Header fields:
-        <list style="hanging">
-          <t hangText="Source Address:">
-            The Source Address identifies the Proxy Trace Server.
-            It MUST be a valid IPv4 or IPv6 unicast addresse.
-          </t>
-          <t></t>
-          <t hangText="Desination Address:">
-            The Destination Address identifies the Proxy Trace Client.
-            It MUST be a valid IPv4 or IPv6 unicast addresse.
-          </t>
-        </list>
-      </t>
-      <t></t>
-      <t>
-        ICMP fields:
-        <list style="hanging">
-          <t hangText="Type:">
-              Proxy Trace Reply.
-              The value for ICMPv4 is FIX45.
-              The value for ICMPv6 is FIX163.
-          </t>
-          <t></t>
-          <t hangText="Code:">
-            MUST be set to 0 and MUST be ignored upon receipt.
-          </t>
-          <t></t>
-          <t hangText="Checksum:">
-            For ICMPv4, see <xref target="RFC0792" />.
-            For ICMPv6, see <xref target="RFC4443" />.
-          </t>
-          <t></t>
-          <t hangText="Identifier:">
-            And Identifier to aid in matching ICMP Proxy Trace Replies to ICMP Proxy Trace Requests.
-            May be 0.
-            See <xref target="RFC0792" /> Echo/Echo Reply.
-          </t>
-          <t></t>
-          <t hangText="Sequence Number:">
-            A Sequence Number to aid in matching ICMP Proxy Trace Replies to ICMP PRoxy Trace Requests.
-            May be 0.
-            See <xref target="RFC0792" /> Echo/Echo Reply.
-          </t>
-          <t></t>
-        </list>
-      </t>
-      <t>
-        TLVs:
-        <list style="hanging">
+            <t>
+                IP Header fields:
+                <list style="hanging">
+                    <t hangText="Source Address:">
+                        The Source Address identifies the Proxy Trace Server.
+                        It MUST be a valid IPv4 or IPv6 unicast addresse.
+                    </t>
+                    <t></t>
+                    <t hangText="Desination Address:">
+                        The Destination Address identifies the Proxy Trace Client.
+                        It MUST be a valid IPv4 or IPv6 unicast addresse.
+                    </t>
+                </list>
+            </t>
+            <t></t>
+            <t>
+                ICMP fields:
+                <list style="hanging">
+                    <t hangText="Type:">
+                        Proxy Trace Reply.
+                        The value for ICMPv4 is FIX45.
+                        The value for ICMPv6 is FIX163.
+                    </t>
+                    <t></t>
+                    <t hangText="Code:">
+                        MUST be set to 0 and MUST be ignored upon receipt.
+                    </t>
+                    <t></t>
+                    <t hangText="Checksum:">
+                        For ICMPv4, see <xref target="RFC0792" />.
+                        For ICMPv6, see <xref target="RFC4443" />.
+                    </t>
+                    <t></t>
+                    <t hangText="Identifier:">
+                        And Identifier to aid in matching ICMP Proxy Trace Replies to ICMP Proxy Trace Requests.
+                        May be 0.
+                        See <xref target="RFC0792" /> Echo/Echo Reply.
+                    </t>
+                    <t></t>
+                    <t hangText="Sequence Number:">
+                        A Sequence Number to aid in matching ICMP Proxy Trace Replies to ICMP PRoxy Trace Requests.
+                        May be 0.
+                        See <xref target="RFC0792" /> Echo/Echo Reply.
+                    </t>
+                    <t></t>
+                </list>
+            </t>
+            <t>
+                TLVs:
+                <list style="hanging">
 
-          <t hangText="Proxy Trace Probe Reply Packet:">
-            The ICMP TTL exceeded or Unreachable Message Server received, verbatim.
-            Includes extension objects such as <xref target="RFC4950" /> and <xref target="RFC5837" />.
-            <list style="hanging">
-              <t hangText="Type:">0</t>
-              <t hangText="Length:">Any</t>
-              <t hangText="Value:">Any</t>
-              <t hangText="Times:">0 or 1</t>
-              <t hangText="Implementation:">Mandatory</t>
-              <t hangText="Locaton:">Any</t>
-              <t hangText="Default:">None</t>
-            </list>
-          </t>
-          <t></t>
+                    <t hangText="Proxy Trace Probe Reply Packet:">
+                        The ICMP TTL exceeded or Unreachable Message Server received, verbatim.
+                        Includes extension objects such as <xref target="RFC4950" /> and <xref target="RFC5837" />.
+                        <list style="hanging">
+                            <t hangText="Type:">0</t>
+                            <t hangText="Length:">Any</t>
+                            <t hangText="Value:">Any</t>
+                            <t hangText="Times:">0 or 1</t>
+                            <t hangText="Implementation:">Mandatory</t>
+                            <t hangText="Locaton:">Any</t>
+                            <t hangText="Default:">None</t>
+                        </list>
+                    </t>
+                    <t></t>
 
-          <t hangText="RTT:">
-            RTT in microseconds
-            <list style="hanging">
-              <t hangText="Type:">1</t>
-              <t hangText="Length:">3 Bytes</t>
-              <t hangText="Value:">Any</t>
-              <t hangText="Times:">0 or 1</t>
-              <t hangText="Implementation:">Optional</t>
-              <t hangText="Locaton:">Any</t>
-              <t hangText="Default:">None</t>
-            </list>
-          </t>
-          <t></t>
+                    <t hangText="RTT:">
+                        RTT in microseconds
+                        <list style="hanging">
+                            <t hangText="Type:">1</t>
+                            <t hangText="Length:">3 Bytes</t>
+                            <t hangText="Value:">Any</t>
+                            <t hangText="Times:">0 or 1</t>
+                            <t hangText="Implementation:">Optional</t>
+                            <t hangText="Locaton:">Any</t>
+                            <t hangText="Default:">None</t>
+                        </list>
+                    </t>
+                    <t></t>
 
-          <t hangText="Ignored TLV:">
-            List of TLV type numbers implementation supports but chooses to not honor.
-            <list style="hanging">
-              <t hangText="Type:">2</t>
-              <t hangText="Length:">Any</t>
-              <t hangText="Value:">2 bytes per Ignored TLV</t>
-              <t hangText="Times:">0 or 1</t>
-              <t hangText="Implementation:">Mandatory</t>
-              <t hangText="Locaton:">Any</t>
-              <t hangText="Default:">None</t>
-            </list>
-          </t>
-          <t></t>
+                    <t hangText="Ignored TLV:">
+                        List of TLV type numbers implementation supports but chooses to not honor.
+                        <list style="hanging">
+                            <t hangText="Type:">2</t>
+                            <t hangText="Length:">Any</t>
+                            <t hangText="Value:">2 bytes per Ignored TLV</t>
+                            <t hangText="Times:">0 or 1</t>
+                            <t hangText="Implementation:">Mandatory</t>
+                            <t hangText="Locaton:">Any</t>
+                            <t hangText="Default:">None</t>
+                        </list>
+                    </t>
+                    <t></t>
 
-          <t hangText="Unsupported TLV:">
-            List of TLV type numbers implementation does not support
-            <list style="hanging">
-              <t hangText="Type:">3</t>
-              <t hangText="Length:">Any</t>
-              <t hangText="Value:">2 bytes per Unsupported TLV</t>
-              <t hangText="Times:">0 or 1</t>
-              <t hangText="Implementation:">Mandatory</t>
-              <t hangText="Locaton:">Any</t>
-              <t hangText="Default:">None</t>
-            </list>
-          </t>
-          <t></t>
+                    <t hangText="Unsupported TLV:">
+                        List of TLV type numbers implementation does not support
+                        <list style="hanging">
+                            <t hangText="Type:">3</t>
+                            <t hangText="Length:">Any</t>
+                            <t hangText="Value:">2 bytes per Unsupported TLV</t>
+                            <t hangText="Times:">0 or 1</t>
+                            <t hangText="Implementation:">Mandatory</t>
+                            <t hangText="Locaton:">Any</t>
+                            <t hangText="Default:">None</t>
+                        </list>
+                    </t>
+                    <t></t>
 
-          <t hangText="Bad TLV Count:">
-            List of TLV type numbers occuring more or less time than expected
-            <list style="hanging">
-              <t hangText="Type:">4</t>
-              <t hangText="Length:">Any</t>
-              <t hangText="Value:">2 bytes per Bad TLV</t>
-              <t hangText="Times:">0 or 1</t>
-              <t hangText="Implementation:">Mandatory</t>
-              <t hangText="Locaton:">Any</t>
-              <t hangText="Default:">None</t>
-            </list>
-          </t>
-          <t></t>
+                    <t hangText="Bad TLV Count:">
+                        List of TLV type numbers occuring more or less time than expected
+                        <list style="hanging">
+                            <t hangText="Type:">4</t>
+                            <t hangText="Length:">Any</t>
+                            <t hangText="Value:">2 bytes per Bad TLV</t>
+                            <t hangText="Times:">0 or 1</t>
+                            <t hangText="Implementation:">Mandatory</t>
+                            <t hangText="Locaton:">Any</t>
+                            <t hangText="Default:">None</t>
+                        </list>
+                    </t>
+                    <t></t>
 
-          <t hangText="Bad TLV Length:">
-            List of TLV type numbers having Length implementation rejects as valid
-            <list style="hanging">
-              <t hangText="Type:">5</t>
-              <t hangText="Length:">Any</t>
-              <t hangText="Value:">2 bytes per Bad TLV</t>
-              <t hangText="Times:">0 or 1</t>
-              <t hangText="Implementation:">Mandatory</t>
-              <t hangText="Locaton:">Any</t>
-              <t hangText="Default:">None</t>
-            </list>
-          </t>
-          <t></t>
+                    <t hangText="Bad TLV Length:">
+                        List of TLV type numbers having Length implementation rejects as valid
+                        <list style="hanging">
+                            <t hangText="Type:">5</t>
+                            <t hangText="Length:">Any</t>
+                            <t hangText="Value:">2 bytes per Bad TLV</t>
+                            <t hangText="Times:">0 or 1</t>
+                            <t hangText="Implementation:">Mandatory</t>
+                            <t hangText="Locaton:">Any</t>
+                            <t hangText="Default:">None</t>
+                        </list>
+                    </t>
+                    <t></t>
 
-          <t hangText="Bad TLV Value:">
-            List of TLV type numbers having Value implementation rejects as valid
-            <list style="hanging">
-              <t hangText="Type:">6</t>
-              <t hangText="Length:">Any</t>
-              <t hangText="Value:">2 bytes per Bad TLV</t>
-              <t hangText="Times:">0 or 1</t>
-              <t hangText="Implementation:">Mandatory</t>
-              <t hangText="Locaton:">Any</t>
-              <t hangText="Default:">None</t>
-            </list>
-          </t>
-          <t></t>
+                    <t hangText="Bad TLV Value:">
+                        List of TLV type numbers having Value implementation rejects as valid
+                        <list style="hanging">
+                            <t hangText="Type:">6</t>
+                            <t hangText="Length:">Any</t>
+                            <t hangText="Value:">2 bytes per Bad TLV</t>
+                            <t hangText="Times:">0 or 1</t>
+                            <t hangText="Implementation:">Mandatory</t>
+                            <t hangText="Locaton:">Any</t>
+                            <t hangText="Default:">None</t>
+                        </list>
+                    </t>
+                    <t></t>
 
-          <t hangText="Future Use:">
-            <list style="hanging">
-              <t hangText="Type:">7-59999</t>
-            </list>
-          </t>
-          <t></t>
+                    <t hangText="Future Use:">
+                        <list style="hanging">
+                            <t hangText="Type:">7-59999</t>
+                        </list>
+                    </t>
+                    <t></t>
 
-          <t hangText="Local Use:">
-            <list style="hanging">
-              <t hangText="Type:">60000-65535</t>
-            </list>
-          </t>
-          <t></t>
-        </list>
-      </t>
-    </section>
+                    <t hangText="Local Use:">
+                        <list style="hanging">
+                            <t hangText="Type:">60000-65535</t>
+                        </list>
+                    </t>
+                    <t></t>
+                </list>
+            </t>
+        </section>
 
-    <section anchor="icmp" title="ICMP Message Processing">
-      <t>
-        When a host receives an ICMP Proxy Trace Request message and any of the following conditions apply, the node MUST silently discard the incoming message:
-      </t>
-      <t>
-        <list style="hanging">
-          <t>
-            The node does not recognize ICMP Proxy Trace Request messages.
-          </t>
-          <t>
-            The node has disabled the ICMP Proxy Trace Request functionality.
-          </t>
-          <t>
-            The incoming ICMP Proxy Trace Request message is too small.
-          </t>
-          <t>
-            The Source Address of the incoming message is not a unicast address.
-          </t>
-          <t>
-            The Destination Address of the incoming message is a multicast address.
-          </t>
-        </list>
-      </t>
-      <t>
-        Discard SHOULD happen in the forwarding-plane
-      </t>
+        <section anchor="icmp" title="ICMP Message Processing">
+            <t>
+                When a host receives an ICMP Proxy Trace Request message and any of the following conditions apply, the node MUST silently discard the incoming message:
+            </t>
+            <t>
+                <list style="hanging">
+                    <t>
+                        The node does not recognize ICMP Proxy Trace Request messages.
+                    </t>
+                    <t>
+                        The node has disabled the ICMP Proxy Trace Request functionality.
+                    </t>
+                    <t>
+                        The incoming ICMP Proxy Trace Request message is too small.
+                    </t>
+                    <t>
+                        The Source Address of the incoming message is not a unicast address.
+                    </t>
+                    <t>
+                        The Destination Address of the incoming message is a multicast address.
+                    </t>
+                </list>
+            </t>
+            <t>
+                Discard SHOULD happen in the forwarding-plane
+            </t>
 
-      <t>
-        Otherwise, when a node receives an ICMPv4 Proxy Trace Request, it MUST format an ICMPv4 Proxy Trace Reply as follows:
-      </t>
-      <t>
-        <list style="hanging">
-          <t hangText="Don't Fragment (DF) flag:">1</t>
-          <t hangText="More Fragments flag:">0</t>
-          <t hangText="Fragment Offset:">0</t>
-          <t hangText="TTL:">255</t>
-          <t hangText="Protocol:">ICMP</t>
-        </list>
-      </t>
+            <t>
+                Otherwise, when a node receives an ICMPv4 Proxy Trace Request, it MUST format an ICMPv4 Proxy Trace Reply as follows:
+            </t>
+            <t>
+                <list style="hanging">
+                    <t hangText="Don't Fragment (DF) flag:">1</t>
+                    <t hangText="More Fragments flag:">0</t>
+                    <t hangText="Fragment Offset:">0</t>
+                    <t hangText="TTL:">255</t>
+                    <t hangText="Protocol:">ICMP</t>
+                </list>
+            </t>
 
-      <t>
-        When a node receives an ICMPv6 Proxy Trace Request, it MUST format an ICMPv6 Proxy Trace Reply as follows:
-      </t>
-      <t>
-        <list style="hanging">
-          <t hangText="Hop Limit:">255</t>
-          <t hangText="Next Header:">ICMPv6</t>
-        </list>
-      </t>
+            <t>
+                When a node receives an ICMPv6 Proxy Trace Request, it MUST format an ICMPv6 Proxy Trace Reply as follows:
+            </t>
+            <t>
+                <list style="hanging">
+                    <t hangText="Hop Limit:">255</t>
+                    <t hangText="Next Header:">ICMPv6</t>
+                </list>
+            </t>
 
-      <t>
-        In either case, the responding node MUST do the following:
-      </t>
-      <t>
-        <list style="hanging">
-          <t>
-            Copy the Source Address from the Proxy Trace Request message to the Destination Address of the Proxy Trace Reply message.
-          </t>
-          <t>
-            Copy the Destination Address from the Proxy Trace Request message to the Source Address of the Proxy Trace Reply message.
-          </t>
-          <t>
-            Set the ICMP Type to Proxy Trace Reply.
-          </t>
-          <t>
-            Copy the Identifier from the Proxy Trace Request message to the Proxy Trace Response message.
-          </t>
-          <t>
-            Copy the Sequence Number from the Proxy Trace Request message to the Proxy Trace Response message.
-          </t>
-          <t>
-            Set the Code field to 0.
-          </t>
-          <t>
-            Set the Checksum appropriately.
-          </t>
-          <t>
-            Set the TLVs appropriately.
-          </t>
-          <t>
-            Forward the Proxy Trace Reply to the Proxy Trace Client.
-          </t>
-        </list>
-      </t>
-    </section>
+            <t>
+                In either case, the responding node MUST do the following:
+            </t>
+            <t>
+                <list style="hanging">
+                    <t>
+                        Copy the Source Address from the Proxy Trace Request message to the Destination Address of the Proxy Trace Reply message.
+                    </t>
+                    <t>
+                        Copy the Destination Address from the Proxy Trace Request message to the Source Address of the Proxy Trace Reply message.
+                    </t>
+                    <t>
+                        Set the ICMP Type to Proxy Trace Reply.
+                    </t>
+                    <t>
+                        Copy the Identifier from the Proxy Trace Request message to the Proxy Trace Response message.
+                    </t>
+                    <t>
+                        Copy the Sequence Number from the Proxy Trace Request message to the Proxy Trace Response message.
+                    </t>
+                    <t>
+                        Set the Code field to 0.
+                    </t>
+                    <t>
+                        Set the Checksum appropriately.
+                    </t>
+                    <t>
+                        Set the TLVs appropriately.
+                    </t>
+                    <t>
+                        Forward the Proxy Trace Reply to the Proxy Trace Client.
+                    </t>
+                </list>
+            </t>
+        </section>
 
-    <section anchor="implementation" title="Implementation Considerations">
-      <t>
-          Host implementing Proxy Trace SHOULD have it turned on by default in all interfaces and MUST allow turning it off/on per interface.
-          Host implementation MUST police rate of Proxy Trace Request packets from the data-plane to a level where Host can honor all Proxy Trace Request packets accepted without negatively impacting control-plane operations.
-      </t>
-      <t>
-          Proxy Trace Server SHOULD timeout after 1 second of waiting for a Proxy Trace Probe Reply Packet and MAY timeout earlier.
-          Proxy Trace Server SHOULD NOT send Proxy Trace Reply message if it timed out.
-      </t>
-    </section>
+        <section anchor="implementation" title="Implementation Considerations">
+            <t>
+                Host implementing Proxy Trace SHOULD have it turned on by default in all interfaces and MUST allow turning it off/on per interface.
+                Host implementation MUST police rate of Proxy Trace Request packets from the data-plane to a level where Host can honor all Proxy Trace Request packets accepted without negatively impacting control-plane operations.
+            </t>
+            <t>
+                Proxy Trace Server SHOULD timeout after 1 second of waiting for a Proxy Trace Probe Reply Packet and MAY timeout earlier.
+                Proxy Trace Server SHOULD NOT send Proxy Trace Reply message if it timed out.
+            </t>
+        </section>
 
-    <section anchor="errorhandling" title="Error Handling">
-      <t>
-          Proxy Trace Server encountering any problem in the Proxy Trace Request Message MUST not send any Probe Packet out and SHOULD send Proxy Trace Reply Message to the Proxy Trace Client informing of the issue.
-          Proxy Trace Server may give up parsing the Proxy Trace Request Message after one or more problems.
-      </t>
-      <t>
-        Proxy Trace Server receiving too small Proxy Trace Request packet should silently discard it in the data-plane.
-      </t>
-    </section>
+        <section anchor="errorhandling" title="Error Handling">
+            <t>
+                Proxy Trace Server encountering any problem in the Proxy Trace Request Message MUST not send any Probe Packet out and SHOULD send Proxy Trace Reply Message to the Proxy Trace Client informing of the issue.
+                Proxy Trace Server may give up parsing the Proxy Trace Request Message after one or more problems.
+            </t>
+            <t>
+                Proxy Trace Server receiving too small Proxy Trace Request packet should silently discard it in the data-plane.
+            </t>
+        </section>
 
-   <section anchor="iana" title="IANA Considerations">
-     <t>
-       Per this document, IANA is requested to reference this document in the "Internet Control Message Control (ICMP) Parmeters" and the "Internet Control Message Protocol version 6 (ICMPv6) Parameters" registries under the "Code Fields" group.
-     </t>
-   </section>
+        <section anchor="iana" title="IANA Considerations">
+            <t>
+                Per this document, IANA is requested to reference this document in the "Internet Control Message Control (ICMP) Parmeters" and the "Internet Control Message Protocol version 6 (ICMPv6) Parameters" registries under the "Code Fields" group.
+            </t>
+        </section>
 
-    <section anchor="security" title="Security Considerations">
-      <t>
-        Allowing client to set arbitrary Payload will create amplification potential.
-      </t>
-      <t>
-        Allowing client to define Protocol, Port and Bit Pattern allows client to craft arbitrary packets enabling it to perform port knocking and trigger packet-of-death bugs.
-      </t>
-      <t>
-        Opt-In Request TLVs should only be honored in trusted networks.
-      </t>
-      <t>
-        By default, unlike ICMP Echo, there is bps attenuation becase Proxy Request packets are much larger than Probe Request and Proxy Response.
-      </t>
-      <t>
-        By default there is potentially 2 x pps amplification, however this is minor concerns as other more common vectors, such as TCP SYN spooffing allow for much higher pps amplification.
-      </t>
-      <t>
-        There is no way for Client to cause Server to send more than two packets per each packet Client sends.
-      </t>
-      <t>
-          There are no security implifications identified in setting destination address TLV as attacker could spoof request source address in either case, which would yield both Probe Request and Proxy Response to be sent to the victim.
-          Compared to having different source addresss and destination TLV where Probe Request and Proxy Response will go to a different hosts, making it less attractive vector.
-      </t>
-    </section>
+        <section anchor="security" title="Security Considerations">
+            <t>
+                Allowing client to set arbitrary Payload will create amplification potential.
+            </t>
+            <t>
+                Allowing client to define Protocol, Port and Bit Pattern allows client to craft arbitrary packets enabling it to perform port knocking and trigger packet-of-death bugs.
+            </t>
+            <t>
+                Opt-In Request TLVs should only be honored in trusted networks.
+            </t>
+            <t>
+                By default, unlike ICMP Echo, there is bps attenuation becase Proxy Request packets are much larger than Probe Request and Proxy Response.
+            </t>
+            <t>
+                By default there is potentially 2 x pps amplification, however this is minor concerns as other more common vectors, such as TCP SYN spooffing allow for much higher pps amplification.
+            </t>
+            <t>
+                There is no way for Client to cause Server to send more than two packets per each packet Client sends.
+            </t>
+            <t>
+                There are no security implifications identified in setting destination address TLV as attacker could spoof request source address in either case, which would yield both Probe Request and Proxy Response to be sent to the victim.
+                Compared to having different source addresss and destination TLV where Probe Request and Proxy Response will go to a different hosts, making it less attractive vector.
+            </t>
+        </section>
 
-  </middle>
+    </middle>
 
-  <back>
-    <references title="Normative References">
-      <?rfc include="reference.RFC.0792"?>
-      <?rfc include="reference.RFC.2119"?>
-      <?rfc include="reference.RFC.4443"?>
-    </references>
-    <references title="Informative References">
-      <?rfc include="reference.RFC.4950"?>
-      <?rfc include="reference.RFC.5837"?>
-      <?rfc include="reference.RFC.6056"?>
-    </references>
+    <back>
+        <references title="Normative References">
+            <?rfc include="reference.RFC.0792"?>
+            <?rfc include="reference.RFC.2119"?>
+            <?rfc include="reference.RFC.4443"?>
+        </references>
+        <references title="Informative References">
+            <?rfc include="reference.RFC.4950"?>
+            <?rfc include="reference.RFC.5837"?>
+            <?rfc include="reference.RFC.6056"?>
+        </references>
 
-    <section anchor="acknowledgements" title="Acknowledgements">
-      <t>
-      </t>
-    </section>
-  </back>
+        <section anchor="acknowledgements" title="Acknowledgements">
+            <t>
+            </t>
+        </section>
+    </back>
 
 </rfc>
