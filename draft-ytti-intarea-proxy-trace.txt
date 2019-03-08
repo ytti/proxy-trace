@@ -698,6 +698,16 @@ Internet-Draft                 Proxy Trace                    March 2019
    destination TLV where Probe Request and Proxy Response will go to a
    different hosts, making it less attractive vector.
 
+   Precedent exists in [RFC8335] where we can ask server to return
+   information to us which would normally not be visible to us.  Like
+   every packet received on control-plane there are always risks
+   involved in software defects, however we need to balance the cost of
+   those risks with the cost savings afforded by diagnostic tools due to
+   reduced outage times.  Historically we have had several security
+   issues in ICMP echo, including f00fc7c8 and +++ATH, but we continue
+   to utilise ICMP echo because the diagnostic value in reducing outage
+   times exceeds the risk carried.
+
 11.  References
 
 11.1.  Normative References
@@ -711,6 +721,15 @@ Internet-Draft                 Proxy Trace                    March 2019
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
+
+
+
+
+Ytti                    Expires September 9, 2019              [Page 13]
+
+Internet-Draft                 Proxy Trace                    March 2019
+
+
    [RFC4443]  Conta, A., Deering, S., and M. Gupta, Ed., "Internet
               Control Message Protocol (ICMPv6) for the Internet
               Protocol Version 6 (IPv6) Specification", STD 89,
@@ -720,15 +739,6 @@ Internet-Draft                 Proxy Trace                    March 2019
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
-
-
-
-
-
-Ytti                    Expires September 9, 2019              [Page 13]
-
-Internet-Draft                 Proxy Trace                    March 2019
-
 
 11.2.  Informative References
 
@@ -747,6 +757,11 @@ Internet-Draft                 Proxy Trace                    March 2019
               DOI 10.17487/RFC6056, January 2011,
               <https://www.rfc-editor.org/info/rfc6056>.
 
+   [RFC8335]  Bonica, R., Thomas, R., Linkova, J., Lenart, C., and M.
+              Boucadair, "PROBE: A Utility for Probing Interfaces",
+              RFC 8335, DOI 10.17487/RFC8335, February 2018,
+              <https://www.rfc-editor.org/info/rfc8335>.
+
 Appendix A.  Acknowledgments
 
 Author's Address
@@ -755,21 +770,6 @@ Author's Address
    NTT Communications
 
    Email: ytti@ntt.net
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

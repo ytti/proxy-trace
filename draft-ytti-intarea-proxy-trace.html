@@ -1220,6 +1220,7 @@
 <p id="rfc.section.10.p.5">By default there is potentially 2 x pps amplification, however this is minor concerns as other more common vectors, such as TCP SYN spoofing allow for much higher pps amplification.  </p>
 <p id="rfc.section.10.p.6">There is no way for Client to cause Server to send more than two packets per each packet Client sends.  </p>
 <p id="rfc.section.10.p.7">There are no security implications identified in setting destination address TLV as attacker could spoof request source address in either case, which would yield both Probe Request and Proxy Response to be sent to the victim.  Compared to having different source address and destination TLV where Probe Request and Proxy Response will go to a different hosts, making it less attractive vector.  </p>
+<p id="rfc.section.10.p.8">Precedent exists in <a href="#RFC8335" class="xref">[RFC8335]</a> where we can ask server to return information to us which would normally not be visible to us.  Like every packet received on control-plane there are always risks involved in software defects, however we need to balance the cost of those risks with the cost savings afforded by diagnostic tools due to reduced outage times.  Historically we have had several security issues in ICMP echo, including f00fc7c8 and +++ATH, but we continue to utilise ICMP echo because the diagnostic value in reducing outage times exceeds the risk carried.  </p>
 <h1 id="rfc.references">
 <a href="#rfc.references">11.</a> References</h1>
 <h1 id="rfc.references.1">
@@ -1263,6 +1264,11 @@
 <td class="reference"><b id="RFC6056">[RFC6056]</b></td>
 <td class="top">
 <a>Larsen, M.</a> and <a>F. Gont</a>, "<a href="https://tools.ietf.org/html/rfc6056">Recommendations for Transport-Protocol Port Randomization</a>", BCP 156, RFC 6056, DOI 10.17487/RFC6056, January 2011.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC8335">[RFC8335]</b></td>
+<td class="top">
+<a>Bonica, R.</a>, <a>Thomas, R.</a>, <a>Linkova, J.</a>, <a>Lenart, C.</a> and <a>M. Boucadair</a>, "<a href="https://tools.ietf.org/html/rfc8335">PROBE: A Utility for Probing Interfaces</a>", RFC 8335, DOI 10.17487/RFC8335, February 2018.</td>
 </tr>
 </tbody></table>
 <h1 id="rfc.appendix.A">
