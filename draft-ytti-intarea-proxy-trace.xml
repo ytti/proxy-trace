@@ -14,7 +14,7 @@
 
 
 <rfc category="std"
-  docName="draft-ietf-intarea-proxy-trace-00">
+  docName="draft-ytti-intarea-proxy-trace-00">
   <front>
     <title abbrev="Proxy Trace">
       Proxy Trace: A Utility for Programmatic Discovery of Forward and Reverse Path"
