@@ -379,14 +379,15 @@
 <link href="#rfc.section.3" rel="Chapter" title="3 Operation">
 <link href="#rfc.section.4" rel="Chapter" title="4 ICMP Proxy Trace Request">
 <link href="#rfc.section.5" rel="Chapter" title="5 ICMP Proxy Trace Reply">
-<link href="#rfc.section.6" rel="Chapter" title="6 ICMP Message Processing">
-<link href="#rfc.section.7" rel="Chapter" title="7 Implementation Considerations">
-<link href="#rfc.section.8" rel="Chapter" title="8 Error Handling">
-<link href="#rfc.section.9" rel="Chapter" title="9 IANA Considerations">
-<link href="#rfc.section.10" rel="Chapter" title="10 Security Considerations">
-<link href="#rfc.references" rel="Chapter" title="11 References">
-<link href="#rfc.references.1" rel="Chapter" title="11.1 Normative References">
-<link href="#rfc.references.2" rel="Chapter" title="11.2 Informative References">
+<link href="#rfc.section.6" rel="Chapter" title="6 Timestamp format">
+<link href="#rfc.section.7" rel="Chapter" title="7 ICMP Message Processing">
+<link href="#rfc.section.8" rel="Chapter" title="8 Implementation Considerations">
+<link href="#rfc.section.9" rel="Chapter" title="9 Error Handling">
+<link href="#rfc.section.10" rel="Chapter" title="10 IANA Considerations">
+<link href="#rfc.section.11" rel="Chapter" title="11 Security Considerations">
+<link href="#rfc.references" rel="Chapter" title="12 References">
+<link href="#rfc.references.1" rel="Chapter" title="12.1 Normative References">
+<link href="#rfc.references.2" rel="Chapter" title="12.2 Informative References">
 <link href="#rfc.appendix.A" rel="Chapter" title="A Acknowledgments">
 <link href="#rfc.authors" rel="Chapter">
 
@@ -397,8 +398,8 @@
   <meta name="dct.creator" content="Ytti, S." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ytti-intarea-proxy-trace-00" />
   <meta name="dct.issued" scheme="ISO8601" content="2019-08" />
-  <meta name="dct.abstract" content="This document describes a network diagnostic tool called Proxy Trace.  Proxy Trace has similarities with PING and TRACEROUTE in that it uses PING style ICMP request to ask remote host to trigger a single packet TRACEROUTE query and deliver the response in PING style ICMP response.  " />
-  <meta name="description" content="This document describes a network diagnostic tool called Proxy Trace.  Proxy Trace has similarities with PING and TRACEROUTE in that it uses PING style ICMP request to ask remote host to trigger a single packet TRACEROUTE query and deliver the response in PING style ICMP response.  " />
+  <meta name="dct.abstract" content="This document describes a network diagnostic tool called Proxy Trace.  Proxy Trace has similarities with PING and TRACEROUTE in that it uses PING style ICMP request to ask remote host to trigger a single packet TRACEROUTE query and deliver the reply in PING style ICMP reply.  " />
+  <meta name="description" content="This document describes a network diagnostic tool called Proxy Trace.  Proxy Trace has similarities with PING and TRACEROUTE in that it uses PING style ICMP request to ask remote host to trigger a single packet TRACEROUTE query and deliver the reply in PING style ICMP reply.  " />
 
 </head>
 
@@ -432,7 +433,7 @@
   <span class="filename">draft-ytti-intarea-proxy-trace-00</span></p>
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
-<p>This document describes a network diagnostic tool called Proxy Trace.  Proxy Trace has similarities with PING and TRACEROUTE in that it uses PING style ICMP request to ask remote host to trigger a single packet TRACEROUTE query and deliver the response in PING style ICMP response.  </p>
+<p>This document describes a network diagnostic tool called Proxy Trace.  Proxy Trace has similarities with PING and TRACEROUTE in that it uses PING style ICMP request to ask remote host to trigger a single packet TRACEROUTE query and deliver the reply in PING style ICMP reply.  </p>
 <h1><a>Requirements Language</a></h1>
 <p>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 <a href="#RFC2119" class="xref">[RFC2119]</a> <a href="#RFC8174" class="xref">[RFC8174]</a> when, and only when, they appear in all capitals, as shown here.  </p>
 <h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
@@ -459,21 +460,23 @@
 </li>
 <li>5.   <a href="#rfc.section.5">ICMP Proxy Trace Reply</a>
 </li>
-<li>6.   <a href="#rfc.section.6">ICMP Message Processing</a>
+<li>6.   <a href="#rfc.section.6">Timestamp format</a>
 </li>
-<li>7.   <a href="#rfc.section.7">Implementation Considerations</a>
+<li>7.   <a href="#rfc.section.7">ICMP Message Processing</a>
 </li>
-<li>8.   <a href="#rfc.section.8">Error Handling</a>
+<li>8.   <a href="#rfc.section.8">Implementation Considerations</a>
 </li>
-<li>9.   <a href="#rfc.section.9">IANA Considerations</a>
+<li>9.   <a href="#rfc.section.9">Error Handling</a>
 </li>
-<li>10.   <a href="#rfc.section.10">Security Considerations</a>
+<li>10.   <a href="#rfc.section.10">IANA Considerations</a>
 </li>
-<li>11.   <a href="#rfc.references">References</a>
+<li>11.   <a href="#rfc.section.11">Security Considerations</a>
 </li>
-<ul><li>11.1.   <a href="#rfc.references.1">Normative References</a>
+<li>12.   <a href="#rfc.references">References</a>
 </li>
-<li>11.2.   <a href="#rfc.references.2">Informative References</a>
+<ul><li>12.1.   <a href="#rfc.references.1">Normative References</a>
+</li>
+<li>12.2.   <a href="#rfc.references.2">Informative References</a>
 </li>
 </ul><li>Appendix A.   <a href="#rfc.appendix.A">Acknowledgments</a>
 </li>
@@ -488,7 +491,7 @@
 </h1>
 <p id="rfc.section.1.p.1">Network operators use TRACEROUTE to discover path between client host and a target host.  Operator does this by running the traceroute software on the client host and giving as an argument target host to which operator wants to discover the network path.  This information helps network operator to understand and troubleshoot issues on the network.  </p>
 <p id="rfc.section.1.p.2">This document describes a network diagnostic tool called Proxy Trace.  Proxy Trace is similar to TRACEROUTE in that it can be used to discover path between two hosts, but it differs from TRACEROUTE in that it can discover the path between two arbitrary host, allowing operator not only discover the reverse path but also removes the requirement that operator must have access to a host in the path.  </p>
-<p id="rfc.section.1.p.3">Further unlike alternative solutions such as looking glasses, Proxy Trace responses are formal and machine parseable.  This enables programmatic discovery of both directions of the path.  Motivation for Proxy Trace is to reduce outage times by reducing the time it takes to identify the issue, while also enabling programmatic identification and recovery of an outage.  </p>
+<p id="rfc.section.1.p.3">Further unlike alternative solutions such as looking glasses, Proxy Trace replies are formal and machine parseable.  This enables programmatic discovery of both directions of the path.  Motivation for Proxy Trace is to reduce outage times by reducing the time it takes to identify the issue, while also enabling programmatic identification and recovery of an outage.  </p>
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#terminology" id="terminology">Terminology</a>
 </h1>
@@ -520,7 +523,7 @@
 <dt></dt>
 <dd style="margin-left: 8"></dd>
 <dt>Proxy Trace Probe Reply:</dt>
-<dd style="margin-left: 8">Packet received from the network as response to the Proxy Trace Probe Request, usually ICMP TTL Exceeded or ICMP Host Unreachable message </dd>
+<dd style="margin-left: 8">Packet received from the network as a reply to the Proxy Trace Probe Request, usually ICMP TTL Exceeded or ICMP Host Unreachable message </dd>
 </dl>
 
 <p> </p>
@@ -562,24 +565,24 @@
 <dd style="margin-left: 8">Hop1 received the Proxy Trace Probe Request, because TTL has expired it punts the packet from data-plane to control-plane.  </dd>
 <dt></dt>
 <dd style="margin-left: 8"></dd>
-<dt>Send Proxy Trace Probe Response:</dt>
+<dt>Send Proxy Trace Probe Reply:</dt>
 <dd style="margin-left: 8">Hop1 sends ICMP TTL Exceeded message to the PT Server </dd>
 <dt></dt>
 <dd style="margin-left: 8"></dd>
-<dt>Receive Proxy Trace Probe Response:</dt>
-<dd style="margin-left: 8">PT Server received the Proxy Trace Probe Response and relates it to the open Proxy Trace Request.  </dd>
+<dt>Receive Proxy Trace Probe Reply:</dt>
+<dd style="margin-left: 8">PT Server received the Proxy Trace Probe Reply and relates it to the open Proxy Trace Request.  </dd>
 <dt></dt>
 <dd style="margin-left: 8"></dd>
-<dt>Send Proxy Trace Response:</dt>
-<dd style="margin-left: 8">PT Server generates Proxy Trace Response packets and adds Proxy Trace Probe Response packet as TLV 0 to the Proxy Trace Response packet.  PT Server sends the Proxy Trace Response packet to the PT Client.  </dd>
+<dt>Send Proxy Trace Reply:</dt>
+<dd style="margin-left: 8">PT Server generates Proxy Trace Reply packets and adds Proxy Trace Probe Reply packet as TLV 0 to the Proxy Trace Reply packet.  PT Server sends the Proxy Trace Reply packet to the PT Client.  </dd>
 <dt></dt>
 <dd style="margin-left: 8"></dd>
-<dt>Receive Proxy Trace Response:</dt>
-<dd style="margin-left: 8">PT Client receives the Proxy Trace Response from PT Server learning that Hop Limit 1 in the path between PT Server and PT Target it Hop1 </dd>
+<dt>Receive Proxy Trace Reply:</dt>
+<dd style="margin-left: 8">PT Client receives the Proxy Trace Reply from PT Server learning that Hop Limit 1 in the path between PT Server and PT Target it Hop1 </dd>
 </dl>
 
 <p> </p>
-<p id="rfc.section.3.p.2">PT Client is free to send multiple Proxy Trace Request packets without waiting for an Proxy Trace Response.  </p>
+<p id="rfc.section.3.p.2">PT Client is free to send multiple Proxy Trace Request packets without waiting for an Proxy Trace Reply.  </p>
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#request" id="request">ICMP Proxy Trace Request</a>
 </h1>
@@ -667,7 +670,7 @@
 <dt>Type:</dt>
 <dd style="margin-left: 8">1</dd>
 <dt>Length:</dt>
-<dd style="margin-left: 8">4 or 16 Bytes, depending on AFI</dd>
+<dd style="margin-left: 8">4 for IPv4 and 16 for IPv6</dd>
 <dt>Value:</dt>
 <dd style="margin-left: 8">Any</dd>
 <dt>Times:</dt>
@@ -690,7 +693,7 @@
 <dt>Type:</dt>
 <dd style="margin-left: 8">2</dd>
 <dt>Length:</dt>
-<dd style="margin-left: 8">4 or 16 Bytes, depending on AFI</dd>
+<dd style="margin-left: 8">4 for IPv4 and 16 for IPv6</dd>
 <dt>Value:</dt>
 <dd style="margin-left: 8">Any</dd>
 <dt>Times:</dt>
@@ -794,7 +797,7 @@
 <dt>Location:</dt>
 <dd style="margin-left: 8">Any</dd>
 <dt>Default:</dt>
-<dd style="margin-left: 8">33433 + hop-limit (33434 to 33688)</dd>
+<dd style="margin-left: 8">33688 + hop-limit (33689 to 33943)</dd>
 </dl>
 <p> </p>
 </dd>
@@ -817,7 +820,7 @@
 <dt>Location:</dt>
 <dd style="margin-left: 8">Any</dd>
 <dt>Default:</dt>
-<dd style="margin-left: 8">Local choice, typically just as needed for a timestamp</dd>
+<dd style="margin-left: 8">4 for IPv4 and 16 for IPv6</dd>
 </dl>
 <p> </p>
 </dd>
@@ -863,7 +866,7 @@
 <dt>Location:</dt>
 <dd style="margin-left: 8">Any</dd>
 <dt>Default:</dt>
-<dd style="margin-left: 8">Local choice, typically random, 0 or 1</dd>
+<dd style="margin-left: 8">Proxy Trace Request Source Address</dd>
 </dl>
 <p> </p>
 </dd>
@@ -973,12 +976,33 @@
 </dd>
 <dt></dt>
 <dd style="margin-left: 8"></dd>
-<dt>RTT:</dt>
-<dd style="margin-left: 8">RTT in microseconds <dl>
+<dt>Proxy Trace Probe Request Timestamp:</dt>
+<dd style="margin-left: 8">Timestamp of Proxy Trace Probe Request leaving the Proxy Trace Server <dl>
 <dt>Type:</dt>
 <dd style="margin-left: 8">1</dd>
 <dt>Length:</dt>
-<dd style="margin-left: 8">3 Bytes</dd>
+<dd style="margin-left: 8">6 Bytes</dd>
+<dt>Value:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Times:</dt>
+<dd style="margin-left: 8">0 or 1</dd>
+<dt>Implementation:</dt>
+<dd style="margin-left: 8">Optional</dd>
+<dt>Location:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Default:</dt>
+<dd style="margin-left: 8">None</dd>
+</dl>
+<p> </p>
+</dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Proxy Trace Probe Reply Timestamp:</dt>
+<dd style="margin-left: 8">Timestamp of Proxy Trace Probe Request arriving at the Proxy Trace Server <dl>
+<dt>Type:</dt>
+<dd style="margin-left: 8">2</dd>
+<dt>Length:</dt>
+<dd style="margin-left: 8">6 Bytes</dd>
 <dt>Value:</dt>
 <dd style="margin-left: 8">Any</dd>
 <dt>Times:</dt>
@@ -997,7 +1021,7 @@
 <dt>Ignored TLV:</dt>
 <dd style="margin-left: 8">List of TLV type numbers implementation supports but chooses to not honor.  <dl>
 <dt>Type:</dt>
-<dd style="margin-left: 8">2</dd>
+<dd style="margin-left: 8">401</dd>
 <dt>Length:</dt>
 <dd style="margin-left: 8">Any</dd>
 <dt>Value:</dt>
@@ -1018,7 +1042,7 @@
 <dt>Unsupported TLV:</dt>
 <dd style="margin-left: 8">List of TLV type numbers implementation does not support <dl>
 <dt>Type:</dt>
-<dd style="margin-left: 8">3</dd>
+<dd style="margin-left: 8">402</dd>
 <dt>Length:</dt>
 <dd style="margin-left: 8">Any</dd>
 <dt>Value:</dt>
@@ -1039,7 +1063,7 @@
 <dt>Bad TLV Count:</dt>
 <dd style="margin-left: 8">List of TLV type numbers occuring more or less time than expected <dl>
 <dt>Type:</dt>
-<dd style="margin-left: 8">4</dd>
+<dd style="margin-left: 8">403</dd>
 <dt>Length:</dt>
 <dd style="margin-left: 8">Any</dd>
 <dt>Value:</dt>
@@ -1060,7 +1084,7 @@
 <dt>Bad TLV Length:</dt>
 <dd style="margin-left: 8">List of TLV type numbers having Length implementation rejects as valid <dl>
 <dt>Type:</dt>
-<dd style="margin-left: 8">5</dd>
+<dd style="margin-left: 8">404</dd>
 <dt>Length:</dt>
 <dd style="margin-left: 8">Any</dd>
 <dt>Value:</dt>
@@ -1081,7 +1105,7 @@
 <dt>Bad TLV Value:</dt>
 <dd style="margin-left: 8">List of TLV type numbers having Value implementation rejects as valid <dl>
 <dt>Type:</dt>
-<dd style="margin-left: 8">6</dd>
+<dd style="margin-left: 8">405</dd>
 <dt>Length:</dt>
 <dd style="margin-left: 8">Any</dd>
 <dt>Value:</dt>
@@ -1123,9 +1147,13 @@
 
 <p> </p>
 <h1 id="rfc.section.6">
-<a href="#rfc.section.6">6.</a> <a href="#icmp" id="icmp">ICMP Message Processing</a>
+<a href="#rfc.section.6">6.</a> <a href="#timestamp" id="timestamp">Timestamp format</a>
 </h1>
-<p id="rfc.section.6.p.1">When a host receives an ICMP Proxy Trace Request message and any of the following conditions apply, the node MUST silently discard the incoming message: </p>
+<p id="rfc.section.6.p.1">Timestamp should be 6 bytes or 48 bits wide, most significant bit is a flag called 'non-canonical epoch'.  If 'non-canonical epoch' flag is not set timestamp's epoch is UTC midnight, if 'non-canonical epoch' flag is set then epoch is unspecified but not UTC midnight.  Timestamp unit is nanoseconds.  </p>
+<h1 id="rfc.section.7">
+<a href="#rfc.section.7">7.</a> <a href="#icmp" id="icmp">ICMP Message Processing</a>
+</h1>
+<p id="rfc.section.7.p.1">When a host receives an ICMP Proxy Trace Request message and any of the following conditions apply, the node MUST silently discard the incoming message: </p>
 <p></p>
 
 <dl>
@@ -1142,8 +1170,8 @@
 </dl>
 
 <p> </p>
-<p id="rfc.section.6.p.3">Discard SHOULD happen in the forwarding-plane </p>
-<p id="rfc.section.6.p.4">Otherwise, when a node receives an ICMPv4 Proxy Trace Request, it MUST format an ICMPv4 Proxy Trace Reply as follows: </p>
+<p id="rfc.section.7.p.3">Discard SHOULD happen in the forwarding-plane </p>
+<p id="rfc.section.7.p.4">Otherwise, when a node receives an ICMPv4 Proxy Trace Request, it MUST format an ICMPv4 Proxy Trace Reply as follows: </p>
 <p></p>
 
 <dl>
@@ -1160,7 +1188,7 @@
 </dl>
 
 <p> </p>
-<p id="rfc.section.6.p.6">When a node receives an ICMPv6 Proxy Trace Request, it MUST format an ICMPv6 Proxy Trace Reply as follows: </p>
+<p id="rfc.section.7.p.6">When a node receives an ICMPv6 Proxy Trace Request, it MUST format an ICMPv6 Proxy Trace Reply as follows: </p>
 <p></p>
 
 <dl>
@@ -1171,7 +1199,7 @@
 </dl>
 
 <p> </p>
-<p id="rfc.section.6.p.8">In either case, the responding node MUST do the following: </p>
+<p id="rfc.section.7.p.8">In either case, the responding node MUST do the following: </p>
 <p></p>
 
 <dl>
@@ -1182,9 +1210,9 @@
 <dt></dt>
 <dd style="margin-left: 8">Set the ICMP Type to Proxy Trace Reply.  </dd>
 <dt></dt>
-<dd style="margin-left: 8">Copy the Identifier from the Proxy Trace Request message to the Proxy Trace Response message.  </dd>
+<dd style="margin-left: 8">Copy the Identifier from the Proxy Trace Request message to the Proxy Trace Reply message.  </dd>
 <dt></dt>
-<dd style="margin-left: 8">Copy the Sequence Number from the Proxy Trace Request message to the Proxy Trace Response message.  </dd>
+<dd style="margin-left: 8">Copy the Sequence Number from the Proxy Trace Request message to the Proxy Trace Reply message.  </dd>
 <dt></dt>
 <dd style="margin-left: 8">Set the Code field to 0.  </dd>
 <dt></dt>
@@ -1196,35 +1224,35 @@
 </dl>
 
 <p> </p>
-<h1 id="rfc.section.7">
-<a href="#rfc.section.7">7.</a> <a href="#implementation" id="implementation">Implementation Considerations</a>
-</h1>
-<p id="rfc.section.7.p.1">Host implementing Proxy Trace SHOULD have it turned on by default in all interfaces and MUST allow turning it off/on per interface.  Host implementation MUST police rate of Proxy Trace Request packets from the data-plane to a level where Host can honor all Proxy Trace Request packets accepted without negatively impacting control-plane operations.  </p>
-<p id="rfc.section.7.p.2">Proxy Trace Server SHOULD timeout after 1 second of waiting for a Proxy Trace Probe Reply Packet and MAY timeout earlier.  Proxy Trace Server SHOULD NOT send Proxy Trace Reply message if it timed out.  </p>
 <h1 id="rfc.section.8">
-<a href="#rfc.section.8">8.</a> <a href="#errorhandling" id="errorhandling">Error Handling</a>
+<a href="#rfc.section.8">8.</a> <a href="#implementation" id="implementation">Implementation Considerations</a>
 </h1>
-<p id="rfc.section.8.p.1">Proxy Trace Server encountering any problem in the Proxy Trace Request Message MUST not send any Probe Packet out and SHOULD send Proxy Trace Reply Message to the Proxy Trace Client informing of the issue.  Proxy Trace Server may give up parsing the Proxy Trace Request Message after one or more problems.  </p>
-<p id="rfc.section.8.p.2">Proxy Trace Server receiving too small Proxy Trace Request packet should silently discard it in the data-plane.  </p>
+<p id="rfc.section.8.p.1">Host implementing Proxy Trace SHOULD have it turned on by default in all interfaces and MUST allow turning it off/on per interface.  Host implementation MUST police rate of Proxy Trace Request packets from the data-plane to a level where Host can honor all Proxy Trace Request packets accepted without negatively impacting control-plane operations.  </p>
+<p id="rfc.section.8.p.2">Proxy Trace Server SHOULD timeout after 1 second of waiting for a Proxy Trace Probe Reply Packet and MAY timeout earlier.  Proxy Trace Server SHOULD NOT send Proxy Trace Reply message if it timed out.  </p>
 <h1 id="rfc.section.9">
-<a href="#rfc.section.9">9.</a> <a href="#iana" id="iana">IANA Considerations</a>
+<a href="#rfc.section.9">9.</a> <a href="#errorhandling" id="errorhandling">Error Handling</a>
 </h1>
-<p id="rfc.section.9.p.1">Per this document, IANA is requested to reference this document in the "Internet Control Message Control (ICMP) Parameters" and the "Internet Control Message Protocol version 6 (ICMPv6) Parameters" registries under the "Code Fields" group.  </p>
+<p id="rfc.section.9.p.1">Proxy Trace Server encountering any problem in the Proxy Trace Request Message MUST not send any Probe Packet out and SHOULD send Proxy Trace Reply Message to the Proxy Trace Client informing of the issue.  Proxy Trace Server may give up parsing the Proxy Trace Request Message after one or more problems.  </p>
+<p id="rfc.section.9.p.2">Proxy Trace Server receiving too small Proxy Trace Request packet should silently discard it in the data-plane.  </p>
 <h1 id="rfc.section.10">
-<a href="#rfc.section.10">10.</a> <a href="#security" id="security">Security Considerations</a>
+<a href="#rfc.section.10">10.</a> <a href="#iana" id="iana">IANA Considerations</a>
 </h1>
-<p id="rfc.section.10.p.1">Allowing client to set arbitrary Payload will create amplification potential.  </p>
-<p id="rfc.section.10.p.2">Allowing client to define Protocol, Port and Bit Pattern allows client to craft arbitrary packets enabling it to perform port knocking and trigger packet-of-death bugs.  </p>
-<p id="rfc.section.10.p.3">Opt-In Request TLVs should only be honored in trusted networks.  </p>
-<p id="rfc.section.10.p.4">By default, unlike ICMP Echo, there is bps attenuation because Proxy Request packets are much larger than Probe Request and Proxy Response.  </p>
-<p id="rfc.section.10.p.5">By default there is potentially 2 x pps amplification, however this is minor concerns as other more common vectors, such as TCP SYN spoofing allow for much higher pps amplification.  </p>
-<p id="rfc.section.10.p.6">There is no way for Client to cause Server to send more than two packets per each packet Client sends.  </p>
-<p id="rfc.section.10.p.7">Other than gleaning information about UDP TRACEROUTE ports, there are no security implications identified in setting destination address TLV.  Attacker setting destination address TLV will necessarily create less traffic towards the victim compared to not setting destination address TLV and spooffing source address.  Without setting destination address TLV Attacker will be able to send two packets to a single Victim, where as by setting destination address TLV Attacker can only send one packet per victim.  </p>
-<p id="rfc.section.10.p.8">Precedent exists in <a href="#RFC8335" class="xref">[RFC8335]</a> where we can ask server to return information to us which would normally not be visible to us.  Like every packet received on control-plane there are always risks involved in software defects, however we need to balance the cost of those risks with the cost savings afforded by diagnostic tools due to reduced outage times.  Historically we have had several security issues in ICMP echo, including f00fc7c8 and +++ATH, but we continue to utilise ICMP echo because the diagnostic value in reducing outage times exceeds the risk carried.  </p>
+<p id="rfc.section.10.p.1">Per this document, IANA is requested to reference this document in the "Internet Control Message Control (ICMP) Parameters" and the "Internet Control Message Protocol version 6 (ICMPv6) Parameters" registries under the "Code Fields" group.  </p>
+<h1 id="rfc.section.11">
+<a href="#rfc.section.11">11.</a> <a href="#security" id="security">Security Considerations</a>
+</h1>
+<p id="rfc.section.11.p.1">Allowing client to set arbitrary Payload will create amplification potential.  </p>
+<p id="rfc.section.11.p.2">Allowing client to define Protocol, Port and Bit Pattern allows client to craft arbitrary packets enabling it to perform port knocking and trigger packet-of-death bugs.  </p>
+<p id="rfc.section.11.p.3">Opt-In Request TLVs should only be honored in trusted networks.  </p>
+<p id="rfc.section.11.p.4">By default, unlike ICMP Echo, there is bps attenuation because Proxy Request packets are much larger than Probe Request and Proxy Reply.  </p>
+<p id="rfc.section.11.p.5">By default there is potentially 2 x pps amplification, however this is minor concerns as other more common vectors, such as TCP SYN spoofing allow for much higher pps amplification.  </p>
+<p id="rfc.section.11.p.6">There is no way for Client to cause Server to send more than two packets per each packet Client sends.  </p>
+<p id="rfc.section.11.p.7">Other than gleaning information about UDP TRACEROUTE ports, there are no security implications identified in setting destination address TLV.  Attacker setting destination address TLV will necessarily create less traffic towards the victim compared to not setting destination address TLV and spooffing source address.  Without setting destination address TLV Attacker will be able to send two packets to a single Victim, where as by setting destination address TLV Attacker can only send one packet per victim.  </p>
+<p id="rfc.section.11.p.8">Precedent exists in <a href="#RFC8335" class="xref">[RFC8335]</a> where we can ask server to return information to us which would normally not be visible to us.  Like every packet received on control-plane there are always risks involved in software defects, however we need to balance the cost of those risks with the cost savings afforded by diagnostic tools due to reduced outage times.  Historically we have had several security issues in ICMP echo, including f00fc7c8 and +++ATH, but we continue to utilise ICMP echo because the diagnostic value in reducing outage times exceeds the risk carried.  </p>
 <h1 id="rfc.references">
-<a href="#rfc.references">11.</a> References</h1>
+<a href="#rfc.references">12.</a> References</h1>
 <h1 id="rfc.references.1">
-<a href="#rfc.references.1">11.1.</a> Normative References</h1>
+<a href="#rfc.references.1">12.1.</a> Normative References</h1>
 <table><tbody>
 <tr>
 <td class="reference"><b id="RFC0792">[RFC0792]</b></td>
@@ -1248,7 +1276,7 @@
 </tr>
 </tbody></table>
 <h1 id="rfc.references.2">
-<a href="#rfc.references.2">11.2.</a> Informative References</h1>
+<a href="#rfc.references.2">12.2.</a> Informative References</h1>
 <table><tbody>
 <tr>
 <td class="reference"><b id="RFC4950">[RFC4950]</b></td>
