@@ -4,4 +4,4 @@ python:
 install:
   - pip install xml2rfc
 script:
-  - xml2rfc draft-ietf-intarea-proxy-trace.xml
+  - xml2rfc draft-ytti-intarea-proxy-trace.xml
