@@ -372,7 +372,7 @@ Internet-Draft                 Proxy Trace                    March 2019
       Implementation:  Optional
       Honor:  Opt-In
       Location:  Any
-      Default:  4 for IPv4 and 16 for IPv6
+      Default:  10 for IPv4 and 22 for IPv6
 
    Traffic Class:  Traffic Class byte of the Proxy Trace Probe Request
       Packet.
@@ -405,7 +405,7 @@ Internet-Draft                 Proxy Trace                    March 2019
       Implementation:  Optional
       Honor:  Opt-In
       Location:  Any
-      Default:  Proxy Trace Request Source Address
+      Default:  Timestamp+Proxy Trace Request Source Address
 
    Future Use:
 
