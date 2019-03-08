@@ -1156,18 +1156,13 @@
 <p id="rfc.section.7.p.1">When a host receives an ICMP Proxy Trace Request message and any of the following conditions apply, the node MUST silently discard the incoming message: </p>
 <p></p>
 
-<dl>
-<dt></dt>
-<dd style="margin-left: 8">The node does not recognize ICMP Proxy Trace Request messages.  </dd>
-<dt></dt>
-<dd style="margin-left: 8">The node has disabled the ICMP Proxy Trace Request functionality.  </dd>
-<dt></dt>
-<dd style="margin-left: 8">The incoming ICMP Proxy Trace Request message is too small.  </dd>
-<dt></dt>
-<dd style="margin-left: 8">The Source Address of the incoming message is not a unicast address.  </dd>
-<dt></dt>
-<dd style="margin-left: 8">The Destination Address of the incoming message is a multicast address.  </dd>
-</dl>
+<ul>
+<li>The node does not recognize ICMP Proxy Trace Request messages.  </li>
+<li>The node has disabled the ICMP Proxy Trace Request functionality.  </li>
+<li>The incoming ICMP Proxy Trace Request message is too small.  </li>
+<li>The Source Address of the incoming message is not a unicast address.  </li>
+<li>The Destination Address of the incoming message is a multicast address.  </li>
+</ul>
 
 <p> </p>
 <p id="rfc.section.7.p.3">Discard SHOULD happen in the forwarding-plane </p>
@@ -1202,26 +1197,17 @@
 <p id="rfc.section.7.p.8">In either case, the responding node MUST do the following: </p>
 <p></p>
 
-<dl>
-<dt></dt>
-<dd style="margin-left: 8">Copy the Source Address from the Proxy Trace Request message to the Destination Address of the Proxy Trace Reply message.  </dd>
-<dt></dt>
-<dd style="margin-left: 8">Copy the Destination Address from the Proxy Trace Request message to the Source Address of the Proxy Trace Reply message.  </dd>
-<dt></dt>
-<dd style="margin-left: 8">Set the ICMP Type to Proxy Trace Reply.  </dd>
-<dt></dt>
-<dd style="margin-left: 8">Copy the Identifier from the Proxy Trace Request message to the Proxy Trace Reply message.  </dd>
-<dt></dt>
-<dd style="margin-left: 8">Copy the Sequence Number from the Proxy Trace Request message to the Proxy Trace Reply message.  </dd>
-<dt></dt>
-<dd style="margin-left: 8">Set the Code field to 0.  </dd>
-<dt></dt>
-<dd style="margin-left: 8">Set the Checksum appropriately.  </dd>
-<dt></dt>
-<dd style="margin-left: 8">Set the TLVs appropriately.  </dd>
-<dt></dt>
-<dd style="margin-left: 8">Forward the Proxy Trace Reply to the Proxy Trace Client.  </dd>
-</dl>
+<ul>
+<li>Copy the Source Address from the Proxy Trace Request message to the Destination Address of the Proxy Trace Reply message.  </li>
+<li>Copy the Destination Address from the Proxy Trace Request message to the Source Address of the Proxy Trace Reply message.  </li>
+<li>Set the ICMP Type to Proxy Trace Reply.  </li>
+<li>Copy the Identifier from the Proxy Trace Request message to the Proxy Trace Reply message.  </li>
+<li>Copy the Sequence Number from the Proxy Trace Request message to the Proxy Trace Reply message.  </li>
+<li>Set the Code field to 0.  </li>
+<li>Set the Checksum appropriately.  </li>
+<li>Set the TLVs appropriately.  </li>
+<li>Forward the Proxy Trace Reply to the Proxy Trace Client.  </li>
+</ul>
 
 <p> </p>
 <h1 id="rfc.section.8">

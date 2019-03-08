@@ -600,12 +600,12 @@ Internet-Draft                 Proxy Trace                    March 2019
    the following conditions apply, the node MUST silently discard the
    incoming message:
 
-      The node does not recognize ICMP Proxy Trace Request messages.
-      The node has disabled the ICMP Proxy Trace Request functionality.
-      The incoming ICMP Proxy Trace Request message is too small.
-      The Source Address of the incoming message is not a unicast
+   o  The node does not recognize ICMP Proxy Trace Request messages.
+   o  The node has disabled the ICMP Proxy Trace Request functionality.
+   o  The incoming ICMP Proxy Trace Request message is too small.
+   o  The Source Address of the incoming message is not a unicast
       address.
-      The Destination Address of the incoming message is a multicast
+   o  The Destination Address of the incoming message is a multicast
       address.
 
    Discard SHOULD happen in the forwarding-plane
@@ -635,19 +635,19 @@ Internet-Draft                 Proxy Trace                    March 2019
 
    In either case, the responding node MUST do the following:
 
-      Copy the Source Address from the Proxy Trace Request message to
+   o  Copy the Source Address from the Proxy Trace Request message to
       the Destination Address of the Proxy Trace Reply message.
-      Copy the Destination Address from the Proxy Trace Request message
+   o  Copy the Destination Address from the Proxy Trace Request message
       to the Source Address of the Proxy Trace Reply message.
-      Set the ICMP Type to Proxy Trace Reply.
-      Copy the Identifier from the Proxy Trace Request message to the
+   o  Set the ICMP Type to Proxy Trace Reply.
+   o  Copy the Identifier from the Proxy Trace Request message to the
       Proxy Trace Reply message.
-      Copy the Sequence Number from the Proxy Trace Request message to
+   o  Copy the Sequence Number from the Proxy Trace Request message to
       the Proxy Trace Reply message.
-      Set the Code field to 0.
-      Set the Checksum appropriately.
-      Set the TLVs appropriately.
-      Forward the Proxy Trace Reply to the Proxy Trace Client.
+   o  Set the Code field to 0.
+   o  Set the Checksum appropriately.
+   o  Set the TLVs appropriately.
+   o  Forward the Proxy Trace Reply to the Proxy Trace Client.
 
 8.  Implementation Considerations
 
