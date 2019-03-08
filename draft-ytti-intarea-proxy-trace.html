@@ -398,8 +398,8 @@
   <meta name="dct.creator" content="Ytti, S." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ytti-intarea-proxy-trace-00" />
   <meta name="dct.issued" scheme="ISO8601" content="2019-08" />
-  <meta name="dct.abstract" content="This document describes a network diagnostic tool called Proxy Trace.  Proxy Trace has similarities with PING and TRACEROUTE in that it uses PING style ICMP request to ask remote host to trigger a single packet TRACEROUTE query and deliver the reply in PING style ICMP reply.  " />
-  <meta name="description" content="This document describes a network diagnostic tool called Proxy Trace.  Proxy Trace has similarities with PING and TRACEROUTE in that it uses PING style ICMP request to ask remote host to trigger a single packet TRACEROUTE query and deliver the reply in PING style ICMP reply.  " />
+  <meta name="dct.abstract" content="This document describes a network diagnostic tool called Proxy Trace.  Proxy Trace has similarities with PING and TRACEROUTE in that it uses PING style ICMP request to ask the remote host to trigger a single packet TRACEROUTE query and deliver the reply in PING style ICMP reply.  " />
+  <meta name="description" content="This document describes a network diagnostic tool called Proxy Trace.  Proxy Trace has similarities with PING and TRACEROUTE in that it uses PING style ICMP request to ask the remote host to trigger a single packet TRACEROUTE query and deliver the reply in PING style ICMP reply.  " />
 
 </head>
 
@@ -433,7 +433,7 @@
   <span class="filename">draft-ytti-intarea-proxy-trace-00</span></p>
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
-<p>This document describes a network diagnostic tool called Proxy Trace.  Proxy Trace has similarities with PING and TRACEROUTE in that it uses PING style ICMP request to ask remote host to trigger a single packet TRACEROUTE query and deliver the reply in PING style ICMP reply.  </p>
+<p>This document describes a network diagnostic tool called Proxy Trace.  Proxy Trace has similarities with PING and TRACEROUTE in that it uses PING style ICMP request to ask the remote host to trigger a single packet TRACEROUTE query and deliver the reply in PING style ICMP reply.  </p>
 <h1><a>Requirements Language</a></h1>
 <p>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 <a href="#RFC2119" class="xref">[RFC2119]</a> <a href="#RFC8174" class="xref">[RFC8174]</a> when, and only when, they appear in all capitals, as shown here.  </p>
 <h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
@@ -489,13 +489,13 @@
   <h1 id="rfc.section.1">
 <a href="#rfc.section.1">1.</a> <a href="#intro" id="intro">Introduction</a>
 </h1>
-<p id="rfc.section.1.p.1">Network operators use TRACEROUTE to discover path between client host and a target host.  Operator does this by running the traceroute software on the client host and giving as an argument target host to which operator wants to discover the network path.  This information helps network operator to understand and troubleshoot issues on the network.  </p>
-<p id="rfc.section.1.p.2">This document describes a network diagnostic tool called Proxy Trace.  Proxy Trace is similar to TRACEROUTE in that it can be used to discover path between two hosts, but it differs from TRACEROUTE in that it can discover the path between two arbitrary host, allowing operator not only discover the reverse path but also removes the requirement that operator must have access to a host in the path.  </p>
+<p id="rfc.section.1.p.1">Network operators use TRACEROUTE to discover the path between the client host and a target host.  An Operator does this by running the traceroute software on the client host and giving as an argument target host to which operator wants to discover the network path.  This information helps network operator to understand and troubleshoot issues on the network.  </p>
+<p id="rfc.section.1.p.2">This document describes a network diagnostic tool called Proxy Trace.  Proxy Trace is similar to TRACEROUTE in that it can be used to discover path between two hosts, but it differs from TRACEROUTE in that it can discover the path between two arbitrary hosts, allowing operator not only discover the reverse path but also removes the requirement that the operator must have access to a host in the path.  </p>
 <p id="rfc.section.1.p.3">Further unlike alternative solutions such as looking glasses, Proxy Trace replies are formal and machine parseable.  This enables programmatic discovery of both directions of the path.  Motivation for Proxy Trace is to reduce outage times by reducing the time it takes to identify the issue, while also enabling programmatic identification and recovery of an outage.  </p>
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#terminology" id="terminology">Terminology</a>
 </h1>
-<p id="rfc.section.2.p.1">This document uses following terms: </p>
+<p id="rfc.section.2.p.1">This document uses the following terms: </p>
 
 <dl>
 <dt>Proxy Trace Request:</dt>
@@ -546,7 +546,7 @@
 +-----------+    +------+    +------+    +-------+   +-----------+
 </pre>
 <p class="figure">Figure 1</p>
-<p id="rfc.section.3.p.1">In attached diagram PT Client wants to discover path from PT Server to a PT Target.  The same process is repeated for each Hop: </p>
+<p id="rfc.section.3.p.1">In the attached diagram PT Client wants to discover the path from PT Server to a PT Target.  The same process is repeated for each Hop: </p>
 
 <dl>
 <dt>Send Proxy Trace Request:</dt>
@@ -582,7 +582,7 @@
 </dl>
 
 <p> </p>
-<p id="rfc.section.3.p.2">PT Client is free to send multiple Proxy Trace Request packets without waiting for an Proxy Trace Reply.  </p>
+<p id="rfc.section.3.p.2">PT Client is free to send multiple Proxy Trace Request packets without waiting for a Proxy Trace Reply.  </p>
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#request" id="request">ICMP Proxy Trace Request</a>
 </h1>
@@ -643,7 +643,7 @@
 
 <dl>
 <dt>Padding:</dt>
-<dd style="margin-left: 8">Client added padding to reach desired request packet size.  <dl>
+<dd style="margin-left: 8">Client added padding to reach the desired request packet size.  <dl>
 <dt>Type:</dt>
 <dd style="margin-left: 8">0</dd>
 <dt>Length:</dt>
@@ -854,7 +854,7 @@
 <dt>Type:</dt>
 <dd style="margin-left: 8">9</dd>
 <dt>Length:</dt>
-<dd style="margin-left: 8">Any, implementation MAY choose to limit arbitrarily what it accepts</dd>
+<dd style="margin-left: 8">Any, the implementation MAY choose to limit arbitrarily what it accepts</dd>
 <dt>Value:</dt>
 <dd style="margin-left: 8">Any</dd>
 <dt>Times:</dt>
@@ -1061,7 +1061,7 @@
 <dt></dt>
 <dd style="margin-left: 8"></dd>
 <dt>Bad TLV Count:</dt>
-<dd style="margin-left: 8">List of TLV type numbers occuring more or less time than expected <dl>
+<dd style="margin-left: 8">List of TLV type numbers occurring more or less time than expected <dl>
 <dt>Type:</dt>
 <dd style="margin-left: 8">403</dd>
 <dt>Length:</dt>
@@ -1149,7 +1149,7 @@
 <h1 id="rfc.section.6">
 <a href="#rfc.section.6">6.</a> <a href="#timestamp" id="timestamp">Timestamp format</a>
 </h1>
-<p id="rfc.section.6.p.1">Timestamp should be 6 bytes or 48 bits wide, most significant bit is a flag called 'non-canonical epoch'.  If 'non-canonical epoch' flag is not set timestamp's epoch is UTC midnight, if 'non-canonical epoch' flag is set then epoch is unspecified but not UTC midnight.  Timestamp unit is nanoseconds.  </p>
+<p id="rfc.section.6.p.1">The timestamp should be 6 bytes or 48 bits wide, most significant bit is a flag called 'non-canonical epoch'.  If 'non-canonical epoch' flag is not set timestamp's epoch is UTC midnight, if 'non-canonical epoch' flag is set then epoch is unspecified but not UTC midnight.  Timestamp unit is nanoseconds.  </p>
 <h1 id="rfc.section.7">
 <a href="#rfc.section.7">7.</a> <a href="#icmp" id="icmp">ICMP Message Processing</a>
 </h1>
@@ -1213,7 +1213,7 @@
 <h1 id="rfc.section.8">
 <a href="#rfc.section.8">8.</a> <a href="#implementation" id="implementation">Implementation Considerations</a>
 </h1>
-<p id="rfc.section.8.p.1">Host implementing Proxy Trace SHOULD have it turned on by default in all interfaces and MUST allow turning it off/on per interface.  Host implementation MUST police rate of Proxy Trace Request packets from the data-plane to a level where Host can honor all Proxy Trace Request packets accepted without negatively impacting control-plane operations.  </p>
+<p id="rfc.section.8.p.1">A host implementing Proxy Trace SHOULD have it turned on by default in all interfaces and MUST allow turning it off/on per interface.  The implementation MUST police rate of Proxy Trace Request packets from the data-plane to a level where Host can honor all Proxy Trace Request packets accepted without negatively impacting control-plane operations.  </p>
 <p id="rfc.section.8.p.2">Proxy Trace Server SHOULD timeout after 1 second of waiting for a Proxy Trace Probe Reply Packet and MAY timeout earlier.  Proxy Trace Server SHOULD NOT send Proxy Trace Reply message if it timed out.  </p>
 <h1 id="rfc.section.9">
 <a href="#rfc.section.9">9.</a> <a href="#errorhandling" id="errorhandling">Error Handling</a>
@@ -1227,14 +1227,14 @@
 <h1 id="rfc.section.11">
 <a href="#rfc.section.11">11.</a> <a href="#security" id="security">Security Considerations</a>
 </h1>
-<p id="rfc.section.11.p.1">Allowing client to set arbitrary Payload will create amplification potential.  </p>
-<p id="rfc.section.11.p.2">Allowing client to define Protocol, Port and Bit Pattern allows client to craft arbitrary packets enabling it to perform port knocking and trigger packet-of-death bugs.  </p>
+<p id="rfc.section.11.p.1">Allowing the client to set arbitrary Payload will create amplification potential.  </p>
+<p id="rfc.section.11.p.2">Allowing the client to define Protocol, Port and Bit Pattern allows client to craft arbitrary packets enabling it to perform port knocking and trigger packet-of-death bugs.  </p>
 <p id="rfc.section.11.p.3">Opt-In Request TLVs should only be honored in trusted networks.  </p>
-<p id="rfc.section.11.p.4">By default, unlike ICMP Echo, there is bps attenuation because Proxy Request packets are much larger than Probe Request and Proxy Reply.  </p>
-<p id="rfc.section.11.p.5">By default there is potentially 2 x pps amplification, however this is minor concerns as other more common vectors, such as TCP SYN spoofing allow for much higher pps amplification.  </p>
-<p id="rfc.section.11.p.6">There is no way for Client to cause Server to send more than two packets per each packet Client sends.  </p>
-<p id="rfc.section.11.p.7">Other than gleaning information about UDP TRACEROUTE ports, there are no security implications identified in setting destination address TLV.  Attacker setting destination address TLV will necessarily create less traffic towards the victim compared to not setting destination address TLV and spooffing source address.  Without setting destination address TLV Attacker will be able to send two packets to a single Victim, where as by setting destination address TLV Attacker can only send one packet per victim.  </p>
-<p id="rfc.section.11.p.8">Precedent exists in <a href="#RFC8335" class="xref">[RFC8335]</a> where we can ask server to return information to us which would normally not be visible to us.  Like every packet received on control-plane there are always risks involved in software defects, however we need to balance the cost of those risks with the cost savings afforded by diagnostic tools due to reduced outage times.  Historically we have had several security issues in ICMP echo, including f00fc7c8 and +++ATH, but we continue to utilise ICMP echo because the diagnostic value in reducing outage times exceeds the risk carried.  </p>
+<p id="rfc.section.11.p.4">By default, unlike ICMP Echo, there is bps attenuation because the Proxy Request packets are much larger than the Probe Request and the Proxy Reply.  </p>
+<p id="rfc.section.11.p.5">By default there is potentially 2 x pps amplification, however this is a minor concern as other more common vectors, such as TCP SYN spoofing allow for much higher pps amplification.  </p>
+<p id="rfc.section.11.p.6">There is no way for the Client to cause the Server to send more than two packets per each packet the Client sends.  </p>
+<p id="rfc.section.11.p.7">Other than gleaning information about UDP TRACEROUTE ports, there are no security implications identified in setting the destination address TLV.  Attacker setting the destination address TLV will necessarily create less traffic towards the victim compared to not setting the destination address TLV and spoofing the source address.  Without setting the destination address TLV Attacker will be able to send two packets to a single Victim, whereas by setting the destination address TLV Attacker can only send one packet per victim.  </p>
+<p id="rfc.section.11.p.8">Precedent exists in <a href="#RFC8335" class="xref">[RFC8335]</a> where we can ask the server to return information to us which would normally not be visible to us.  Like every packet received on control-plane there are always risks involved in software defects, however we need to balance the cost of those risks with the cost savings afforded by diagnostic tools due to reduced outage times.  Historically we have had security issues in ICMP Echo, including f00fc7c8 and +++ATH, but we continue to utilize ICMP Echo because the perceived diagnostic value in reducing outage times exceeds the perceived risk carried.  </p>
 <h1 id="rfc.references">
 <a href="#rfc.references">12.</a> References</h1>
 <h1 id="rfc.references.1">

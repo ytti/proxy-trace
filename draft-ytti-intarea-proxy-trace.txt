@@ -16,8 +16,9 @@ Abstract
 
    This document describes a network diagnostic tool called Proxy Trace.
    Proxy Trace has similarities with PING and TRACEROUTE in that it uses
-   PING style ICMP request to ask remote host to trigger a single packet
-   TRACEROUTE query and deliver the reply in PING style ICMP reply.
+   PING style ICMP request to ask the remote host to trigger a single
+   packet TRACEROUTE query and deliver the reply in PING style ICMP
+   reply.
 
 Requirements Language
 
@@ -48,7 +49,6 @@ Copyright Notice
 
    Copyright (c) 2019 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
-
 
 
 
@@ -89,19 +89,19 @@ Table of Contents
 
 1.  Introduction
 
-   Network operators use TRACEROUTE to discover path between client host
-   and a target host.  Operator does this by running the traceroute
-   software on the client host and giving as an argument target host to
-   which operator wants to discover the network path.  This information
-   helps network operator to understand and troubleshoot issues on the
-   network.
+   Network operators use TRACEROUTE to discover the path between the
+   client host and a target host.  An Operator does this by running the
+   traceroute software on the client host and giving as an argument
+   target host to which operator wants to discover the network path.
+   This information helps network operator to understand and
+   troubleshoot issues on the network.
 
    This document describes a network diagnostic tool called Proxy Trace.
    Proxy Trace is similar to TRACEROUTE in that it can be used to
    discover path between two hosts, but it differs from TRACEROUTE in
-   that it can discover the path between two arbitrary host, allowing
+   that it can discover the path between two arbitrary hosts, allowing
    operator not only discover the reverse path but also removes the
-   requirement that operator must have access to a host in the path.
+   requirement that the operator must have access to a host in the path.
 
    Further unlike alternative solutions such as looking glasses, Proxy
    Trace replies are formal and machine parseable.  This enables
@@ -120,7 +120,7 @@ Internet-Draft                 Proxy Trace                    March 2019
 
 2.  Terminology
 
-   This document uses following terms:
+   This document uses the following terms:
 
    Proxy Trace Request:  An ICMP packet Proxy Trace Client sends to a
       Proxy Trace Server.
@@ -170,8 +170,8 @@ Ytti                    Expires September 9, 2019               [Page 3]
 Internet-Draft                 Proxy Trace                    March 2019
 
 
-   In attached diagram PT Client wants to discover path from PT Server
-   to a PT Target.  The same process is repeated for each Hop:
+   In the attached diagram PT Client wants to discover the path from PT
+   Server to a PT Target.  The same process is repeated for each Hop:
 
    Send Proxy Trace Request:  PT Client sends Proxy Trace Request to PT
       Server with Hop-Limit '1' and Destination Address 'PT Target'.
@@ -205,7 +205,7 @@ Internet-Draft                 Proxy Trace                    March 2019
       Server and PT Target it Hop1
 
    PT Client is free to send multiple Proxy Trace Request packets
-   without waiting for an Proxy Trace Reply.
+   without waiting for a Proxy Trace Reply.
 
 4.  ICMP Proxy Trace Request
 
@@ -265,7 +265,8 @@ Internet-Draft                 Proxy Trace                    March 2019
 
    TLVs:
 
-   Padding:  Client added padding to reach desired request packet size.
+   Padding:  Client added padding to reach the desired request packet
+      size.
 
       Type:  0
       Length:  Any
@@ -273,7 +274,6 @@ Internet-Draft                 Proxy Trace                    March 2019
       Times:  0 or 1
       Implementation:  Mandatory
       Honor:  Yes
-      Location:  Last
 
 
 
@@ -282,6 +282,7 @@ Ytti                    Expires September 9, 2019               [Page 5]
 Internet-Draft                 Proxy Trace                    March 2019
 
 
+      Location:  Last
       Default:  None
 
    Source Address:  Source Address of the Proxy Trace Probe Request
@@ -329,7 +330,6 @@ Internet-Draft                 Proxy Trace                    March 2019
       Implementation:  Optional
       Honor:  Opt-In
       Location:  Any
-      Default:  17 (UDP)
 
 
 
@@ -337,6 +337,8 @@ Ytti                    Expires September 9, 2019               [Page 6]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
+
+      Default:  17 (UDP)
 
    Source Port:  L4 Source Port number of the Proxy Trace Probe Request
       Packet.
@@ -384,8 +386,6 @@ Internet-Draft                 Proxy Trace                    March 2019
       Implementation:  Optional
       Honor:  Opt-In
       Location:  Any
-      Default:  Local choice
-
 
 
 
@@ -394,12 +394,14 @@ Ytti                    Expires September 9, 2019               [Page 7]
 Internet-Draft                 Proxy Trace                    March 2019
 
 
+      Default:  Local choice
+
    Bit Pattern:  Bit Pattern of a payload of the Proxy Trace Probe
       Request Packet.
 
       Type:  9
-      Length:  Any, implementation MAY choose to limit arbitrarily what
-         it accepts
+      Length:  Any, the implementation MAY choose to limit arbitrarily
+         what it accepts
       Value:  Any
       Times:  0 or 1
       Implementation:  Optional
@@ -439,8 +441,6 @@ Internet-Draft                 Proxy Trace                    March 2019
 
    IP Header fields:
 
-   Source Address:  The Source Address identifies the Proxy Trace
-      Server.  It MUST be a valid IPv4 or IPv6 unicast address.
 
 
 
@@ -449,6 +449,9 @@ Ytti                    Expires September 9, 2019               [Page 8]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
+
+   Source Address:  The Source Address identifies the Proxy Trace
+      Server.  It MUST be a valid IPv4 or IPv6 unicast address.
 
    Destination Address:  The Destination Address identifies the Proxy
       Trace Client.  It MUST be a valid IPv4 or IPv6 unicast address.
@@ -496,15 +499,15 @@ Internet-Draft                 Proxy Trace                    March 2019
       Location:  Any
       Default:  None
 
-   Proxy Trace Probe Reply Timestamp:  Timestamp of Proxy Trace Probe
-      Request arriving at the Proxy Trace Server
-
 
 
 Ytti                    Expires September 9, 2019               [Page 9]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
+
+   Proxy Trace Probe Reply Timestamp:  Timestamp of Proxy Trace Probe
+      Request arriving at the Proxy Trace Server
 
       Type:  2
       Length:  6 Bytes
@@ -536,7 +539,7 @@ Internet-Draft                 Proxy Trace                    March 2019
       Location:  Any
       Default:  None
 
-   Bad TLV Count:  List of TLV type numbers occuring more or less time
+   Bad TLV Count:  List of TLV type numbers occurring more or less time
       than expected
 
       Type:  403
@@ -551,9 +554,6 @@ Internet-Draft                 Proxy Trace                    March 2019
       implementation rejects as valid
 
       Type:  404
-      Length:  Any
-      Value:  2 bytes per Bad TLV
-      Times:  0 or 1
 
 
 
@@ -562,6 +562,9 @@ Ytti                    Expires September 9, 2019              [Page 10]
 Internet-Draft                 Proxy Trace                    March 2019
 
 
+      Length:  Any
+      Value:  2 bytes per Bad TLV
+      Times:  0 or 1
       Implementation:  Mandatory
       Location:  Any
       Default:  None
@@ -588,9 +591,9 @@ Internet-Draft                 Proxy Trace                    March 2019
 
 6.  Timestamp format
 
-   Timestamp should be 6 bytes or 48 bits wide, most significant bit is
-   a flag called 'non-canonical epoch'.  If 'non-canonical epoch' flag
-   is not set timestamp's epoch is UTC midnight, if 'non-canonical
+   The timestamp should be 6 bytes or 48 bits wide, most significant bit
+   is a flag called 'non-canonical epoch'.  If 'non-canonical epoch'
+   flag is not set timestamp's epoch is UTC midnight, if 'non-canonical
    epoch' flag is set then epoch is unspecified but not UTC midnight.
    Timestamp unit is nanoseconds.
 
@@ -608,15 +611,14 @@ Internet-Draft                 Proxy Trace                    March 2019
    o  The Destination Address of the incoming message is a multicast
       address.
 
-   Discard SHOULD happen in the forwarding-plane
-
-
 
 
 Ytti                    Expires September 9, 2019              [Page 11]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
+
+   Discard SHOULD happen in the forwarding-plane
 
    Otherwise, when a node receives an ICMPv4 Proxy Trace Request, it
    MUST format an ICMPv4 Proxy Trace Reply as follows:
@@ -651,18 +653,16 @@ Internet-Draft                 Proxy Trace                    March 2019
 
 8.  Implementation Considerations
 
-   Host implementing Proxy Trace SHOULD have it turned on by default in
-   all interfaces and MUST allow turning it off/on per interface.  Host
-   implementation MUST police rate of Proxy Trace Request packets from
-   the data-plane to a level where Host can honor all Proxy Trace
+   A host implementing Proxy Trace SHOULD have it turned on by default
+   in all interfaces and MUST allow turning it off/on per interface.
+   The implementation MUST police rate of Proxy Trace Request packets
+   from the data-plane to a level where Host can honor all Proxy Trace
    Request packets accepted without negatively impacting control-plane
    operations.
 
    Proxy Trace Server SHOULD timeout after 1 second of waiting for a
    Proxy Trace Probe Reply Packet and MAY timeout earlier.  Proxy Trace
    Server SHOULD NOT send Proxy Trace Reply message if it timed out.
-
-
 
 
 
@@ -694,34 +694,34 @@ Internet-Draft                 Proxy Trace                    March 2019
 
 11.  Security Considerations
 
-   Allowing client to set arbitrary Payload will create amplification
-   potential.
+   Allowing the client to set arbitrary Payload will create
+   amplification potential.
 
-   Allowing client to define Protocol, Port and Bit Pattern allows
+   Allowing the client to define Protocol, Port and Bit Pattern allows
    client to craft arbitrary packets enabling it to perform port
    knocking and trigger packet-of-death bugs.
 
    Opt-In Request TLVs should only be honored in trusted networks.
 
-   By default, unlike ICMP Echo, there is bps attenuation because Proxy
-   Request packets are much larger than Probe Request and Proxy Reply.
+   By default, unlike ICMP Echo, there is bps attenuation because the
+   Proxy Request packets are much larger than the Probe Request and the
+   Proxy Reply.
 
    By default there is potentially 2 x pps amplification, however this
-   is minor concerns as other more common vectors, such as TCP SYN
+   is a minor concern as other more common vectors, such as TCP SYN
    spoofing allow for much higher pps amplification.
 
-   There is no way for Client to cause Server to send more than two
-   packets per each packet Client sends.
+   There is no way for the Client to cause the Server to send more than
+   two packets per each packet the Client sends.
 
    Other than gleaning information about UDP TRACEROUTE ports, there are
-   no security implications identified in setting destination address
-   TLV.  Attacker setting destination address TLV will necessarily
-   create less traffic towards the victim compared to not setting
-   destination address TLV and spooffing source address.  Without
-   setting destination address TLV Attacker will be able to send two
-   packets to a single Victim, where as by setting destination address
-   TLV Attacker can only send one packet per victim.
-
+   no security implications identified in setting the destination
+   address TLV.  Attacker setting the destination address TLV will
+   necessarily create less traffic towards the victim compared to not
+   setting the destination address TLV and spoofing the source address.
+   Without setting the destination address TLV Attacker will be able to
+   send two packets to a single Victim, whereas by setting the
+   destination address TLV Attacker can only send one packet per victim.
 
 
 
@@ -730,15 +730,15 @@ Ytti                    Expires September 9, 2019              [Page 13]
 Internet-Draft                 Proxy Trace                    March 2019
 
 
-   Precedent exists in [RFC8335] where we can ask server to return
+   Precedent exists in [RFC8335] where we can ask the server to return
    information to us which would normally not be visible to us.  Like
    every packet received on control-plane there are always risks
    involved in software defects, however we need to balance the cost of
    those risks with the cost savings afforded by diagnostic tools due to
-   reduced outage times.  Historically we have had several security
-   issues in ICMP echo, including f00fc7c8 and +++ATH, but we continue
-   to utilise ICMP echo because the diagnostic value in reducing outage
-   times exceeds the risk carried.
+   reduced outage times.  Historically we have had security issues in
+   ICMP Echo, including f00fc7c8 and +++ATH, but we continue to utilize
+   ICMP Echo because the perceived diagnostic value in reducing outage
+   times exceeds the perceived risk carried.
 
 12.  References
 
