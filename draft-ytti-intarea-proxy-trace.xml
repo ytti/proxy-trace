@@ -94,7 +94,7 @@
                     </t>
                     <t></t>
                     <t hangText="Proxy Trace Probe Reply:">
-                        Packet received from the network as response to the Proby Trace Probe Request, usually ICMP TTL Exceeded or ICMP Host Unreachable message
+                        Packet received from the network as response to the Proxy Trace Probe Request, usually ICMP TTL Exceeded or ICMP Host Unreachable message
                     </t>
                 </list>
             </t>
