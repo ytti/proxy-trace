@@ -1,13 +1,10 @@
 language: python
 python:
-  - "3.6"
+- '3.6'
 install:
-  - pip install xml2rfc
+- pip install xml2rfc
 script:
-  - xml2rfc draft-ytti-intarea-proxy-trace.xml
-env:
-  global:
-    - secure: gcRiG3v4ii4SSgNHH2hwoW+KWrQyfcBy24mAGHN6/hXtKQ4ONWJwTOkda4Ny3dLTC12Kcbqd4fuO55F3w4aKWMvkUfVnUPwdWxzJo5oYy2L3fU6cC5yVJRd3C6Isj1xzxvtMHmMRu37dHEw1+Il/jLORjbXoCkT2zD8hSqvW/WSg9zX3p+LSQs/Rgt6/ULz3jq19ne1uiKUn0Mt3tF7Y+9IG/D/X7PHgFzBC1Cy6LnPyxMuH7y03P0Ib2hCCn50bIFJOrAlVq9xr5g4+CWwyIKo/Rl2jXIN330v/H2+0v6leblbcX6ioWImyx4iI5F+dEN4gGIOu8AdR6MiqVuqudlm9F5jceqKAOnC5yXmAxmQEq3+3URPKupUF89fZ1BD4GEnNoLC//mAPE4mbm2liuaeOkSYNobN0A9QY1Yqon8iUSRhCbjFx4p+u8b9+/l0J69pKCuqGLAZa+E6QH2Bl0v0sgHQwnZvFng/CSLPoZl2jccAMDL/xWNXDajM6YXxMj2164ab2i7eOr63OYQqt7JJQYyF0gPVdFtGSMV5IIvpPSLR4q5Nr9peyFWszjmUxOSC6AvjeQ+BNNUyPsT4sQKpX2neq3DrwH0h6DWz7KSsP7s9k6a3l0GTd/Itl+UNXql2pruNP0AzLZ3DaY5VsWE9jcCR/Qfo4EGQ1QDXnd/4=
+- xml2rfc draft-ytti-intarea-proxy-trace.xml
 deploy:
   provider: pages
   skip-cleanup: true
@@ -15,3 +12,6 @@ deploy:
   keep-history: true
   on:
     branch: master
+env:
+  global:
+    secure: RXIOwNhO4HrSs0/tS040lLRvorxeUDwdC1jVWIp5GSdWKTatnakk8Dugy5awZdKpWqwaLfup6kgRCxRLiN9PP5VWkGH8rfT8STENEZL3PiZyUzgH+O/N843Ud90Mej5+1vMTcZvhm2lspxbO1uunHspS9RtZnlomYjrB6UjpBd+d/x5AVTjXF/+ynX9XfkYYiOBbvTGuBThvQpt1bWZp254DpfoKZ5t4sq0WzIDQ+vTnW5XbTq0ZyNctE4Rv2w4d2+jhjM7zGuY1kw4Q4R9Nz6kXKEOH68lmehNEAzPDr+xulkOIdLJabb4PKgW5Fw/n93xIRmac9F7JsId3VzHf4bNiZcSawVt5h00z8MEc3wNd8v6q5MhGACb6Fvn44WFEUJHsusTWLotZfgKReuhhPH0iEsN8f08WdIKclkS9eFNAxXi3oRUIdmMZVlH5+UbhfXlr66KvF8CM9Ok9s3nD/1BWGc/MiqME2wlCQg/kkrTEgYxv3IglruFbdqvYzVtHkvw+n35KTAkitIf64G3lYHH2474eTz3L6nyAT4OrQdDy8B81wWOsd/Zz9NA0mXjJgZ0CZKGf3FDWCjWXwhcZ0y67PmZNIh2f3CQJ0t6W5wkFN/rSKKzNTWDcoXD6gY+rAdvQOX175Dom4ZEE8BL8IR91F86BUEvatu8JvU4iTKQ=
