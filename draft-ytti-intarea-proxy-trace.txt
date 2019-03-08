@@ -691,12 +691,14 @@ Internet-Draft                 Proxy Trace                    March 2019
    There is no way for Client to cause Server to send more than two
    packets per each packet Client sends.
 
-   There are no security implications identified in setting destination
-   address TLV as attacker could spoof request source address in either
-   case, which would yield both Probe Request and Proxy Response to be
-   sent to the victim.  Compared to having different source address and
-   destination TLV where Probe Request and Proxy Response will go to a
-   different hosts, making it less attractive vector.
+   Other than gleaning information about UDP TRACEROUTE ports, there are
+   no security implications identified in setting destination address
+   TLV.  Attacker setting destination address TLV will necessarily
+   create less traffic towards the victim compared to not setting
+   destination address TLV and spooffing source address.  Without
+   setting destination address TLV Attacker will be able to send two
+   packets to a single Victim, where as by setting destination address
+   TLV Attacker can only send one packet per victim.
 
    Precedent exists in [RFC8335] where we can ask server to return
    information to us which would normally not be visible to us.  Like
@@ -720,8 +722,6 @@ Internet-Draft                 Proxy Trace                    March 2019
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
-
-
 
 
 
