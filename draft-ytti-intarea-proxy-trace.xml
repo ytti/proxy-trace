@@ -611,6 +611,7 @@
             </t>
         </section>
 
+        <section anchor="icmp" title="ICMP Message Processing">
             <t>
                 When a host receives an ICMP Proxy Trace Request message and any of the following conditions apply, the node MUST silently discard the incoming message:
             </t>
