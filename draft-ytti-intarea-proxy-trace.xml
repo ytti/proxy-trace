@@ -61,6 +61,7 @@
             <t>
                 Further unlike alternative solutions such as looking glasses, Proxy Trace responses are formal and machine parseable.
                 This enables programmatic discovery of both directions of the path.
+                Motivation for Proxy Trace is to reduce outage times by reducing the time it takes to identify the issue, while also enabling programmatic identification and recovery of an outage.
             </t>
         </section>
 

@@ -104,8 +104,8 @@ Table of Contents
 
    Further unlike alternative solutions such as looking glasses, Proxy
    Trace responses are formal and machine parseable.  This enables
-   programmatic discovery of both directions of the path.
-
+   programmatic discovery of both directions of the path.  Motivation
+   for Proxy Trace is to reduce outage times by reducing the time it
 
 
 
@@ -113,6 +113,9 @@ Ytti                    Expires September 9, 2019               [Page 2]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
+
+   takes to identify the issue, while also enabling programmatic
+   identification and recovery of an outage.
 
 2.  Terminology
 
@@ -160,15 +163,15 @@ Internet-Draft                 Proxy Trace                    March 2019
    In attached diagram PT Client wants to discover path from PT Server
    to a PT Target.  The same process is repeated for each Hop:
 
-   Send Proxy Trace Request:  PT Client sends Proxy Trace Request to PT
-      Server with Hop-Limit '1' and Destination Address 'PT Target.
-
 
 
 Ytti                    Expires September 9, 2019               [Page 3]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
+
+   Send Proxy Trace Request:  PT Client sends Proxy Trace Request to PT
+      Server with Hop-Limit '1' and Destination Address 'PT Target.
 
    Receive Proxy Trace Request:  PT Server receives Proxy Trace Request,
       verifies its size and TLVs.
@@ -209,9 +212,6 @@ Internet-Draft                 Proxy Trace                    March 2019
    is encapsulated in an IPv6 header.  ICMP Proxy Trace Request packet's
    minimum size on IPv4 level is 576B and on IPv6 level 1280B.
    Figure 1. depicts the ICMP Proxy Trace Request message.
-
-
-
 
 
 
