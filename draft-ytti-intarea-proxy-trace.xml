@@ -149,7 +149,7 @@
                         PT Server sends the Proxy Trace Response packet to the PT Client.
                     </t>
                     <t></t>
-                    <t hangText="Receice Proxy Trace Response:">
+                    <t hangText="Receive Proxy Trace Response:">
                         PT Client receives the Proxy Trace Response from PT Server learning that Hop Limit 1 in the path between PT Server and PT Target it Hop1
                     </t>
                 </list>
@@ -167,7 +167,7 @@
 
                 ICMP Proxy Trace Request packet's minimum size on IPv4 level is 576B and on IPv6 level 1280B.
 
-                Figure 1. decipts the ICMP Proxy Trace Request message.
+                Figure 1. depicts the ICMP Proxy Trace Request message.
             </t>
 
             <figure anchor="requestencoding" align="center"><artwork><![CDATA[
@@ -186,12 +186,12 @@
                 <list style="hanging">
                     <t hangText="Source Address:">
                         The Source Address identifies the Proxy Trace Client.
-                        It MUST be a valid IPv4 or IPv6 unicast addresse.
+                        It MUST be a valid IPv4 or IPv6 unicast address.
                     </t>
                     <t></t>
-                    <t hangText="Desination Address:">
+                    <t hangText="Destination Address:">
                         The Destination Address identifies the Proxy Trace Server.
-                        It MUST be a valid IPv4 or IPv6 unicast addresse.
+                        It MUST be a valid IPv4 or IPv6 unicast address.
                     </t>
                 </list>
             </t>
@@ -240,7 +240,7 @@
                             <t hangText="Times:">0 or 1</t>
                             <t hangText="Implementation:">Mandatory</t>
                             <t hangText="Honor:">Yes</t>
-                            <t hangText="Locaton:">Last</t>
+                            <t hangText="Location:">Last</t>
                             <t hangText="Default:">None</t>
                         </list>
                     </t>
@@ -331,7 +331,7 @@
                             <t hangText="Implementation:">Optional</t>
                             <t hangText="Honor:">Opt-In</t>
                             <t hangText="Location:">Any</t>
-                            <t hangText="Default:">33433 + hopt-limit (33434 to 33688)</t>
+                            <t hangText="Default:">33433 + hop-limit (33434 to 33688)</t>
                         </list>
                     </t>
                     <t></t>
@@ -407,7 +407,7 @@
                 The ICMPv4 version of the ICMP Proxy Trace Reply message is encapsulated in an IPv4 header, while the ICMPv6 version is encapsulated in an IPv6 header.
             </t>
             <t>
-                Figure 2. decipts the ICMP Proxy Trace Reply message.
+                Figure 2. depicts the ICMP Proxy Trace Reply message.
             </t>
 
             <figure anchor="replyencoding" align="center"><artwork><![CDATA[
@@ -426,12 +426,12 @@
                 <list style="hanging">
                     <t hangText="Source Address:">
                         The Source Address identifies the Proxy Trace Server.
-                        It MUST be a valid IPv4 or IPv6 unicast addresse.
+                        It MUST be a valid IPv4 or IPv6 unicast address.
                     </t>
                     <t></t>
-                    <t hangText="Desination Address:">
+                    <t hangText="Destination Address:">
                         The Destination Address identifies the Proxy Trace Client.
-                        It MUST be a valid IPv4 or IPv6 unicast addresse.
+                        It MUST be a valid IPv4 or IPv6 unicast address.
                     </t>
                 </list>
             </t>
@@ -461,7 +461,7 @@
                     </t>
                     <t></t>
                     <t hangText="Sequence Number:">
-                        A Sequence Number to aid in matching ICMP Proxy Trace Replies to ICMP PRoxy Trace Requests.
+                        A Sequence Number to aid in matching ICMP Proxy Trace Replies to ICMP Proxy Trace Requests.
                         May be 0.
                         See <xref target="RFC0792" /> Echo/Echo Reply.
                     </t>
@@ -481,7 +481,7 @@
                             <t hangText="Value:">Any</t>
                             <t hangText="Times:">0 or 1</t>
                             <t hangText="Implementation:">Mandatory</t>
-                            <t hangText="Locaton:">Any</t>
+                            <t hangText="Location:">Any</t>
                             <t hangText="Default:">None</t>
                         </list>
                     </t>
@@ -495,7 +495,7 @@
                             <t hangText="Value:">Any</t>
                             <t hangText="Times:">0 or 1</t>
                             <t hangText="Implementation:">Optional</t>
-                            <t hangText="Locaton:">Any</t>
+                            <t hangText="Location:">Any</t>
                             <t hangText="Default:">None</t>
                         </list>
                     </t>
@@ -509,7 +509,7 @@
                             <t hangText="Value:">2 bytes per Ignored TLV</t>
                             <t hangText="Times:">0 or 1</t>
                             <t hangText="Implementation:">Mandatory</t>
-                            <t hangText="Locaton:">Any</t>
+                            <t hangText="Location:">Any</t>
                             <t hangText="Default:">None</t>
                         </list>
                     </t>
@@ -523,7 +523,7 @@
                             <t hangText="Value:">2 bytes per Unsupported TLV</t>
                             <t hangText="Times:">0 or 1</t>
                             <t hangText="Implementation:">Mandatory</t>
-                            <t hangText="Locaton:">Any</t>
+                            <t hangText="Location:">Any</t>
                             <t hangText="Default:">None</t>
                         </list>
                     </t>
@@ -537,7 +537,7 @@
                             <t hangText="Value:">2 bytes per Bad TLV</t>
                             <t hangText="Times:">0 or 1</t>
                             <t hangText="Implementation:">Mandatory</t>
-                            <t hangText="Locaton:">Any</t>
+                            <t hangText="Location:">Any</t>
                             <t hangText="Default:">None</t>
                         </list>
                     </t>
@@ -551,7 +551,7 @@
                             <t hangText="Value:">2 bytes per Bad TLV</t>
                             <t hangText="Times:">0 or 1</t>
                             <t hangText="Implementation:">Mandatory</t>
-                            <t hangText="Locaton:">Any</t>
+                            <t hangText="Location:">Any</t>
                             <t hangText="Default:">None</t>
                         </list>
                     </t>
@@ -565,7 +565,7 @@
                             <t hangText="Value:">2 bytes per Bad TLV</t>
                             <t hangText="Times:">0 or 1</t>
                             <t hangText="Implementation:">Mandatory</t>
-                            <t hangText="Locaton:">Any</t>
+                            <t hangText="Location:">Any</t>
                             <t hangText="Default:">None</t>
                         </list>
                     </t>
@@ -697,7 +697,7 @@
 
         <section anchor="iana" title="IANA Considerations">
             <t>
-                Per this document, IANA is requested to reference this document in the "Internet Control Message Control (ICMP) Parmeters" and the "Internet Control Message Protocol version 6 (ICMPv6) Parameters" registries under the "Code Fields" group.
+                Per this document, IANA is requested to reference this document in the "Internet Control Message Control (ICMP) Parameters" and the "Internet Control Message Protocol version 6 (ICMPv6) Parameters" registries under the "Code Fields" group.
             </t>
         </section>
 
@@ -712,17 +712,17 @@
                 Opt-In Request TLVs should only be honored in trusted networks.
             </t>
             <t>
-                By default, unlike ICMP Echo, there is bps attenuation becase Proxy Request packets are much larger than Probe Request and Proxy Response.
+                By default, unlike ICMP Echo, there is bps attenuation because Proxy Request packets are much larger than Probe Request and Proxy Response.
             </t>
             <t>
-                By default there is potentially 2 x pps amplification, however this is minor concerns as other more common vectors, such as TCP SYN spooffing allow for much higher pps amplification.
+                By default there is potentially 2 x pps amplification, however this is minor concerns as other more common vectors, such as TCP SYN spoofing allow for much higher pps amplification.
             </t>
             <t>
                 There is no way for Client to cause Server to send more than two packets per each packet Client sends.
             </t>
             <t>
-                There are no security implifications identified in setting destination address TLV as attacker could spoof request source address in either case, which would yield both Probe Request and Proxy Response to be sent to the victim.
-                Compared to having different source addresss and destination TLV where Probe Request and Proxy Response will go to a different hosts, making it less attractive vector.
+                There are no security implications identified in setting destination address TLV as attacker could spoof request source address in either case, which would yield both Probe Request and Proxy Response to be sent to the victim.
+                Compared to having different source address and destination TLV where Probe Request and Proxy Response will go to a different hosts, making it less attractive vector.
             </t>
         </section>
 
@@ -741,7 +741,7 @@
             <?rfc include="reference.RFC.6056"?>
         </references>
 
-        <section anchor="acknowledgements" title="Acknowledgements">
+        <section anchor="acknowledgments" title="Acknowledgments">
             <t>
             </t>
         </section>
