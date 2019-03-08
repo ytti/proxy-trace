@@ -6,7 +6,7 @@ Proxy trace is protocol which allows programmatic discovery of path between two 
 # Authoring Conventions
 
 * One sentence per line, this makes diff viewing easiest.
-* Only edit the .xml file (the .txt and .html files are computer generated).
+* Only edit the .xml file (the .[txt] and .[html] files are computer generated).
 * Be sure to keep track of the names of contributors through the Acknowledgements section and the git log.
 
 # Note Well
@@ -25,3 +25,6 @@ repository constitutes Contributions to the IETF Standards Process
 You agree to comply with all applicable IETF policies and procedures,
 including, BCP 78, 79, the TLP, and the TLP rules regarding code components
 (e.g. being subject to a Simplified BSD License) in Contributions.
+
+|txt]: https://ytti.github.io/proxy-trace/draft-ytti-intarea-proxy-trace.txt
+|html]: https://ytti.github.io/proxy-trace/draft-ytti-intarea-proxy-trace.html
