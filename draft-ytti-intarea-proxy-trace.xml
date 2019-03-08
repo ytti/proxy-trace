@@ -733,6 +733,7 @@
             <?rfc include="reference.RFC.0792"?>
             <?rfc include="reference.RFC.2119"?>
             <?rfc include="reference.RFC.4443"?>
+            <?rfc include="reference.RFC.8174"?>
         </references>
         <references title="Informative References">
             <?rfc include="reference.RFC.4950"?>
