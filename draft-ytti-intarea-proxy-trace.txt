@@ -174,7 +174,7 @@ Internet-Draft                 Proxy Trace                    March 2019
    to a PT Target.  The same process is repeated for each Hop:
 
    Send Proxy Trace Request:  PT Client sends Proxy Trace Request to PT
-      Server with Hop-Limit '1' and Destination Address 'PT Target.
+      Server with Hop-Limit '1' and Destination Address 'PT Target'.
 
    Receive Proxy Trace Request:  PT Server receives Proxy Trace Request,
       verifies its size and TLVs.

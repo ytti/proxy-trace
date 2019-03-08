@@ -122,7 +122,7 @@
 
                 <list style="hanging">
                     <t hangText="Send Proxy Trace Request:">
-                        PT Client sends Proxy Trace Request to PT Server with Hop-Limit '1' and Destination Address 'PT Target.
+                        PT Client sends Proxy Trace Request to PT Server with Hop-Limit '1' and Destination Address 'PT Target'.
                     </t>
                     <t></t>
                     <t hangText="Receive Proxy Trace Request:">
