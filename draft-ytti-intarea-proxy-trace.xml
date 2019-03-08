@@ -616,7 +616,7 @@
                 When a host receives an ICMP Proxy Trace Request message and any of the following conditions apply, the node MUST silently discard the incoming message:
             </t>
             <t>
-                <list style="hanging">
+                <list style="symbols">
                     <t>
                         The node does not recognize ICMP Proxy Trace Request messages.
                     </t>
@@ -665,7 +665,7 @@
                 In either case, the responding node MUST do the following:
             </t>
             <t>
-                <list style="hanging">
+                <list style="symbols">
                     <t>
                         Copy the Source Address from the Proxy Trace Request message to the Destination Address of the Proxy Trace Reply message.
                     </t>
