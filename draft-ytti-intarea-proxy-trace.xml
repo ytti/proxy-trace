@@ -347,7 +347,7 @@
                             <t hangText="Implementation:">Optional</t>
                             <t hangText="Honor:">Opt-In</t>
                             <t hangText="Location:">Any</t>
-                            <t hangText="Default:">4 for IPv4 and 16 for IPv6</t>
+                            <t hangText="Default:">10 for IPv4 and 22 for IPv6</t>
                         </list>
                     </t>
                     <t></t>
@@ -377,7 +377,7 @@
                             <t hangText="Implementation:">Optional</t>
                             <t hangText="Honor:">Opt-In</t>
                             <t hangText="Location:">Any</t>
-                            <t hangText="Default:">Proxy Trace Request Source Address</t>
+                            <t hangText="Default:">Timestamp+Proxy Trace Request Source Address</t>
                         </list>
                     </t>
                     <t></t>
