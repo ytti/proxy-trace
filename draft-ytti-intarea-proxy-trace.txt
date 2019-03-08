@@ -178,7 +178,9 @@ Internet-Draft                 Proxy Trace                    March 2019
 
    Send Proxy Trace Probe Request:  PT Server sends Proxy Trace Probe
       Request towards PT Target out from the Interface where FIB informs
-      PT Target to be located.
+      PT Target to be located.  PT Server SHOULD use the same FIB for
+      Proxy Trace Probe Request as where it received the Proxy Trace
+      Request.
 
    Receive Proxy Trace Probe Request:  Hop1 received the Proxy Trace
       Probe Request, because TTL has expired it punts the packet from
@@ -212,8 +214,6 @@ Internet-Draft                 Proxy Trace                    March 2019
    is encapsulated in an IPv6 header.  ICMP Proxy Trace Request packet's
    minimum size on IPv4 level is 576B and on IPv6 level 1280B.
    Figure 1. depicts the ICMP Proxy Trace Request message.
-
-
 
 
 

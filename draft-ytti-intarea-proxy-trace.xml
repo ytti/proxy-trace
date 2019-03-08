@@ -130,7 +130,7 @@
                     </t>
                     <t></t>
                     <t hangText="Send Proxy Trace Probe Request:">
-                        PT Server sends Proxy Trace Probe Request towards PT Target out from the Interface where FIB informs PT Target to be located.
+                        PT Server sends Proxy Trace Probe Request towards PT Target out from the Interface where FIB informs PT Target to be located. PT Server SHOULD use the same FIB for Proxy Trace Probe Request as where it received the Proxy Trace Request.
                     </t>
                     <t></t>
                     <t hangText="Receive Proxy Trace Probe Request:">
