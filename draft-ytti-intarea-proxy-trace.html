@@ -1,0 +1,1297 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+
+  <title>Proxy Trace: A Utility for Programmatic Discovery of Forward and Reverse Path </title>
+
+  <style type="text/css" title="Xml2Rfc (sans serif)">
+  /*<![CDATA[*/
+	  a {
+	  text-decoration: none;
+	  }
+      /* info code from SantaKlauss at http://www.madaboutstyle.com/tooltip2.html */
+      a.info {
+          /* This is the key. */
+          position: relative;
+          z-index: 24;
+          text-decoration: none;
+      }
+      a.info:hover {
+          z-index: 25;
+          color: #FFF; background-color: #900;
+      }
+      a.info span { display: none; }
+      a.info:hover span.info {
+          /* The span will display just on :hover state. */
+          display: block;
+          position: absolute;
+          font-size: smaller;
+          top: 2em; left: -5em; width: 15em;
+          padding: 2px; border: 1px solid #333;
+          color: #900; background-color: #EEE;
+          text-align: left;
+      }
+	  a.smpl {
+	  color: black;
+	  }
+	  a:hover {
+	  text-decoration: underline;
+	  }
+	  a:active {
+	  text-decoration: underline;
+	  }
+	  address {
+	  margin-top: 1em;
+	  margin-left: 2em;
+	  font-style: normal;
+	  }
+	  body {
+	  color: black;
+	  font-family: verdana, helvetica, arial, sans-serif;
+	  font-size: 10pt;
+	  max-width: 55em;
+	  
+	  }
+	  cite {
+	  font-style: normal;
+	  }
+	  dd {
+	  margin-right: 2em;
+	  }
+	  dl {
+	  margin-left: 2em;
+	  }
+	
+	  ul.empty {
+	  list-style-type: none;
+	  }
+	  ul.empty li {
+	  margin-top: .5em;
+	  }
+	  dl p {
+	  margin-left: 0em;
+	  }
+	  dt {
+	  margin-top: .5em;
+	  }
+	  h1 {
+	  font-size: 14pt;
+	  line-height: 21pt;
+	  page-break-after: avoid;
+	  }
+	  h1.np {
+	  page-break-before: always;
+	  }
+	  h1 a {
+	  color: #333333;
+	  }
+	  h2 {
+	  font-size: 12pt;
+	  line-height: 15pt;
+	  page-break-after: avoid;
+	  }
+	  h3, h4, h5, h6 {
+	  font-size: 10pt;
+	  page-break-after: avoid;
+	  }
+	  h2 a, h3 a, h4 a, h5 a, h6 a {
+	  color: black;
+	  }
+	  img {
+	  margin-left: 3em;
+	  }
+	  li {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  ol {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  ol p {
+	  margin-left: 0em;
+	  }
+	  p {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  pre {
+	  margin-left: 3em;
+	  background-color: lightyellow;
+	  padding: .25em;
+	  }
+	  pre.text2 {
+	  border-style: dotted;
+	  border-width: 1px;
+	  background-color: #f0f0f0;
+	  width: 69em;
+	  }
+	  pre.inline {
+	  background-color: white;
+	  padding: 0em;
+	  }
+	  pre.text {
+	  border-style: dotted;
+	  border-width: 1px;
+	  background-color: #f8f8f8;
+	  width: 69em;
+	  }
+	  pre.drawing {
+	  border-style: solid;
+	  border-width: 1px;
+	  background-color: #f8f8f8;
+	  padding: 2em;
+	  }
+	  table {
+	  margin-left: 2em;
+	  }
+	  table.tt {
+	  vertical-align: top;
+	  }
+	  table.full {
+	  border-style: outset;
+	  border-width: 1px;
+	  }
+	  table.headers {
+	  border-style: outset;
+	  border-width: 1px;
+	  }
+	  table.tt td {
+	  vertical-align: top;
+	  }
+	  table.full td {
+	  border-style: inset;
+	  border-width: 1px;
+	  }
+	  table.tt th {
+	  vertical-align: top;
+	  }
+	  table.full th {
+	  border-style: inset;
+	  border-width: 1px;
+	  }
+	  table.headers th {
+	  border-style: none none inset none;
+	  border-width: 1px;
+	  }
+	  table.left {
+	  margin-right: auto;
+	  }
+	  table.right {
+	  margin-left: auto;
+	  }
+	  table.center {
+	  margin-left: auto;
+	  margin-right: auto;
+	  }
+	  caption {
+	  caption-side: bottom;
+	  font-weight: bold;
+	  font-size: 9pt;
+	  margin-top: .5em;
+	  }
+	
+	  table.header {
+	  border-spacing: 1px;
+	  width: 95%;
+	  font-size: 10pt;
+	  color: white;
+	  }
+	  td.top {
+	  vertical-align: top;
+	  }
+	  td.topnowrap {
+	  vertical-align: top;
+	  white-space: nowrap; 
+	  }
+	  table.header td {
+	  background-color: gray;
+	  width: 50%;
+	  }
+	  table.header a {
+	  color: white;
+	  }
+	  td.reference {
+	  vertical-align: top;
+	  white-space: nowrap;
+	  padding-right: 1em;
+	  }
+	  thead {
+	  display:table-header-group;
+	  }
+	  ul.toc, ul.toc ul {
+	  list-style: none;
+	  margin-left: 1.5em;
+	  margin-right: 0em;
+	  padding-left: 0em;
+	  }
+	  ul.toc li {
+	  line-height: 150%;
+	  font-weight: bold;
+	  font-size: 10pt;
+	  margin-left: 0em;
+	  margin-right: 0em;
+	  }
+	  ul.toc li li {
+	  line-height: normal;
+	  font-weight: normal;
+	  font-size: 9pt;
+	  margin-left: 0em;
+	  margin-right: 0em;
+	  }
+	  li.excluded {
+	  font-size: 0pt;
+	  }
+	  ul p {
+	  margin-left: 0em;
+	  }
+	
+	  .comment {
+	  background-color: yellow;
+	  }
+	  .center {
+	  text-align: center;
+	  }
+	  .error {
+	  color: red;
+	  font-style: italic;
+	  font-weight: bold;
+	  }
+	  .figure {
+	  font-weight: bold;
+	  text-align: center;
+	  font-size: 9pt;
+	  }
+	  .filename {
+	  color: #333333;
+	  font-weight: bold;
+	  font-size: 12pt;
+	  line-height: 21pt;
+	  text-align: center;
+	  }
+	  .fn {
+	  font-weight: bold;
+	  }
+	  .hidden {
+	  display: none;
+	  }
+	  .left {
+	  text-align: left;
+	  }
+	  .right {
+	  text-align: right;
+	  }
+	  .title {
+	  color: #990000;
+	  font-size: 18pt;
+	  line-height: 18pt;
+	  font-weight: bold;
+	  text-align: center;
+	  margin-top: 36pt;
+	  }
+	  .vcardline {
+	  display: block;
+	  }
+	  .warning {
+	  font-size: 14pt;
+	  background-color: yellow;
+	  }
+	
+	
+	  @media print {
+	  .noprint {
+		display: none;
+	  }
+	
+	  a {
+		color: black;
+		text-decoration: none;
+	  }
+	
+	  table.header {
+		width: 90%;
+	  }
+	
+	  td.header {
+		width: 50%;
+		color: black;
+		background-color: white;
+		vertical-align: top;
+		font-size: 12pt;
+	  }
+	
+	  ul.toc a::after {
+		content: leader('.') target-counter(attr(href), page);
+	  }
+	
+	  ul.ind li li a {
+		content: target-counter(attr(href), page);
+	  }
+	
+	  .print2col {
+		column-count: 2;
+		-moz-column-count: 2;
+		column-fill: auto;
+	  }
+	  }
+	
+	  @page {
+	  @top-left {
+		   content: "Internet-Draft"; 
+	  } 
+	  @top-right {
+		   content: "December 2010"; 
+	  } 
+	  @top-center {
+		   content: "Abbreviated Title";
+	  } 
+	  @bottom-left {
+		   content: "Doe"; 
+	  } 
+	  @bottom-center {
+		   content: "Expires June 2011"; 
+	  } 
+	  @bottom-right {
+		   content: "[Page " counter(page) "]"; 
+	  } 
+	  }
+	
+	  @page:first { 
+		@top-left {
+		  content: normal;
+		}
+		@top-right {
+		  content: normal;
+		}
+		@top-center {
+		  content: normal;
+		}
+	  }
+  /*]]>*/
+  </style>
+
+  <link href="#rfc.toc" rel="Contents">
+<link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
+<link href="#rfc.section.2" rel="Chapter" title="2 Terminology">
+<link href="#rfc.section.3" rel="Chapter" title="3 Operation">
+<link href="#rfc.section.4" rel="Chapter" title="4 ICMP Proxy Trace Request">
+<link href="#rfc.section.5" rel="Chapter" title="5 ICMP Proxy Trace Reply">
+<link href="#rfc.section.6" rel="Chapter" title="6 ICMP Message Processing">
+<link href="#rfc.section.7" rel="Chapter" title="7 Implementation Considerations">
+<link href="#rfc.section.8" rel="Chapter" title="8 Error Handling">
+<link href="#rfc.section.9" rel="Chapter" title="9 IANA Considerations">
+<link href="#rfc.section.10" rel="Chapter" title="10 Security Considerations">
+<link href="#rfc.references" rel="Chapter" title="11 References">
+<link href="#rfc.references.1" rel="Chapter" title="11.1 Normative References">
+<link href="#rfc.references.2" rel="Chapter" title="11.2 Informative References">
+<link href="#rfc.appendix.A" rel="Chapter" title="A Acknowledgments">
+<link href="#rfc.authors" rel="Chapter">
+
+
+  <meta name="generator" content="xml2rfc version 2.21.0 - https://tools.ietf.org/tools/xml2rfc" />
+  <link rel="schema.dct" href="http://purl.org/dc/terms/" />
+
+  <meta name="dct.creator" content="Ytti, S." />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-ytti-intarea-proxy-trace-00" />
+  <meta name="dct.issued" scheme="ISO8601" content="2019-08" />
+  <meta name="dct.abstract" content="This document describes a network diagnostic tool called Proxy Trace.  Proxy Trace has similarities with PING and TRACEROUTE in that it uses PING style ICMP request to ask remote host to trigger a single packet TRACEROUTE query and deliver the response in PING style ICMP response.  " />
+  <meta name="description" content="This document describes a network diagnostic tool called Proxy Trace.  Proxy Trace has similarities with PING and TRACEROUTE in that it uses PING style ICMP request to ask remote host to trigger a single packet TRACEROUTE query and deliver the response in PING style ICMP response.  " />
+
+</head>
+
+<body>
+
+  <table class="header">
+    <tbody>
+    
+    	<tr>
+<td class="left">intarea</td>
+<td class="right">S. Ytti</td>
+</tr>
+<tr>
+<td class="left">Internet-Draft</td>
+<td class="right">NTT</td>
+</tr>
+<tr>
+<td class="left">Intended status: Standards Track</td>
+<td class="right">March 8, 2019</td>
+</tr>
+<tr>
+<td class="left">Expires: September 9, 2019</td>
+<td class="right"></td>
+</tr>
+
+    	
+    </tbody>
+  </table>
+
+  <p class="title">Proxy Trace: A Utility for Programmatic Discovery of Forward and Reverse Path <br />
+  <span class="filename">draft-ytti-intarea-proxy-trace-00</span></p>
+  
+  <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
+<p>This document describes a network diagnostic tool called Proxy Trace.  Proxy Trace has similarities with PING and TRACEROUTE in that it uses PING style ICMP request to ask remote host to trigger a single packet TRACEROUTE query and deliver the response in PING style ICMP response.  </p>
+<h1><a>Requirements Language</a></h1>
+<p>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 <a href="#RFC2119" class="xref">[RFC2119]</a> <a href="#RFC8174" class="xref">[RFC8174]</a> when, and only when, they appear in all capitals, as shown here.  </p>
+<h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
+<p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
+<p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
+<p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
+<p>This Internet-Draft will expire on September 9, 2019.</p>
+<h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
+<p>Copyright (c) 2019 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
+<p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
+
+  
+  <hr class="noprint" />
+  <h1 class="np" id="rfc.toc"><a href="#rfc.toc">Table of Contents</a></h1>
+  <ul class="toc">
+
+  	<li>1.   <a href="#rfc.section.1">Introduction</a>
+</li>
+<li>2.   <a href="#rfc.section.2">Terminology</a>
+</li>
+<li>3.   <a href="#rfc.section.3">Operation</a>
+</li>
+<li>4.   <a href="#rfc.section.4">ICMP Proxy Trace Request</a>
+</li>
+<li>5.   <a href="#rfc.section.5">ICMP Proxy Trace Reply</a>
+</li>
+<li>6.   <a href="#rfc.section.6">ICMP Message Processing</a>
+</li>
+<li>7.   <a href="#rfc.section.7">Implementation Considerations</a>
+</li>
+<li>8.   <a href="#rfc.section.8">Error Handling</a>
+</li>
+<li>9.   <a href="#rfc.section.9">IANA Considerations</a>
+</li>
+<li>10.   <a href="#rfc.section.10">Security Considerations</a>
+</li>
+<li>11.   <a href="#rfc.references">References</a>
+</li>
+<ul><li>11.1.   <a href="#rfc.references.1">Normative References</a>
+</li>
+<li>11.2.   <a href="#rfc.references.2">Informative References</a>
+</li>
+</ul><li>Appendix A.   <a href="#rfc.appendix.A">Acknowledgments</a>
+</li>
+<li><a href="#rfc.authors">Author's Address</a>
+</li>
+
+
+  </ul>
+
+  <h1 id="rfc.section.1">
+<a href="#rfc.section.1">1.</a> <a href="#intro" id="intro">Introduction</a>
+</h1>
+<p id="rfc.section.1.p.1">Network operators use TRACEROUTE to discover path between client host and a target host.  Operator does this by running the traceroute software on the client host and giving as an argument target host to which operator wants to discover the network path.  This information helps network operator to understand and troubleshoot issues on the network.  </p>
+<p id="rfc.section.1.p.2">This document describes a network diagnostic tool called Proxy Trace.  Proxy Trace is similar to TRACEROUTE in that it can be used to discover path between two hosts, but it differs from TRACEROUTE in that it can discover the path between two arbitrary host, allowing operator not only discover the reverse path but also removes the requirement that operator must have access to a host in the path.  </p>
+<p id="rfc.section.1.p.3">Further unlike alternative solutions such as looking glasses, Proxy Trace responses are formal and machine parseable.  This enables programmatic discovery of both directions of the path.  </p>
+<h1 id="rfc.section.2">
+<a href="#rfc.section.2">2.</a> <a href="#terminology" id="terminology">Terminology</a>
+</h1>
+<p id="rfc.section.2.p.1">This document uses following terms: </p>
+
+<dl>
+<dt>Proxy Trace Request:</dt>
+<dd style="margin-left: 8">An ICMP packet Proxy Trace Client sends to a Proxy Trace Server.  </dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Proxy Trace Reply:</dt>
+<dd style="margin-left: 8">An ICMP packet Proxy Trace Server sends to a Proxy Trace Client.  </dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Proxy Trace Client:</dt>
+<dd style="margin-left: 8">Client host requesting for a Proxy Trace </dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Proxy Trace Server:</dt>
+<dd style="margin-left: 8">Server listening to a Proxy Trace Requests, sending Proxy Trace Probe Request, receiving Proxy Trace Probe Reply and sending Proxy Trace Reply </dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Proxy Trace Target:</dt>
+<dd style="margin-left: 8">Destination address of the Proxy Trace Probe Request </dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Proxy Trace Probe Request:</dt>
+<dd style="margin-left: 8">Packet Proxy Trace Server sends towards the Proxy Trace Target.  Equivalent to the packet generated by TRACEROUTE </dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Proxy Trace Probe Reply:</dt>
+<dd style="margin-left: 8">Packet received from the network as response to the Proxy Trace Probe Request, usually ICMP TTL Exceeded or ICMP Host Unreachable message </dd>
+</dl>
+
+<p> </p>
+<h1 id="rfc.section.3">
+<a href="#rfc.section.3">3.</a> <a href="#operation" id="operation">Operation</a>
+</h1>
+<div id="rfc.figure.1"></div>
+<div id="topology"></div>
+<pre>
++-----------+
+| PT Client |
++-----------+
+|
+~~~~~~~~~~~~
+~ internet ~
+~~~~~~~~~~~~
+|
++-----------+    +------+    +------+    +-------+   +-----------+
+| PT Server |----| Hop1 |----| Hop2 |----| Hop3  |---| PT Target |
++-----------+    +------+    +------+    +-------+   +-----------+
+</pre>
+<p class="figure">Figure 1</p>
+<p id="rfc.section.3.p.1">In attached diagram PT Client wants to discover path from PT Server to a PT Target.  The same process is repeated for each Hop: </p>
+
+<dl>
+<dt>Send Proxy Trace Request:</dt>
+<dd style="margin-left: 8">PT Client sends Proxy Trace Request to PT Server with Hop-Limit '1' and Destination Address 'PT Target.  </dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Receive Proxy Trace Request:</dt>
+<dd style="margin-left: 8">PT Server receives Proxy Trace Request, verifies its size and TLVs.  </dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Send Proxy Trace Probe Request:</dt>
+<dd style="margin-left: 8">PT Server sends Proxy Trace Probe Request towards PT Target out from the Interface where FIB informs PT Target to be located.  </dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Receive Proxy Trace Probe Request:</dt>
+<dd style="margin-left: 8">Hop1 received the Proxy Trace Probe Request, because TTL has expired it punts the packet from data-plane to control-plane.  </dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Send Proxy Trace Probe Response:</dt>
+<dd style="margin-left: 8">Hop1 sends ICMP TTL Exceeded message to the PT Server </dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Receive Proxy Trace Probe Response:</dt>
+<dd style="margin-left: 8">PT Server received the Proxy Trace Probe Response and relates it to the open Proxy Trace Request.  </dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Send Proxy Trace Response:</dt>
+<dd style="margin-left: 8">PT Server generates Proxy Trace Response packets and adds Proxy Trace Probe Response packet as TLV 0 to the Proxy Trace Response packet.  PT Server sends the Proxy Trace Response packet to the PT Client.  </dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Receive Proxy Trace Response:</dt>
+<dd style="margin-left: 8">PT Client receives the Proxy Trace Response from PT Server learning that Hop Limit 1 in the path between PT Server and PT Target it Hop1 </dd>
+</dl>
+
+<p> </p>
+<p id="rfc.section.3.p.2">PT Client is free to send multiple Proxy Trace Request packets without waiting for an Proxy Trace Response.  </p>
+<h1 id="rfc.section.4">
+<a href="#rfc.section.4">4.</a> <a href="#request" id="request">ICMP Proxy Trace Request</a>
+</h1>
+<p id="rfc.section.4.p.1">The ICMP Proxy Trace Request is defined for both ICMPv4 and ICMPv6.  Like any ICMP message, the ICMP Proxy Trace Request is encapsulated in an IP header.  The ICMPv4 version of the ICMP Proxy Trace Request message is encapsulated in an IPv4 header, while the ICMPv6 version is encapsulated in an IPv6 header.  ICMP Proxy Trace Request packet's minimum size on IPv4 level is 576B and on IPv6 level 1280B.  Figure 1. depicts the ICMP Proxy Trace Request message.  </p>
+<div id="rfc.figure.2"></div>
+<div id="requestencoding"></div>
+<pre>
+0                   1                   2                   3
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|     Type      |     Code      |          Checksum             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|           Identifier          |        Sequence Number        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  ICMP Proxy Trace Request TLV Structure
+</pre>
+<p class="figure">Figure 2</p>
+<p id="rfc.section.4.p.2">IP Header fields: </p>
+
+<dl>
+<dt>Source Address:</dt>
+<dd style="margin-left: 8">The Source Address identifies the Proxy Trace Client.  It MUST be a valid IPv4 or IPv6 unicast address.  </dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Destination Address:</dt>
+<dd style="margin-left: 8">The Destination Address identifies the Proxy Trace Server.  It MUST be a valid IPv4 or IPv6 unicast address.  </dd>
+</dl>
+
+<p> </p>
+<p></p>
+<p id="rfc.section.4.p.4">ICMP fields: </p>
+
+<dl>
+<dt>Type:</dt>
+<dd style="margin-left: 8">Proxy Trace Request.  The value for ICMPv4 is FIX44.  The value for ICMPv6 is FIX162.  </dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Code:</dt>
+<dd style="margin-left: 8">MUST be set to 0 and MUST be ignored upon receipt.  </dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Checksum:</dt>
+<dd style="margin-left: 8">For ICMPv4, see <a href="#RFC0792" class="xref">[RFC0792]</a>.  For ICMPv6, see <a href="#RFC4443" class="xref">[RFC4443]</a>.  </dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Identifier:</dt>
+<dd style="margin-left: 8">And Identifier to aid in matching ICMP Proxy Trace Replies to ICMP Proxy Trace Requests.  May be 0.  See <a href="#RFC0792" class="xref">[RFC0792]</a> Echo/Echo Reply.  </dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Sequence Number:</dt>
+<dd style="margin-left: 8">A Sequence Number to aid in matching ICMP Proxy Trace Replies to ICMP PRoxy Trace Requests.  May be 0.  See <a href="#RFC0792" class="xref">[RFC0792]</a> Echo/Echo Reply.  </dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+</dl>
+
+<p> </p>
+<p id="rfc.section.4.p.5">TLVs: </p>
+
+<dl>
+<dt>Padding:</dt>
+<dd style="margin-left: 8">Client added padding to reach desired request packet size.  <dl>
+<dt>Type:</dt>
+<dd style="margin-left: 8">0</dd>
+<dt>Length:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Value:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Times:</dt>
+<dd style="margin-left: 8">0 or 1</dd>
+<dt>Implementation:</dt>
+<dd style="margin-left: 8">Mandatory</dd>
+<dt>Honor:</dt>
+<dd style="margin-left: 8">Yes</dd>
+<dt>Location:</dt>
+<dd style="margin-left: 8">Last</dd>
+<dt>Default:</dt>
+<dd style="margin-left: 8">None</dd>
+</dl>
+<p> </p>
+</dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Source Address:</dt>
+<dd style="margin-left: 8">Source Address of the Proxy Trace Probe Request Packet.  <dl>
+<dt>Type:</dt>
+<dd style="margin-left: 8">1</dd>
+<dt>Length:</dt>
+<dd style="margin-left: 8">4 or 16 Bytes, depending on AFI</dd>
+<dt>Value:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Times:</dt>
+<dd style="margin-left: 8">0 or 1</dd>
+<dt>Implementation:</dt>
+<dd style="margin-left: 8">Optional</dd>
+<dt>Honor:</dt>
+<dd style="margin-left: 8">Opt-In</dd>
+<dt>Location:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Default:</dt>
+<dd style="margin-left: 8">Destination Address of ICMP Proxy Trace Request</dd>
+</dl>
+<p> </p>
+</dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Destination Address:</dt>
+<dd style="margin-left: 8">Destination Address of the Proxy Trace Probe Request Packet.  <dl>
+<dt>Type:</dt>
+<dd style="margin-left: 8">2</dd>
+<dt>Length:</dt>
+<dd style="margin-left: 8">4 or 16 Bytes, depending on AFI</dd>
+<dt>Value:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Times:</dt>
+<dd style="margin-left: 8">0 or 1</dd>
+<dt>Implementation:</dt>
+<dd style="margin-left: 8">Mandatory</dd>
+<dt>Honor:</dt>
+<dd style="margin-left: 8">Opt-Out</dd>
+<dt>Location:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Default:</dt>
+<dd style="margin-left: 8">Source Address of ICMP Proxy Trace Request</dd>
+</dl>
+<p> </p>
+</dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Hop Limit:</dt>
+<dd style="margin-left: 8">Hop Limit of the Proxy Trace Probe Request Packet.  <dl>
+<dt>Type:</dt>
+<dd style="margin-left: 8">3</dd>
+<dt>Length:</dt>
+<dd style="margin-left: 8">1 Byte</dd>
+<dt>Value:</dt>
+<dd style="margin-left: 8">1-255, NOT 0</dd>
+<dt>Times:</dt>
+<dd style="margin-left: 8">1</dd>
+<dt>Implementation:</dt>
+<dd style="margin-left: 8">Mandatory</dd>
+<dt>Honor:</dt>
+<dd style="margin-left: 8">Yes</dd>
+<dt>Location:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Default:</dt>
+<dd style="margin-left: 8">None</dd>
+</dl>
+<p> </p>
+</dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>IP Protocol:</dt>
+<dd style="margin-left: 8">IP Protocol number of the Proxy Trace Probe Request Packet.  <dl>
+<dt>Type:</dt>
+<dd style="margin-left: 8">4</dd>
+<dt>Length:</dt>
+<dd style="margin-left: 8">1 Byte</dd>
+<dt>Value:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Times:</dt>
+<dd style="margin-left: 8">0 or 1</dd>
+<dt>Implementation:</dt>
+<dd style="margin-left: 8">Optional</dd>
+<dt>Honor:</dt>
+<dd style="margin-left: 8">Opt-In</dd>
+<dt>Location:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Default:</dt>
+<dd style="margin-left: 8">17 (UDP)</dd>
+</dl>
+<p> </p>
+</dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Source Port:</dt>
+<dd style="margin-left: 8">L4 Source Port number of the Proxy Trace Probe Request Packet.  <dl>
+<dt>Type:</dt>
+<dd style="margin-left: 8">5</dd>
+<dt>Length:</dt>
+<dd style="margin-left: 8">2 Bytes</dd>
+<dt>Value:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Times:</dt>
+<dd style="margin-left: 8">0 or 1</dd>
+<dt>Implementation:</dt>
+<dd style="margin-left: 8">Optional</dd>
+<dt>Honor:</dt>
+<dd style="margin-left: 8">Opt-In</dd>
+<dt>Location:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Default:</dt>
+<dd style="margin-left: 8">Ephemeral (<a href="#RFC6056" class="xref">[RFC6056]</a>)</dd>
+</dl>
+<p> </p>
+</dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Destination Port:</dt>
+<dd style="margin-left: 8">L4 Destination Port number of the Proxy Trace Probe Request Packet.  <dl>
+<dt>Type:</dt>
+<dd style="margin-left: 8">6</dd>
+<dt>Length:</dt>
+<dd style="margin-left: 8">2 Bytes</dd>
+<dt>Value:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Times:</dt>
+<dd style="margin-left: 8">0 or 1</dd>
+<dt>Implementation:</dt>
+<dd style="margin-left: 8">Optional</dd>
+<dt>Honor:</dt>
+<dd style="margin-left: 8">Opt-In</dd>
+<dt>Location:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Default:</dt>
+<dd style="margin-left: 8">33433 + hop-limit (33434 to 33688)</dd>
+</dl>
+<p> </p>
+</dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Payload Length:</dt>
+<dd style="margin-left: 8">Payload Length in bytes of the Proxy Trace Probe Request Packet.  <dl>
+<dt>Type:</dt>
+<dd style="margin-left: 8">7</dd>
+<dt>Length:</dt>
+<dd style="margin-left: 8">2 Bytes</dd>
+<dt>Value:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Times:</dt>
+<dd style="margin-left: 8">0 or 1</dd>
+<dt>Implementation:</dt>
+<dd style="margin-left: 8">Optional</dd>
+<dt>Honor:</dt>
+<dd style="margin-left: 8">Opt-In</dd>
+<dt>Location:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Default:</dt>
+<dd style="margin-left: 8">Local choice, typically just as needed for a timestamp</dd>
+</dl>
+<p> </p>
+</dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Traffic Class:</dt>
+<dd style="margin-left: 8">Traffic Class byte of the Proxy Trace Probe Request Packet.  <dl>
+<dt>Type:</dt>
+<dd style="margin-left: 8">8</dd>
+<dt>Length:</dt>
+<dd style="margin-left: 8">1 Byte</dd>
+<dt>Value:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Times:</dt>
+<dd style="margin-left: 8">0 or 1</dd>
+<dt>Implementation:</dt>
+<dd style="margin-left: 8">Optional</dd>
+<dt>Honor:</dt>
+<dd style="margin-left: 8">Opt-In</dd>
+<dt>Location:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Default:</dt>
+<dd style="margin-left: 8">Local choice</dd>
+</dl>
+<p> </p>
+</dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Bit Pattern:</dt>
+<dd style="margin-left: 8">Bit Pattern of a payload of the Proxy Trace Probe Request Packet.  <dl>
+<dt>Type:</dt>
+<dd style="margin-left: 8">9</dd>
+<dt>Length:</dt>
+<dd style="margin-left: 8">Any, implementation MAY choose to limit arbitrarily what it accepts</dd>
+<dt>Value:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Times:</dt>
+<dd style="margin-left: 8">0 or 1</dd>
+<dt>Implementation:</dt>
+<dd style="margin-left: 8">Optional</dd>
+<dt>Honor:</dt>
+<dd style="margin-left: 8">Opt-In</dd>
+<dt>Location:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Default:</dt>
+<dd style="margin-left: 8">Local choice, typically random, 0 or 1</dd>
+</dl>
+<p> </p>
+</dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Future Use:</dt>
+<dd style="margin-left: 8">
+<dl>
+<dt>Type:</dt>
+<dd style="margin-left: 8">10-59999</dd>
+</dl>
+<p> </p>
+</dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Local Use:</dt>
+<dd style="margin-left: 8">
+<dl>
+<dt>Type:</dt>
+<dd style="margin-left: 8">60000-65535</dd>
+</dl>
+<p> </p>
+</dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+</dl>
+
+<p> </p>
+<h1 id="rfc.section.5">
+<a href="#rfc.section.5">5.</a> <a href="#reply" id="reply">ICMP Proxy Trace Reply</a>
+</h1>
+<p id="rfc.section.5.p.1">The ICMP Proxy Trace Reply is defined for both ICMPv4 and ICMPv6.  Like any ICMP message, the ICMP Proxy Trace Reply is encapsulated in an IP header.  The ICMPv4 version of the ICMP Proxy Trace Reply message is encapsulated in an IPv4 header, while the ICMPv6 version is encapsulated in an IPv6 header.  </p>
+<p id="rfc.section.5.p.2">Figure 2. depicts the ICMP Proxy Trace Reply message.  </p>
+<div id="rfc.figure.3"></div>
+<div id="replyencoding"></div>
+<pre>
+0                   1                   2                   3
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|     Type      |     Code      |          Checksum             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|           Identifier          |        Sequence Number        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  ICMP Proxy Trace Reply TLV Structure
+</pre>
+<p class="figure">Figure 3</p>
+<p id="rfc.section.5.p.3">IP Header fields: </p>
+
+<dl>
+<dt>Source Address:</dt>
+<dd style="margin-left: 8">The Source Address identifies the Proxy Trace Server.  It MUST be a valid IPv4 or IPv6 unicast address.  </dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Destination Address:</dt>
+<dd style="margin-left: 8">The Destination Address identifies the Proxy Trace Client.  It MUST be a valid IPv4 or IPv6 unicast address.  </dd>
+</dl>
+
+<p> </p>
+<p></p>
+<p id="rfc.section.5.p.5">ICMP fields: </p>
+
+<dl>
+<dt>Type:</dt>
+<dd style="margin-left: 8">Proxy Trace Reply.  The value for ICMPv4 is FIX45.  The value for ICMPv6 is FIX163.  </dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Code:</dt>
+<dd style="margin-left: 8">MUST be set to 0 and MUST be ignored upon receipt.  </dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Checksum:</dt>
+<dd style="margin-left: 8">For ICMPv4, see <a href="#RFC0792" class="xref">[RFC0792]</a>.  For ICMPv6, see <a href="#RFC4443" class="xref">[RFC4443]</a>.  </dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Identifier:</dt>
+<dd style="margin-left: 8">And Identifier to aid in matching ICMP Proxy Trace Replies to ICMP Proxy Trace Requests.  May be 0.  See <a href="#RFC0792" class="xref">[RFC0792]</a> Echo/Echo Reply.  </dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Sequence Number:</dt>
+<dd style="margin-left: 8">A Sequence Number to aid in matching ICMP Proxy Trace Replies to ICMP Proxy Trace Requests.  May be 0.  See <a href="#RFC0792" class="xref">[RFC0792]</a> Echo/Echo Reply.  </dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+</dl>
+
+<p> </p>
+<p id="rfc.section.5.p.6">TLVs: </p>
+
+<dl>
+<dt>Proxy Trace Probe Reply Packet:</dt>
+<dd style="margin-left: 8">The ICMP TTL exceeded or Unreachable Message Server received, verbatim.  Includes extension objects such as <a href="#RFC4950" class="xref">[RFC4950]</a> and <a href="#RFC5837" class="xref">[RFC5837]</a>.  <dl>
+<dt>Type:</dt>
+<dd style="margin-left: 8">0</dd>
+<dt>Length:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Value:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Times:</dt>
+<dd style="margin-left: 8">0 or 1</dd>
+<dt>Implementation:</dt>
+<dd style="margin-left: 8">Mandatory</dd>
+<dt>Location:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Default:</dt>
+<dd style="margin-left: 8">None</dd>
+</dl>
+<p> </p>
+</dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>RTT:</dt>
+<dd style="margin-left: 8">RTT in microseconds <dl>
+<dt>Type:</dt>
+<dd style="margin-left: 8">1</dd>
+<dt>Length:</dt>
+<dd style="margin-left: 8">3 Bytes</dd>
+<dt>Value:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Times:</dt>
+<dd style="margin-left: 8">0 or 1</dd>
+<dt>Implementation:</dt>
+<dd style="margin-left: 8">Optional</dd>
+<dt>Location:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Default:</dt>
+<dd style="margin-left: 8">None</dd>
+</dl>
+<p> </p>
+</dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Ignored TLV:</dt>
+<dd style="margin-left: 8">List of TLV type numbers implementation supports but chooses to not honor.  <dl>
+<dt>Type:</dt>
+<dd style="margin-left: 8">2</dd>
+<dt>Length:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Value:</dt>
+<dd style="margin-left: 8">2 bytes per Ignored TLV</dd>
+<dt>Times:</dt>
+<dd style="margin-left: 8">0 or 1</dd>
+<dt>Implementation:</dt>
+<dd style="margin-left: 8">Mandatory</dd>
+<dt>Location:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Default:</dt>
+<dd style="margin-left: 8">None</dd>
+</dl>
+<p> </p>
+</dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Unsupported TLV:</dt>
+<dd style="margin-left: 8">List of TLV type numbers implementation does not support <dl>
+<dt>Type:</dt>
+<dd style="margin-left: 8">3</dd>
+<dt>Length:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Value:</dt>
+<dd style="margin-left: 8">2 bytes per Unsupported TLV</dd>
+<dt>Times:</dt>
+<dd style="margin-left: 8">0 or 1</dd>
+<dt>Implementation:</dt>
+<dd style="margin-left: 8">Mandatory</dd>
+<dt>Location:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Default:</dt>
+<dd style="margin-left: 8">None</dd>
+</dl>
+<p> </p>
+</dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Bad TLV Count:</dt>
+<dd style="margin-left: 8">List of TLV type numbers occuring more or less time than expected <dl>
+<dt>Type:</dt>
+<dd style="margin-left: 8">4</dd>
+<dt>Length:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Value:</dt>
+<dd style="margin-left: 8">2 bytes per Bad TLV</dd>
+<dt>Times:</dt>
+<dd style="margin-left: 8">0 or 1</dd>
+<dt>Implementation:</dt>
+<dd style="margin-left: 8">Mandatory</dd>
+<dt>Location:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Default:</dt>
+<dd style="margin-left: 8">None</dd>
+</dl>
+<p> </p>
+</dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Bad TLV Length:</dt>
+<dd style="margin-left: 8">List of TLV type numbers having Length implementation rejects as valid <dl>
+<dt>Type:</dt>
+<dd style="margin-left: 8">5</dd>
+<dt>Length:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Value:</dt>
+<dd style="margin-left: 8">2 bytes per Bad TLV</dd>
+<dt>Times:</dt>
+<dd style="margin-left: 8">0 or 1</dd>
+<dt>Implementation:</dt>
+<dd style="margin-left: 8">Mandatory</dd>
+<dt>Location:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Default:</dt>
+<dd style="margin-left: 8">None</dd>
+</dl>
+<p> </p>
+</dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Bad TLV Value:</dt>
+<dd style="margin-left: 8">List of TLV type numbers having Value implementation rejects as valid <dl>
+<dt>Type:</dt>
+<dd style="margin-left: 8">6</dd>
+<dt>Length:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Value:</dt>
+<dd style="margin-left: 8">2 bytes per Bad TLV</dd>
+<dt>Times:</dt>
+<dd style="margin-left: 8">0 or 1</dd>
+<dt>Implementation:</dt>
+<dd style="margin-left: 8">Mandatory</dd>
+<dt>Location:</dt>
+<dd style="margin-left: 8">Any</dd>
+<dt>Default:</dt>
+<dd style="margin-left: 8">None</dd>
+</dl>
+<p> </p>
+</dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Future Use:</dt>
+<dd style="margin-left: 8">
+<dl>
+<dt>Type:</dt>
+<dd style="margin-left: 8">7-59999</dd>
+</dl>
+<p> </p>
+</dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+<dt>Local Use:</dt>
+<dd style="margin-left: 8">
+<dl>
+<dt>Type:</dt>
+<dd style="margin-left: 8">60000-65535</dd>
+</dl>
+<p> </p>
+</dd>
+<dt></dt>
+<dd style="margin-left: 8"></dd>
+</dl>
+
+<p> </p>
+<h1 id="rfc.section.6">
+<a href="#rfc.section.6">6.</a> <a href="#icmp" id="icmp">ICMP Message Processing</a>
+</h1>
+<p id="rfc.section.6.p.1">When a host receives an ICMP Proxy Trace Request message and any of the following conditions apply, the node MUST silently discard the incoming message: </p>
+<p></p>
+
+<dl>
+<dt></dt>
+<dd style="margin-left: 8">The node does not recognize ICMP Proxy Trace Request messages.  </dd>
+<dt></dt>
+<dd style="margin-left: 8">The node has disabled the ICMP Proxy Trace Request functionality.  </dd>
+<dt></dt>
+<dd style="margin-left: 8">The incoming ICMP Proxy Trace Request message is too small.  </dd>
+<dt></dt>
+<dd style="margin-left: 8">The Source Address of the incoming message is not a unicast address.  </dd>
+<dt></dt>
+<dd style="margin-left: 8">The Destination Address of the incoming message is a multicast address.  </dd>
+</dl>
+
+<p> </p>
+<p id="rfc.section.6.p.3">Discard SHOULD happen in the forwarding-plane </p>
+<p id="rfc.section.6.p.4">Otherwise, when a node receives an ICMPv4 Proxy Trace Request, it MUST format an ICMPv4 Proxy Trace Reply as follows: </p>
+<p></p>
+
+<dl>
+<dt>Don't Fragment (DF) flag:</dt>
+<dd style="margin-left: 8">1</dd>
+<dt>More Fragments flag:</dt>
+<dd style="margin-left: 8">0</dd>
+<dt>Fragment Offset:</dt>
+<dd style="margin-left: 8">0</dd>
+<dt>TTL:</dt>
+<dd style="margin-left: 8">255</dd>
+<dt>Protocol:</dt>
+<dd style="margin-left: 8">ICMP</dd>
+</dl>
+
+<p> </p>
+<p id="rfc.section.6.p.6">When a node receives an ICMPv6 Proxy Trace Request, it MUST format an ICMPv6 Proxy Trace Reply as follows: </p>
+<p></p>
+
+<dl>
+<dt>Hop Limit:</dt>
+<dd style="margin-left: 8">255</dd>
+<dt>Next Header:</dt>
+<dd style="margin-left: 8">ICMPv6</dd>
+</dl>
+
+<p> </p>
+<p id="rfc.section.6.p.8">In either case, the responding node MUST do the following: </p>
+<p></p>
+
+<dl>
+<dt></dt>
+<dd style="margin-left: 8">Copy the Source Address from the Proxy Trace Request message to the Destination Address of the Proxy Trace Reply message.  </dd>
+<dt></dt>
+<dd style="margin-left: 8">Copy the Destination Address from the Proxy Trace Request message to the Source Address of the Proxy Trace Reply message.  </dd>
+<dt></dt>
+<dd style="margin-left: 8">Set the ICMP Type to Proxy Trace Reply.  </dd>
+<dt></dt>
+<dd style="margin-left: 8">Copy the Identifier from the Proxy Trace Request message to the Proxy Trace Response message.  </dd>
+<dt></dt>
+<dd style="margin-left: 8">Copy the Sequence Number from the Proxy Trace Request message to the Proxy Trace Response message.  </dd>
+<dt></dt>
+<dd style="margin-left: 8">Set the Code field to 0.  </dd>
+<dt></dt>
+<dd style="margin-left: 8">Set the Checksum appropriately.  </dd>
+<dt></dt>
+<dd style="margin-left: 8">Set the TLVs appropriately.  </dd>
+<dt></dt>
+<dd style="margin-left: 8">Forward the Proxy Trace Reply to the Proxy Trace Client.  </dd>
+</dl>
+
+<p> </p>
+<h1 id="rfc.section.7">
+<a href="#rfc.section.7">7.</a> <a href="#implementation" id="implementation">Implementation Considerations</a>
+</h1>
+<p id="rfc.section.7.p.1">Host implementing Proxy Trace SHOULD have it turned on by default in all interfaces and MUST allow turning it off/on per interface.  Host implementation MUST police rate of Proxy Trace Request packets from the data-plane to a level where Host can honor all Proxy Trace Request packets accepted without negatively impacting control-plane operations.  </p>
+<p id="rfc.section.7.p.2">Proxy Trace Server SHOULD timeout after 1 second of waiting for a Proxy Trace Probe Reply Packet and MAY timeout earlier.  Proxy Trace Server SHOULD NOT send Proxy Trace Reply message if it timed out.  </p>
+<h1 id="rfc.section.8">
+<a href="#rfc.section.8">8.</a> <a href="#errorhandling" id="errorhandling">Error Handling</a>
+</h1>
+<p id="rfc.section.8.p.1">Proxy Trace Server encountering any problem in the Proxy Trace Request Message MUST not send any Probe Packet out and SHOULD send Proxy Trace Reply Message to the Proxy Trace Client informing of the issue.  Proxy Trace Server may give up parsing the Proxy Trace Request Message after one or more problems.  </p>
+<p id="rfc.section.8.p.2">Proxy Trace Server receiving too small Proxy Trace Request packet should silently discard it in the data-plane.  </p>
+<h1 id="rfc.section.9">
+<a href="#rfc.section.9">9.</a> <a href="#iana" id="iana">IANA Considerations</a>
+</h1>
+<p id="rfc.section.9.p.1">Per this document, IANA is requested to reference this document in the "Internet Control Message Control (ICMP) Parameters" and the "Internet Control Message Protocol version 6 (ICMPv6) Parameters" registries under the "Code Fields" group.  </p>
+<h1 id="rfc.section.10">
+<a href="#rfc.section.10">10.</a> <a href="#security" id="security">Security Considerations</a>
+</h1>
+<p id="rfc.section.10.p.1">Allowing client to set arbitrary Payload will create amplification potential.  </p>
+<p id="rfc.section.10.p.2">Allowing client to define Protocol, Port and Bit Pattern allows client to craft arbitrary packets enabling it to perform port knocking and trigger packet-of-death bugs.  </p>
+<p id="rfc.section.10.p.3">Opt-In Request TLVs should only be honored in trusted networks.  </p>
+<p id="rfc.section.10.p.4">By default, unlike ICMP Echo, there is bps attenuation because Proxy Request packets are much larger than Probe Request and Proxy Response.  </p>
+<p id="rfc.section.10.p.5">By default there is potentially 2 x pps amplification, however this is minor concerns as other more common vectors, such as TCP SYN spoofing allow for much higher pps amplification.  </p>
+<p id="rfc.section.10.p.6">There is no way for Client to cause Server to send more than two packets per each packet Client sends.  </p>
+<p id="rfc.section.10.p.7">There are no security implications identified in setting destination address TLV as attacker could spoof request source address in either case, which would yield both Probe Request and Proxy Response to be sent to the victim.  Compared to having different source address and destination TLV where Probe Request and Proxy Response will go to a different hosts, making it less attractive vector.  </p>
+<h1 id="rfc.references">
+<a href="#rfc.references">11.</a> References</h1>
+<h1 id="rfc.references.1">
+<a href="#rfc.references.1">11.1.</a> Normative References</h1>
+<table><tbody>
+<tr>
+<td class="reference"><b id="RFC0792">[RFC0792]</b></td>
+<td class="top">
+<a>Postel, J.</a>, "<a href="https://tools.ietf.org/html/rfc792">Internet Control Message Protocol</a>", STD 5, RFC 792, DOI 10.17487/RFC0792, September 1981.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC2119">[RFC2119]</b></td>
+<td class="top">
+<a>Bradner, S.</a>, "<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC4443">[RFC4443]</b></td>
+<td class="top">
+<a>Conta, A.</a>, <a>Deering, S.</a> and <a>M. Gupta</a>, "<a href="https://tools.ietf.org/html/rfc4443">Internet Control Message Protocol (ICMPv6) for the Internet Protocol Version 6 (IPv6) Specification</a>", STD 89, RFC 4443, DOI 10.17487/RFC4443, March 2006.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC8174">[RFC8174]</b></td>
+<td class="top">
+<a>Leiba, B.</a>, "<a href="https://tools.ietf.org/html/rfc8174">Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</a>", BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017.</td>
+</tr>
+</tbody></table>
+<h1 id="rfc.references.2">
+<a href="#rfc.references.2">11.2.</a> Informative References</h1>
+<table><tbody>
+<tr>
+<td class="reference"><b id="RFC4950">[RFC4950]</b></td>
+<td class="top">
+<a>Bonica, R.</a>, <a>Gan, D.</a>, <a>Tappan, D.</a> and <a>C. Pignataro</a>, "<a href="https://tools.ietf.org/html/rfc4950">ICMP Extensions for Multiprotocol Label Switching</a>", RFC 4950, DOI 10.17487/RFC4950, August 2007.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC5837">[RFC5837]</b></td>
+<td class="top">
+<a>Atlas, A.</a>, <a>Bonica, R.</a>, <a>Pignataro, C.</a>, <a>Shen, N.</a> and <a>JR. Rivers</a>, "<a href="https://tools.ietf.org/html/rfc5837">Extending ICMP for Interface and Next-Hop Identification</a>", RFC 5837, DOI 10.17487/RFC5837, April 2010.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC6056">[RFC6056]</b></td>
+<td class="top">
+<a>Larsen, M.</a> and <a>F. Gont</a>, "<a href="https://tools.ietf.org/html/rfc6056">Recommendations for Transport-Protocol Port Randomization</a>", BCP 156, RFC 6056, DOI 10.17487/RFC6056, January 2011.</td>
+</tr>
+</tbody></table>
+<h1 id="rfc.appendix.A">
+<a href="#rfc.appendix.A">Appendix A.</a> <a href="#acknowledgments" id="acknowledgments">Acknowledgments</a>
+</h1>
+<p></p>
+<h1 id="rfc.authors"><a href="#rfc.authors">Author's Address</a></h1>
+<div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Saku Ytti</span> 
+	  <span class="n hidden">
+		<span class="family-name">Ytti</span>
+	  </span>
+	</span>
+	<span class="org vcardline">NTT Communications</span>
+	<span class="adr">
+	  
+	  <span class="vcardline">
+		<span class="locality"></span> 
+		<span class="region"></span>
+		<span class="code"></span>
+	  </span>
+	  <span class="country-name vcardline"></span>
+	</span>
+	<span class="vcardline">EMail: <a href="mailto:ytti@ntt.net">ytti@ntt.net</a></span>
+
+  </address>
+</div>
+
+</body>
+</html>

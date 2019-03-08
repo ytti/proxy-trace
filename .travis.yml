@@ -4,7 +4,8 @@ python:
 install:
 - pip install xml2rfc
 script:
-- xml2rfc draft-ytti-intarea-proxy-trace.xml
+- xml2rfc --html draft-ytti-intarea-proxy-trace.xml
+- xml2rfc --text draft-ytti-intarea-proxy-trace.xml
 deploy:
   provider: pages
   skip-cleanup: true
