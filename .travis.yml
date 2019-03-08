@@ -1,7 +1,17 @@
 language: python
 python:
-  - "3.6"
+- '3.6'
 install:
-  - pip install xml2rfc
+- pip install xml2rfc
 script:
-  - xml2rfc draft-ytti-intarea-proxy-trace.xml
+- xml2rfc draft-ytti-intarea-proxy-trace.xml
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $PROXY_TRACE_GH_PAGES_TOKEN
+  keep-history: true
+  on:
+    branch: master
+env:
+  global:
+    secure: RXIOwNhO4HrSs0/tS040lLRvorxeUDwdC1jVWIp5GSdWKTatnakk8Dugy5awZdKpWqwaLfup6kgRCxRLiN9PP5VWkGH8rfT8STENEZL3PiZyUzgH+O/N843Ud90Mej5+1vMTcZvhm2lspxbO1uunHspS9RtZnlomYjrB6UjpBd+d/x5AVTjXF/+ynX9XfkYYiOBbvTGuBThvQpt1bWZp254DpfoKZ5t4sq0WzIDQ+vTnW5XbTq0ZyNctE4Rv2w4d2+jhjM7zGuY1kw4Q4R9Nz6kXKEOH68lmehNEAzPDr+xulkOIdLJabb4PKgW5Fw/n93xIRmac9F7JsId3VzHf4bNiZcSawVt5h00z8MEc3wNd8v6q5MhGACb6Fvn44WFEUJHsusTWLotZfgKReuhhPH0iEsN8f08WdIKclkS9eFNAxXi3oRUIdmMZVlH5+UbhfXlr66KvF8CM9Ok9s3nD/1BWGc/MiqME2wlCQg/kkrTEgYxv3IglruFbdqvYzVtHkvw+n35KTAkitIf64G3lYHH2474eTz3L6nyAT4OrQdDy8B81wWOsd/Zz9NA0mXjJgZ0CZKGf3FDWCjWXwhcZ0y67PmZNIh2f3CQJ0t6W5wkFN/rSKKzNTWDcoXD6gY+rAdvQOX175Dom4ZEE8BL8IR91F86BUEvatu8JvU4iTKQ=

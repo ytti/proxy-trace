@@ -1,0 +1,784 @@
+
+
+
+
+intarea                                                          S. Ytti
+Internet-Draft                                                       NTT
+Intended status: Standards Track                           March 8, 2019
+Expires: September 9, 2019
+
+
+Proxy Trace: A Utility for Programmatic Discovery of Forward and Reverse
+                                  Path
+                   draft-ytti-intarea-proxy-trace-00
+
+Abstract
+
+   This document describes a network diagnostic tool called Proxy Trace.
+   Proxy Trace has similarities with PING and TRACEROUTE in that it uses
+   PING style ICMP request to ask remote host to trigger a single packet
+   TRACEROUTE query and deliver the response in PING style ICMP
+   response.
+
+Requirements Language
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in BCP
+   14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on September 9, 2019.
+
+Copyright Notice
+
+   Copyright (c) 2019 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+
+
+
+Ytti                    Expires September 9, 2019               [Page 1]
+
+Internet-Draft                 Proxy Trace                    March 2019
+
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (https://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   3.  Operation . . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   4.  ICMP Proxy Trace Request  . . . . . . . . . . . . . . . . . .   4
+   5.  ICMP Proxy Trace Reply  . . . . . . . . . . . . . . . . . . .   8
+   6.  ICMP Message Processing . . . . . . . . . . . . . . . . . . .  11
+   7.  Implementation Considerations . . . . . . . . . . . . . . . .  12
+   8.  Error Handling  . . . . . . . . . . . . . . . . . . . . . . .  12
+   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  12
+   10. Security Considerations . . . . . . . . . . . . . . . . . . .  12
+   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  13
+     11.1.  Normative References . . . . . . . . . . . . . . . . . .  13
+     11.2.  Informative References . . . . . . . . . . . . . . . . .  14
+   Appendix A.  Acknowledgments  . . . . . . . . . . . . . . . . . .  14
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  14
+
+1.  Introduction
+
+   Network operators use TRACEROUTE to discover path between client host
+   and a target host.  Operator does this by running the traceroute
+   software on the client host and giving as an argument target host to
+   which operator wants to discover the network path.  This information
+   helps network operator to understand and troubleshoot issues on the
+   network.
+
+   This document describes a network diagnostic tool called Proxy Trace.
+   Proxy Trace is similar to TRACEROUTE in that it can be used to
+   discover path between two hosts, but it differs from TRACEROUTE in
+   that it can discover the path between two arbitrary host, allowing
+   operator not only discover the reverse path but also removes the
+   requirement that operator must have access to a host in the path.
+
+   Further unlike alternative solutions such as looking glasses, Proxy
+   Trace responses are formal and machine parseable.  This enables
+   programmatic discovery of both directions of the path.
+
+
+
+
+Ytti                    Expires September 9, 2019               [Page 2]
+
+Internet-Draft                 Proxy Trace                    March 2019
+
+
+2.  Terminology
+
+   This document uses following terms:
+
+   Proxy Trace Request:  An ICMP packet Proxy Trace Client sends to a
+      Proxy Trace Server.
+
+   Proxy Trace Reply:  An ICMP packet Proxy Trace Server sends to a
+      Proxy Trace Client.
+
+   Proxy Trace Client:  Client host requesting for a Proxy Trace
+
+   Proxy Trace Server:  Server listening to a Proxy Trace Requests,
+      sending Proxy Trace Probe Request, receiving Proxy Trace Probe
+      Reply and sending Proxy Trace Reply
+
+   Proxy Trace Target:  Destination address of the Proxy Trace Probe
+      Request
+
+   Proxy Trace Probe Request:  Packet Proxy Trace Server sends towards
+      the Proxy Trace Target.  Equivalent to the packet generated by
+      TRACEROUTE
+
+   Proxy Trace Probe Reply:  Packet received from the network as
+      response to the Proxy Trace Probe Request, usually ICMP TTL
+      Exceeded or ICMP Host Unreachable message
+
+3.  Operation
+
+   +-----------+
+   | PT Client |
+   +-----------+
+   |
+   ~~~~~~~~~~~~
+   ~ internet ~
+   ~~~~~~~~~~~~
+   |
+   +-----------+    +------+    +------+    +-------+   +-----------+
+   | PT Server |----| Hop1 |----| Hop2 |----| Hop3  |---| PT Target |
+   +-----------+    +------+    +------+    +-------+   +-----------+
+
+                                 Figure 1
+
+   In attached diagram PT Client wants to discover path from PT Server
+   to a PT Target.  The same process is repeated for each Hop:
+
+   Send Proxy Trace Request:  PT Client sends Proxy Trace Request to PT
+      Server with Hop-Limit '1' and Destination Address 'PT Target.
+
+
+
+Ytti                    Expires September 9, 2019               [Page 3]
+
+Internet-Draft                 Proxy Trace                    March 2019
+
+
+   Receive Proxy Trace Request:  PT Server receives Proxy Trace Request,
+      verifies its size and TLVs.
+
+   Send Proxy Trace Probe Request:  PT Server sends Proxy Trace Probe
+      Request towards PT Target out from the Interface where FIB informs
+      PT Target to be located.
+
+   Receive Proxy Trace Probe Request:  Hop1 received the Proxy Trace
+      Probe Request, because TTL has expired it punts the packet from
+      data-plane to control-plane.
+
+   Send Proxy Trace Probe Response:  Hop1 sends ICMP TTL Exceeded
+      message to the PT Server
+
+   Receive Proxy Trace Probe Response:  PT Server received the Proxy
+      Trace Probe Response and relates it to the open Proxy Trace
+      Request.
+
+   Send Proxy Trace Response:  PT Server generates Proxy Trace Response
+      packets and adds Proxy Trace Probe Response packet as TLV 0 to the
+      Proxy Trace Response packet.  PT Server sends the Proxy Trace
+      Response packet to the PT Client.
+
+   Receive Proxy Trace Response:  PT Client receives the Proxy Trace
+      Response from PT Server learning that Hop Limit 1 in the path
+      between PT Server and PT Target it Hop1
+
+   PT Client is free to send multiple Proxy Trace Request packets
+   without waiting for an Proxy Trace Response.
+
+4.  ICMP Proxy Trace Request
+
+   The ICMP Proxy Trace Request is defined for both ICMPv4 and ICMPv6.
+   Like any ICMP message, the ICMP Proxy Trace Request is encapsulated
+   in an IP header.  The ICMPv4 version of the ICMP Proxy Trace Request
+   message is encapsulated in an IPv4 header, while the ICMPv6 version
+   is encapsulated in an IPv6 header.  ICMP Proxy Trace Request packet's
+   minimum size on IPv4 level is 576B and on IPv6 level 1280B.
+   Figure 1. depicts the ICMP Proxy Trace Request message.
+
+
+
+
+
+
+
+
+
+
+
+
+Ytti                    Expires September 9, 2019               [Page 4]
+
+Internet-Draft                 Proxy Trace                    March 2019
+
+
+   0                   1                   2                   3
+   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |     Type      |     Code      |          Checksum             |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |           Identifier          |        Sequence Number        |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |  ICMP Proxy Trace Request TLV Structure
+
+                                 Figure 2
+
+   IP Header fields:
+
+   Source Address:  The Source Address identifies the Proxy Trace
+      Client.  It MUST be a valid IPv4 or IPv6 unicast address.
+
+   Destination Address:  The Destination Address identifies the Proxy
+      Trace Server.  It MUST be a valid IPv4 or IPv6 unicast address.
+
+   ICMP fields:
+
+   Type:  Proxy Trace Request.  The value for ICMPv4 is FIX44.  The
+      value for ICMPv6 is FIX162.
+
+   Code:  MUST be set to 0 and MUST be ignored upon receipt.
+
+   Checksum:  For ICMPv4, see [RFC0792].  For ICMPv6, see [RFC4443].
+
+   Identifier:  And Identifier to aid in matching ICMP Proxy Trace
+      Replies to ICMP Proxy Trace Requests.  May be 0.  See [RFC0792]
+      Echo/Echo Reply.
+
+   Sequence Number:  A Sequence Number to aid in matching ICMP Proxy
+      Trace Replies to ICMP PRoxy Trace Requests.  May be 0.  See
+      [RFC0792] Echo/Echo Reply.
+
+
+   TLVs:
+
+   Padding:  Client added padding to reach desired request packet size.
+
+      Type:  0
+      Length:  Any
+      Value:  Any
+      Times:  0 or 1
+      Implementation:  Mandatory
+      Honor:  Yes
+      Location:  Last
+
+
+
+Ytti                    Expires September 9, 2019               [Page 5]
+
+Internet-Draft                 Proxy Trace                    March 2019
+
+
+      Default:  None
+
+   Source Address:  Source Address of the Proxy Trace Probe Request
+      Packet.
+
+      Type:  1
+      Length:  4 or 16 Bytes, depending on AFI
+      Value:  Any
+      Times:  0 or 1
+      Implementation:  Optional
+      Honor:  Opt-In
+      Location:  Any
+      Default:  Destination Address of ICMP Proxy Trace Request
+
+   Destination Address:  Destination Address of the Proxy Trace Probe
+      Request Packet.
+
+      Type:  2
+      Length:  4 or 16 Bytes, depending on AFI
+      Value:  Any
+      Times:  0 or 1
+      Implementation:  Mandatory
+      Honor:  Opt-Out
+      Location:  Any
+      Default:  Source Address of ICMP Proxy Trace Request
+
+   Hop Limit:  Hop Limit of the Proxy Trace Probe Request Packet.
+
+      Type:  3
+      Length:  1 Byte
+      Value:  1-255, NOT 0
+      Times:  1
+      Implementation:  Mandatory
+      Honor:  Yes
+      Location:  Any
+      Default:  None
+
+   IP Protocol:  IP Protocol number of the Proxy Trace Probe Request
+      Packet.
+
+      Type:  4
+      Length:  1 Byte
+      Value:  Any
+      Times:  0 or 1
+      Implementation:  Optional
+      Honor:  Opt-In
+      Location:  Any
+      Default:  17 (UDP)
+
+
+
+Ytti                    Expires September 9, 2019               [Page 6]
+
+Internet-Draft                 Proxy Trace                    March 2019
+
+
+   Source Port:  L4 Source Port number of the Proxy Trace Probe Request
+      Packet.
+
+      Type:  5
+      Length:  2 Bytes
+      Value:  Any
+      Times:  0 or 1
+      Implementation:  Optional
+      Honor:  Opt-In
+      Location:  Any
+      Default:  Ephemeral ([RFC6056])
+
+   Destination Port:  L4 Destination Port number of the Proxy Trace
+      Probe Request Packet.
+
+      Type:  6
+      Length:  2 Bytes
+      Value:  Any
+      Times:  0 or 1
+      Implementation:  Optional
+      Honor:  Opt-In
+      Location:  Any
+      Default:  33433 + hop-limit (33434 to 33688)
+
+   Payload Length:  Payload Length in bytes of the Proxy Trace Probe
+      Request Packet.
+
+      Type:  7
+      Length:  2 Bytes
+      Value:  Any
+      Times:  0 or 1
+      Implementation:  Optional
+      Honor:  Opt-In
+      Location:  Any
+      Default:  Local choice, typically just as needed for a timestamp
+
+   Traffic Class:  Traffic Class byte of the Proxy Trace Probe Request
+      Packet.
+
+      Type:  8
+      Length:  1 Byte
+      Value:  Any
+      Times:  0 or 1
+      Implementation:  Optional
+      Honor:  Opt-In
+      Location:  Any
+      Default:  Local choice
+
+
+
+
+Ytti                    Expires September 9, 2019               [Page 7]
+
+Internet-Draft                 Proxy Trace                    March 2019
+
+
+   Bit Pattern:  Bit Pattern of a payload of the Proxy Trace Probe
+      Request Packet.
+
+      Type:  9
+      Length:  Any, implementation MAY choose to limit arbitrarily what
+         it accepts
+      Value:  Any
+      Times:  0 or 1
+      Implementation:  Optional
+      Honor:  Opt-In
+      Location:  Any
+      Default:  Local choice, typically random, 0 or 1
+
+   Future Use:
+
+      Type:  10-59999
+
+   Local Use:
+
+      Type:  60000-65535
+
+
+5.  ICMP Proxy Trace Reply
+
+   The ICMP Proxy Trace Reply is defined for both ICMPv4 and ICMPv6.
+   Like any ICMP message, the ICMP Proxy Trace Reply is encapsulated in
+   an IP header.  The ICMPv4 version of the ICMP Proxy Trace Reply
+   message is encapsulated in an IPv4 header, while the ICMPv6 version
+   is encapsulated in an IPv6 header.
+
+   Figure 2. depicts the ICMP Proxy Trace Reply message.
+
+   0                   1                   2                   3
+   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |     Type      |     Code      |          Checksum             |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |           Identifier          |        Sequence Number        |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |  ICMP Proxy Trace Reply TLV Structure
+
+                                 Figure 3
+
+   IP Header fields:
+
+   Source Address:  The Source Address identifies the Proxy Trace
+      Server.  It MUST be a valid IPv4 or IPv6 unicast address.
+
+
+
+
+Ytti                    Expires September 9, 2019               [Page 8]
+
+Internet-Draft                 Proxy Trace                    March 2019
+
+
+   Destination Address:  The Destination Address identifies the Proxy
+      Trace Client.  It MUST be a valid IPv4 or IPv6 unicast address.
+
+   ICMP fields:
+
+   Type:  Proxy Trace Reply.  The value for ICMPv4 is FIX45.  The value
+      for ICMPv6 is FIX163.
+
+   Code:  MUST be set to 0 and MUST be ignored upon receipt.
+
+   Checksum:  For ICMPv4, see [RFC0792].  For ICMPv6, see [RFC4443].
+
+   Identifier:  And Identifier to aid in matching ICMP Proxy Trace
+      Replies to ICMP Proxy Trace Requests.  May be 0.  See [RFC0792]
+      Echo/Echo Reply.
+
+   Sequence Number:  A Sequence Number to aid in matching ICMP Proxy
+      Trace Replies to ICMP Proxy Trace Requests.  May be 0.  See
+      [RFC0792] Echo/Echo Reply.
+
+
+   TLVs:
+
+   Proxy Trace Probe Reply Packet:  The ICMP TTL exceeded or Unreachable
+      Message Server received, verbatim.  Includes extension objects
+      such as [RFC4950] and [RFC5837].
+
+      Type:  0
+      Length:  Any
+      Value:  Any
+      Times:  0 or 1
+      Implementation:  Mandatory
+      Location:  Any
+      Default:  None
+
+   RTT:  RTT in microseconds
+
+      Type:  1
+      Length:  3 Bytes
+      Value:  Any
+      Times:  0 or 1
+      Implementation:  Optional
+      Location:  Any
+      Default:  None
+
+   Ignored TLV:  List of TLV type numbers implementation supports but
+      chooses to not honor.
+
+
+
+
+Ytti                    Expires September 9, 2019               [Page 9]
+
+Internet-Draft                 Proxy Trace                    March 2019
+
+
+      Type:  2
+      Length:  Any
+      Value:  2 bytes per Ignored TLV
+      Times:  0 or 1
+      Implementation:  Mandatory
+      Location:  Any
+      Default:  None
+
+   Unsupported TLV:  List of TLV type numbers implementation does not
+      support
+
+      Type:  3
+      Length:  Any
+      Value:  2 bytes per Unsupported TLV
+      Times:  0 or 1
+      Implementation:  Mandatory
+      Location:  Any
+      Default:  None
+
+   Bad TLV Count:  List of TLV type numbers occuring more or less time
+      than expected
+
+      Type:  4
+      Length:  Any
+      Value:  2 bytes per Bad TLV
+      Times:  0 or 1
+      Implementation:  Mandatory
+      Location:  Any
+      Default:  None
+
+   Bad TLV Length:  List of TLV type numbers having Length
+      implementation rejects as valid
+
+      Type:  5
+      Length:  Any
+      Value:  2 bytes per Bad TLV
+      Times:  0 or 1
+      Implementation:  Mandatory
+      Location:  Any
+      Default:  None
+
+   Bad TLV Value:  List of TLV type numbers having Value implementation
+      rejects as valid
+
+      Type:  6
+      Length:  Any
+      Value:  2 bytes per Bad TLV
+      Times:  0 or 1
+
+
+
+Ytti                    Expires September 9, 2019              [Page 10]
+
+Internet-Draft                 Proxy Trace                    March 2019
+
+
+      Implementation:  Mandatory
+      Location:  Any
+      Default:  None
+
+   Future Use:
+
+      Type:  7-59999
+
+   Local Use:
+
+      Type:  60000-65535
+
+
+6.  ICMP Message Processing
+
+   When a host receives an ICMP Proxy Trace Request message and any of
+   the following conditions apply, the node MUST silently discard the
+   incoming message:
+
+      The node does not recognize ICMP Proxy Trace Request messages.
+      The node has disabled the ICMP Proxy Trace Request functionality.
+      The incoming ICMP Proxy Trace Request message is too small.
+      The Source Address of the incoming message is not a unicast
+      address.
+      The Destination Address of the incoming message is a multicast
+      address.
+
+   Discard SHOULD happen in the forwarding-plane
+
+   Otherwise, when a node receives an ICMPv4 Proxy Trace Request, it
+   MUST format an ICMPv4 Proxy Trace Reply as follows:
+
+   Don't Fragment (DF) flag:  1
+   More Fragments flag:  0
+   Fragment Offset:  0
+   TTL:  255
+   Protocol:  ICMP
+
+   When a node receives an ICMPv6 Proxy Trace Request, it MUST format an
+   ICMPv6 Proxy Trace Reply as follows:
+
+   Hop Limit:  255
+   Next Header:  ICMPv6
+
+   In either case, the responding node MUST do the following:
+
+      Copy the Source Address from the Proxy Trace Request message to
+      the Destination Address of the Proxy Trace Reply message.
+
+
+
+Ytti                    Expires September 9, 2019              [Page 11]
+
+Internet-Draft                 Proxy Trace                    March 2019
+
+
+      Copy the Destination Address from the Proxy Trace Request message
+      to the Source Address of the Proxy Trace Reply message.
+      Set the ICMP Type to Proxy Trace Reply.
+      Copy the Identifier from the Proxy Trace Request message to the
+      Proxy Trace Response message.
+      Copy the Sequence Number from the Proxy Trace Request message to
+      the Proxy Trace Response message.
+      Set the Code field to 0.
+      Set the Checksum appropriately.
+      Set the TLVs appropriately.
+      Forward the Proxy Trace Reply to the Proxy Trace Client.
+
+7.  Implementation Considerations
+
+   Host implementing Proxy Trace SHOULD have it turned on by default in
+   all interfaces and MUST allow turning it off/on per interface.  Host
+   implementation MUST police rate of Proxy Trace Request packets from
+   the data-plane to a level where Host can honor all Proxy Trace
+   Request packets accepted without negatively impacting control-plane
+   operations.
+
+   Proxy Trace Server SHOULD timeout after 1 second of waiting for a
+   Proxy Trace Probe Reply Packet and MAY timeout earlier.  Proxy Trace
+   Server SHOULD NOT send Proxy Trace Reply message if it timed out.
+
+8.  Error Handling
+
+   Proxy Trace Server encountering any problem in the Proxy Trace
+   Request Message MUST not send any Probe Packet out and SHOULD send
+   Proxy Trace Reply Message to the Proxy Trace Client informing of the
+   issue.  Proxy Trace Server may give up parsing the Proxy Trace
+   Request Message after one or more problems.
+
+   Proxy Trace Server receiving too small Proxy Trace Request packet
+   should silently discard it in the data-plane.
+
+9.  IANA Considerations
+
+   Per this document, IANA is requested to reference this document in
+   the "Internet Control Message Control (ICMP) Parameters" and the
+   "Internet Control Message Protocol version 6 (ICMPv6) Parameters"
+   registries under the "Code Fields" group.
+
+10.  Security Considerations
+
+   Allowing client to set arbitrary Payload will create amplification
+   potential.
+
+
+
+
+Ytti                    Expires September 9, 2019              [Page 12]
+
+Internet-Draft                 Proxy Trace                    March 2019
+
+
+   Allowing client to define Protocol, Port and Bit Pattern allows
+   client to craft arbitrary packets enabling it to perform port
+   knocking and trigger packet-of-death bugs.
+
+   Opt-In Request TLVs should only be honored in trusted networks.
+
+   By default, unlike ICMP Echo, there is bps attenuation because Proxy
+   Request packets are much larger than Probe Request and Proxy
+   Response.
+
+   By default there is potentially 2 x pps amplification, however this
+   is minor concerns as other more common vectors, such as TCP SYN
+   spoofing allow for much higher pps amplification.
+
+   There is no way for Client to cause Server to send more than two
+   packets per each packet Client sends.
+
+   There are no security implications identified in setting destination
+   address TLV as attacker could spoof request source address in either
+   case, which would yield both Probe Request and Proxy Response to be
+   sent to the victim.  Compared to having different source address and
+   destination TLV where Probe Request and Proxy Response will go to a
+   different hosts, making it less attractive vector.
+
+11.  References
+
+11.1.  Normative References
+
+   [RFC0792]  Postel, J., "Internet Control Message Protocol", STD 5,
+              RFC 792, DOI 10.17487/RFC0792, September 1981,
+              <https://www.rfc-editor.org/info/rfc792>.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+   [RFC4443]  Conta, A., Deering, S., and M. Gupta, Ed., "Internet
+              Control Message Protocol (ICMPv6) for the Internet
+              Protocol Version 6 (IPv6) Specification", STD 89,
+              RFC 4443, DOI 10.17487/RFC4443, March 2006,
+              <https://www.rfc-editor.org/info/rfc4443>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+
+
+
+
+Ytti                    Expires September 9, 2019              [Page 13]
+
+Internet-Draft                 Proxy Trace                    March 2019
+
+
+11.2.  Informative References
+
+   [RFC4950]  Bonica, R., Gan, D., Tappan, D., and C. Pignataro, "ICMP
+              Extensions for Multiprotocol Label Switching", RFC 4950,
+              DOI 10.17487/RFC4950, August 2007,
+              <https://www.rfc-editor.org/info/rfc4950>.
+
+   [RFC5837]  Atlas, A., Ed., Bonica, R., Ed., Pignataro, C., Ed., Shen,
+              N., and JR. Rivers, "Extending ICMP for Interface and
+              Next-Hop Identification", RFC 5837, DOI 10.17487/RFC5837,
+              April 2010, <https://www.rfc-editor.org/info/rfc5837>.
+
+   [RFC6056]  Larsen, M. and F. Gont, "Recommendations for Transport-
+              Protocol Port Randomization", BCP 156, RFC 6056,
+              DOI 10.17487/RFC6056, January 2011,
+              <https://www.rfc-editor.org/info/rfc6056>.
+
+Appendix A.  Acknowledgments
+
+Author's Address
+
+   Saku Ytti
+   NTT Communications
+
+   Email: ytti@ntt.net
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ytti                    Expires September 9, 2019              [Page 14]
