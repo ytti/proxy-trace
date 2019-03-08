@@ -5,3 +5,13 @@ install:
   - pip install xml2rfc
 script:
   - xml2rfc draft-ytti-intarea-proxy-trace.xml
+env:
+  global:
+    - ENCRYPTION_LABEL: "f6755fc17275"
+    - COMMIT_AUTHOR_EMAIL: "saku@ytti.fi"
+deploy:
+  provider: pages
+  skip-cleanup: true
+  keep-history: true
+  on:
+    branch: gh-pages
