@@ -146,8 +146,8 @@
                     </t>
                     <t></t>
                     <t hangText="Send Proxy Trace Reply:">
-                        PT Server generates Proxy Trace Reply packets and adds Proxy Trace Probe Reply packet as TLV 0 to the Proxy Trace Reply packet.
-                        PT Server sends the Proxy Trace Reply packet to the PT Client.
+                        PT Server generates Proxy Trace Reply message and adds Proxy Trace Probe Reply packet as TLV 0 to the Proxy Trace Reply message.
+                        PT Server sends the Proxy Trace Reply message to the PT Client.
                     </t>
                     <t></t>
                     <t hangText="Receive Proxy Trace Reply:">
@@ -156,7 +156,7 @@
                 </list>
             </t>
             <t>
-                PT Client is free to send multiple Proxy Trace Request packets without waiting for a Proxy Trace Reply.
+                PT Client is free to send multiple Proxy Trace Request messages without waiting for a Proxy Trace Reply message.
             </t>
         </section>
 
@@ -166,9 +166,10 @@
                 Like any ICMP message, the ICMP Proxy Trace Request is encapsulated in an IP header.
                 The ICMPv4 version of the ICMP Proxy Trace Request message is encapsulated in an IPv4 header, while the ICMPv6 version is encapsulated in an IPv6 header.
 
-                ICMP Proxy Trace Request packet's minimum size on IPv4 level is 576B and on IPv6 level 1280B.
-
-                Figure 1. depicts the ICMP Proxy Trace Request message.
+                ICMP Proxy Trace Request message's minimum size on IPv4 level is 576B and on IPv6 level 1280B.
+            </t>
+            <t>
+                Figure 2. depicts the ICMP Proxy Trace Request message.
             </t>
 
             <figure anchor="requestencoding" align="center"><artwork><![CDATA[
@@ -233,7 +234,7 @@
                 <list style="hanging">
 
                     <t hangText="Padding:">
-                        Client added padding to reach the desired request packet size.
+                        Client added padding to reach the desired Proxy Trace Request mesages size.
                         <list style="hanging">
                             <t hangText="Type:">0</t>
                             <t hangText="Length:">Any</t>
@@ -248,7 +249,7 @@
                     <t></t>
 
                     <t hangText="Source Address:">
-                        Source Address of the Proxy Trace Probe Request Packet.
+                        Source Address of the Proxy Trace Probe Request message.
                         <list style="hanging">
                             <t hangText="Type:">1</t>
                             <t hangText="Length:">4 for IPv4 and 16 for IPv6</t>
@@ -263,7 +264,7 @@
                     <t></t>
 
                     <t hangText="Destination Address:">
-                        Destination Address of the Proxy Trace Probe Request Packet.
+                        Destination Address of the Proxy Trace Probe Request mesasge.
                         <list style="hanging">
                             <t hangText="Type:">2</t>
                             <t hangText="Length:">4 for IPv4 and 16 for IPv6</t>
@@ -278,7 +279,7 @@
                     <t></t>
 
                     <t hangText="Hop Limit:">
-                        Hop Limit of the Proxy Trace Probe Request Packet.
+                        Hop Limit of the Proxy Trace Probe Request message.
                         <list style="hanging">
                             <t hangText="Type:">3</t>
                             <t hangText="Length:">1 Byte</t>
@@ -293,7 +294,7 @@
                     <t></t>
 
                     <t hangText="IP Protocol:">
-                        IP Protocol number of the Proxy Trace Probe Request Packet.
+                        IP Protocol number of the Proxy Trace Probe Request message.
                         <list style="hanging">
                             <t hangText="Type:">4</t>
                             <t hangText="Length:">1 Byte</t>
@@ -308,7 +309,7 @@
                     <t></t>
 
                     <t hangText="Source Port:">
-                        L4 Source Port number of the Proxy Trace Probe Request Packet.
+                        L4 Source Port number of the Proxy Trace Probe Request message.
                         <list style="hanging">
                             <t hangText="Type:">5</t>
                             <t hangText="Length:">2 Bytes</t>
@@ -323,7 +324,7 @@
                     <t></t>
 
                     <t hangText="Destination Port:">
-                        L4 Destination Port number of the Proxy Trace Probe Request Packet.
+                        L4 Destination Port number of the Proxy Trace Probe Request message.
                         <list style="hanging">
                             <t hangText="Type:">6</t>
                             <t hangText="Length:">2 Bytes</t>
@@ -338,7 +339,7 @@
                     <t></t>
 
                     <t hangText="Payload Length:">
-                        Payload Length in bytes of the Proxy Trace Probe Request Packet.
+                        Payload Length in bytes of the Proxy Trace Probe Request message.
                         <list style="hanging">
                             <t hangText="Type:">7</t>
                             <t hangText="Length:">2 Bytes</t>
@@ -347,13 +348,13 @@
                             <t hangText="Implementation:">Optional</t>
                             <t hangText="Honor:">Opt-In</t>
                             <t hangText="Location:">Any</t>
-                            <t hangText="Default:">10 for IPv4 and 22 for IPv6</t>
+                            <t hangText="Default:">26 for IPv4 and 38 for IPv6</t>
                         </list>
                     </t>
                     <t></t>
 
                     <t hangText="Traffic Class:">
-                        Traffic Class byte of the Proxy Trace Probe Request Packet.
+                        Traffic Class byte of the Proxy Trace Probe Request message.
                         <list style="hanging">
                             <t hangText="Type:">8</t>
                             <t hangText="Length:">1 Byte</t>
@@ -368,7 +369,7 @@
                     <t></t>
 
                     <t hangText="Bit Pattern:">
-                        Bit Pattern of a payload of the Proxy Trace Probe Request Packet.
+                        Bit Pattern of a payload of the Proxy Trace Probe Request message.
                         <list style="hanging">
                             <t hangText="Type:">9</t>
                             <t hangText="Length:">Any, the implementation MAY choose to limit arbitrarily what it accepts</t>
@@ -377,7 +378,7 @@
                             <t hangText="Implementation:">Optional</t>
                             <t hangText="Honor:">Opt-In</t>
                             <t hangText="Location:">Any</t>
-                            <t hangText="Default:">Timestamp+Proxy Trace Request Source Address</t>
+                            <t hangText="Default:">See Proxy Trace Probe Request Payload section</t>
                         </list>
                     </t>
                     <t></t>
@@ -408,7 +409,7 @@
                 The ICMPv4 version of the ICMP Proxy Trace Reply message is encapsulated in an IPv4 header, while the ICMPv6 version is encapsulated in an IPv6 header.
             </t>
             <t>
-                Figure 2. depicts the ICMP Proxy Trace Reply message.
+                Figure 3. depicts the ICMP Proxy Trace Reply message.
             </t>
 
             <figure anchor="replyencoding" align="center"><artwork><![CDATA[
@@ -473,7 +474,7 @@
                 TLVs:
                 <list style="hanging">
 
-                    <t hangText="Proxy Trace Probe Reply Packet:">
+                    <t hangText="Proxy Trace Probe Reply message:">
                         The ICMP TTL exceeded or Unreachable Message Server received, verbatim.
                         Includes extension objects such as <xref target="RFC4950" /> and <xref target="RFC5837" />.
                         <list style="hanging">
@@ -603,6 +604,43 @@
             </t>
         </section>
 
+        <section anchor="proberequestpayload" title="Proxy Trace Probe Request Payload">
+            <t>
+<figure anchor="proxytraceproberequestpayload" align="center"><artwork><![CDATA[
+0                   1                   2                   3
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                           Timestamp                           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|           Timestamp           |           Identifier          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|        Sequence Number        |          Payload Hash         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|          Payload Hash         |         Source Address        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+| Source Address 
+]]></artwork></figure>
+            </t>
+            <t>
+                Proxy Trace Probe Request Payload Fields:
+                <list style="hanging">
+                   <t hangText="Timestamp:">6B timestamp, as documented in the TIMESTAMP section</t>
+                   <t hangText="Identifier:">2B Identifier from the Proxy Trace Request Message</t>
+                   <t hangText="Sequence Number:">2B Sequence Number from the Proxy Trace Request Message</t>
+                   <t hangText="Payload Hash:">4B hash of the Proxy Trace Probe Request Payload Fields + Local Secret</t>
+                   <t hangText="Source Address">4B or 16B Source Address from the Proxy Trace Request</t>
+                </list>
+            </t>
+        </section>
+
+        <section anchor="stateless" title="Stateless Operation">
+            <t>
+                Implementation MAY choose to do an entirely stateless Proxy Trace Server implementation.
+                The benefit of stateless implementation is that it is friendly towards impleemntation in the NPU microcode.
+                Stateless implementation MUST use PayLoad Hash to verify Proxy Trace Probe Request for correctness, otherwise unsolicited Proxy Trace Probe Request message may create 52B amplification, with hash verification there is 1:4294967296 attenuation for unsolicited Proxy Trace Probe Request messages.
+            </t>
+        </section>
+
         <section anchor="timestamp" title="Timestamp format">
             <t>
               The timestamp should be 6 bytes or 48 bits wide, most significant bit is a flag called 'non-canonical epoch'.
@@ -700,21 +738,21 @@
         <section anchor="implementation" title="Implementation Considerations">
             <t>
                 A host implementing Proxy Trace SHOULD have it turned on by default in all interfaces and MUST allow turning it off/on per interface.
-                The implementation MUST police rate of Proxy Trace Request packets from the data-plane to a level where Host can honor all Proxy Trace Request packets accepted without negatively impacting control-plane operations.
+                The implementation MUST police rate of received Proxy Trace Request messages at the data-plane to 1000 pps, implementation SHOULD allow policer to be configured.
             </t>
             <t>
-                Proxy Trace Server SHOULD timeout after 1 second of waiting for a Proxy Trace Probe Reply Packet and MAY timeout earlier.
+                Proxy Trace Server SHOULD timeout after 1 second of waiting for a Proxy Trace Probe Reply message and MAY timeout earlier.
                 Proxy Trace Server SHOULD NOT send Proxy Trace Reply message if it timed out.
             </t>
         </section>
 
         <section anchor="errorhandling" title="Error Handling">
             <t>
-                Proxy Trace Server encountering any problem in the Proxy Trace Request Message MUST not send any Probe Packet out and SHOULD send Proxy Trace Reply Message to the Proxy Trace Client informing of the issue.
-                Proxy Trace Server may give up parsing the Proxy Trace Request Message after one or more problems.
+                Proxy Trace Server encountering any problem in the Proxy Trace Request message MUST not send any Proxy Trace Probe Reqeust message out and SHOULD send Proxy Trace Reply message to the Proxy Trace Client informing of the issue.
+                Proxy Trace Server may give up parsing the Proxy Trace Request message after one or more problems.
             </t>
             <t>
-                Proxy Trace Server receiving too small Proxy Trace Request packet should silently discard it in the data-plane.
+                Proxy Trace Server receiving too small Proxy Trace Request message should silently discard it in the data-plane.
             </t>
         </section>
 
@@ -735,7 +773,7 @@
                 Opt-In Request TLVs should only be honored in trusted networks.
             </t>
             <t>
-                By default, unlike ICMP Echo, there is bps attenuation because the Proxy Request packets are much larger than the Probe Request and the Proxy Reply.
+                By default, unlike ICMP Echo, there is bps attenuation because the Proxy Request messages are much larger than the Proxy Trace Probe Request and the Proxy Trace Probe Reply messages.
             </t>
             <t>
                 By default there is potentially 2 x pps amplification, however this is a minor concern as other more common vectors, such as TCP SYN spoofing allow for much higher pps amplification.
