@@ -77,7 +77,7 @@ Table of Contents
    5.  ICMP Proxy Trace Reply  . . . . . . . . . . . . . . . . . . .   8
    6.  Proxy Trace Probe Request Payload . . . . . . . . . . . . . .  11
    7.  Stateless Operation . . . . . . . . . . . . . . . . . . . . .  12
-   8.  Timestamp format  . . . . . . . . . . . . . . . . . . . . . .  12
+   8.  Timestamp format  . . . . . . . . . . . . . . . . . . . . . .  13
    9.  ICMP Message Processing . . . . . . . . . . . . . . . . . . .  13
    10. Implementation Considerations . . . . . . . . . . . . . . . .  14
    11. Error Handling  . . . . . . . . . . . . . . . . . . . . . . .  14
@@ -648,20 +648,20 @@ Internet-Draft                 Proxy Trace                    March 2019
    Implementation MAY choose to do an entirely stateless Proxy Trace
    Server implementation.  The benefit of stateless implementation is
    that it is friendly towards impleemntation in the NPU microcode.
-   Stateless implementation MUST use PayLoad Hash to verify Proxy Trace
+   Stateless implementation MUST use Payload Hash to verify Proxy Trace
    Probe Request for correctness, otherwise unsolicited Proxy Trace
    Probe Request message may create 52B amplification, with hash
    verification there is 1:4294967296 attenuation for unsolicited Proxy
-   Trace Probe Request messages.
-
-8.  Timestamp format
-
-   The timestamp should be 6 bytes or 48 bits wide, most significant bit
-   is a flag called 'non-canonical epoch'.  If 'non-canonical epoch'
-   flag is not set timestamp's epoch is UTC midnight, if 'non-canonical
-   epoch' flag is set then epoch is unspecified but not UTC midnight.
-   Timestamp unit is nanoseconds.
-
+   Trace Probe Request messages.  Implication of stateless operation
+   hash is that the Proxy Trace Probe Reply message must contain the
+   original Proxy Trace Probe Request up-to the Source Address,
+   otherwise payload hash verification will fail.  This further implies
+   that for IPv4 the host sending the Proxy Trace Probe Reply message
+   needs to support [RFC4884] for stateless operation to function.
+   Proxy Trace Server using stateless operation has no obligation to
+   function when Proxy Trace Probe Reply message does not facilitate
+   stateless operation, more specifically there is no requirement for
+   stateful operation as a fallback.
 
 
 
@@ -673,6 +673,14 @@ Ytti                   Expires September 11, 2019              [Page 12]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
+
+8.  Timestamp format
+
+   The timestamp should be 6 bytes or 48 bits wide, most significant bit
+   is a flag called 'non-canonical epoch'.  If 'non-canonical epoch'
+   flag is not set timestamp's epoch is UTC midnight, if 'non-canonical
+   epoch' flag is set then epoch is unspecified but not UTC midnight.
+   Timestamp unit is nanoseconds.
 
 9.  ICMP Message Processing
 
@@ -714,14 +722,6 @@ Internet-Draft                 Proxy Trace                    March 2019
    o  Set the ICMP Type to Proxy Trace Reply.
    o  Copy the Identifier from the Proxy Trace Request message to the
       Proxy Trace Reply message.
-   o  Copy the Sequence Number from the Proxy Trace Request message to
-      the Proxy Trace Reply message.
-   o  Set the Code field to 0.
-   o  Set the Checksum appropriately.
-   o  Set the TLVs appropriately.
-   o  Forward the Proxy Trace Reply to the Proxy Trace Client.
-
-
 
 
 
@@ -729,6 +729,13 @@ Ytti                   Expires September 11, 2019              [Page 13]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
+
+   o  Copy the Sequence Number from the Proxy Trace Request message to
+      the Proxy Trace Reply message.
+   o  Set the Code field to 0.
+   o  Set the Checksum appropriately.
+   o  Set the TLVs appropriately.
+   o  Forward the Proxy Trace Reply to the Proxy Trace Client.
 
 10.  Implementation Considerations
 
@@ -771,13 +778,6 @@ Internet-Draft                 Proxy Trace                    March 2019
 
    Opt-In Request TLVs should only be honored in trusted networks.
 
-   By default, unlike ICMP Echo, there is bps attenuation because the
-   Proxy Request messages are much larger than the Proxy Trace Probe
-   Request and the Proxy Trace Probe Reply messages.
-
-   By default there is potentially 2 x pps amplification, however this
-   is a minor concern as other more common vectors, such as TCP SYN
-   spoofing allow for much higher pps amplification.
 
 
 
@@ -785,6 +785,14 @@ Ytti                   Expires September 11, 2019              [Page 14]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
+
+   By default, unlike ICMP Echo, there is bps attenuation because the
+   Proxy Request messages are much larger than the Proxy Trace Probe
+   Request and the Proxy Trace Probe Reply messages.
+
+   By default there is potentially 2 x pps amplification, however this
+   is a minor concern as other more common vectors, such as TCP SYN
+   spoofing allow for much higher pps amplification.
 
    There is no way for the Client to cause the Server to send more than
    two packets per each packet the Client sends.
@@ -827,14 +835,6 @@ Internet-Draft                 Proxy Trace                    March 2019
               RFC 4443, DOI 10.17487/RFC4443, March 2006,
               <https://www.rfc-editor.org/info/rfc4443>.
 
-   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
-              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
-              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
-
-
-
-
-
 
 
 Ytti                   Expires September 11, 2019              [Page 15]
@@ -842,7 +842,16 @@ Ytti                   Expires September 11, 2019              [Page 15]
 Internet-Draft                 Proxy Trace                    March 2019
 
 
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
 14.2.  Informative References
+
+   [RFC4884]  Bonica, R., Gan, D., Tappan, D., and C. Pignataro,
+              "Extended ICMP to Support Multi-Part Messages", RFC 4884,
+              DOI 10.17487/RFC4884, April 2007,
+              <https://www.rfc-editor.org/info/rfc4884>.
 
    [RFC4950]  Bonica, R., Gan, D., Tappan, D., and C. Pignataro, "ICMP
               Extensions for Multiprotocol Label Switching", RFC 4950,
@@ -872,15 +881,6 @@ Author's Address
    NTT Communications
 
    Email: ytti@ntt.net
-
-
-
-
-
-
-
-
-
 
 
 

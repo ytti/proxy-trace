@@ -1193,7 +1193,7 @@
 <h1 id="rfc.section.7">
 <a href="#rfc.section.7">7.</a> <a href="#stateless" id="stateless">Stateless Operation</a>
 </h1>
-<p id="rfc.section.7.p.1">Implementation MAY choose to do an entirely stateless Proxy Trace Server implementation.  The benefit of stateless implementation is that it is friendly towards impleemntation in the NPU microcode.  Stateless implementation MUST use PayLoad Hash to verify Proxy Trace Probe Request for correctness, otherwise unsolicited Proxy Trace Probe Request message may create 52B amplification, with hash verification there is 1:4294967296 attenuation for unsolicited Proxy Trace Probe Request messages.  </p>
+<p id="rfc.section.7.p.1">Implementation MAY choose to do an entirely stateless Proxy Trace Server implementation.  The benefit of stateless implementation is that it is friendly towards impleemntation in the NPU microcode.  Stateless implementation MUST use Payload Hash to verify Proxy Trace Probe Request for correctness, otherwise unsolicited Proxy Trace Probe Request message may create 52B amplification, with hash verification there is 1:4294967296 attenuation for unsolicited Proxy Trace Probe Request messages.  Implication of stateless operation hash is that the Proxy Trace Probe Reply message must contain the original Proxy Trace Probe Request up-to the Source Address, otherwise payload hash verification will fail.  This further implies that for IPv4 the host sending the Proxy Trace Probe Reply message needs to support <a href="#RFC4884" class="xref">[RFC4884]</a> for stateless operation to function.  Proxy Trace Server using stateless operation has no obligation to function when Proxy Trace Probe Reply message does not facilitate stateless operation, more specifically there is no requirement for stateful operation as a fallback.  </p>
 <h1 id="rfc.section.8">
 <a href="#rfc.section.8">8.</a> <a href="#timestamp" id="timestamp">Timestamp format</a>
 </h1>
@@ -1312,6 +1312,11 @@
 <h1 id="rfc.references.2">
 <a href="#rfc.references.2">14.2.</a> Informative References</h1>
 <table><tbody>
+<tr>
+<td class="reference"><b id="RFC4884">[RFC4884]</b></td>
+<td class="top">
+<a>Bonica, R.</a>, <a>Gan, D.</a>, <a>Tappan, D.</a> and <a>C. Pignataro</a>, "<a href="https://tools.ietf.org/html/rfc4884">Extended ICMP to Support Multi-Part Messages</a>", RFC 4884, DOI 10.17487/RFC4884, April 2007.</td>
+</tr>
 <tr>
 <td class="reference"><b id="RFC4950">[RFC4950]</b></td>
 <td class="top">
