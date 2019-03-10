@@ -363,8 +363,8 @@ Internet-Draft                 Proxy Trace                    March 2019
       Length:  2 Bytes
       Value:  Any
       Times:  0 or 1
-      Implementation:  Optional
-      Honor:  Opt-In
+      Implementation:  Mandatory
+      Honor:  Opt-Out
       Location:  Any
       Default:  49200 + hop-limit (49201-49455) from the Ephemeral Port
          Range ([RFC6056])
