@@ -383,9 +383,24 @@
                     </t>
                     <t></t>
 
+                    <t hangText="Flow Label:">
+                        IPv6 20b Flow Label
+                        <list style="hanging">
+                            <t hangText="Type:">10</t>
+                            <t hangText="Length:">3 Bytes</t>
+                            <t hangText="Value:">Any, four most significant bits are ignored</t>
+                            <t hangText="Times:">0 or 1</t>
+                            <t hangText="Implementation:">Optional</t>
+                            <t hangText="Honor:">Opt-In</t>
+                            <t hangText="Location:">Any</t>
+                            <t hangText="Default:">0</t>
+                        </list>
+                    </t>
+                    <t></t>
+
                     <t hangText="Future Use:">
                         <list style="hanging">
-                            <t hangText="Type:">10-59999</t>
+                            <t hangText="Type:">11-59999</t>
                         </list>
                     </t>
                     <t></t>
@@ -676,7 +691,7 @@
                 </list>
             </t>
             <t>
-                Discard SHOULD happen in the forwarding-plane
+                Discard SHOULD happen in the date-plane
             </t>
 
             <t>

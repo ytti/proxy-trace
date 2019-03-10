@@ -74,8 +74,8 @@ Table of Contents
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
    3.  Operation . . . . . . . . . . . . . . . . . . . . . . . . . .   3
    4.  ICMP Proxy Trace Request  . . . . . . . . . . . . . . . . . .   5
-   5.  ICMP Proxy Trace Reply  . . . . . . . . . . . . . . . . . . .   8
-   6.  Proxy Trace Probe Request Payload . . . . . . . . . . . . . .  11
+   5.  ICMP Proxy Trace Reply  . . . . . . . . . . . . . . . . . . .   9
+   6.  Proxy Trace Probe Request Payload . . . . . . . . . . . . . .  12
    7.  Stateless Operation . . . . . . . . . . . . . . . . . . . . .  12
    8.  Timestamp format  . . . . . . . . . . . . . . . . . . . . . .  13
    9.  ICMP Message Processing . . . . . . . . . . . . . . . . . . .  13
@@ -425,11 +425,30 @@ Internet-Draft                 Proxy Trace                    March 2019
       Location:  Any
       Default:  See Proxy Trace Probe Request Payload section
 
+   Flow Label:  IPv6 20b Flow Label
+
+      Type:  10
+      Length:  3 Bytes
+      Value:  Any, four most significant bits are ignored
+      Times:  0 or 1
+      Implementation:  Optional
+      Honor:  Opt-In
+      Location:  Any
+      Default:  0
+
    Future Use:
 
-      Type:  10-59999
+      Type:  11-59999
 
    Local Use:
+
+
+
+
+Ytti                   Expires September 11, 2019               [Page 8]
+
+Internet-Draft                 Proxy Trace                    March 2019
+
 
       Type:  60000-65535
 
@@ -441,14 +460,6 @@ Internet-Draft                 Proxy Trace                    March 2019
    an IP header.  The ICMPv4 version of the ICMP Proxy Trace Reply
    message is encapsulated in an IPv4 header, while the ICMPv6 version
    is encapsulated in an IPv6 header.
-
-
-
-
-Ytti                   Expires September 11, 2019               [Page 8]
-
-Internet-Draft                 Proxy Trace                    March 2019
-
 
    Figure 3. depicts the ICMP Proxy Trace Reply message.
 
@@ -489,6 +500,12 @@ Internet-Draft                 Proxy Trace                    March 2019
       [RFC0792] Echo/Echo Reply.
 
 
+
+Ytti                   Expires September 11, 2019               [Page 9]
+
+Internet-Draft                 Proxy Trace                    March 2019
+
+
    TLVs:
 
    Proxy Trace Probe Reply message:  The ICMP TTL exceeded or
@@ -498,14 +515,6 @@ Internet-Draft                 Proxy Trace                    March 2019
       Type:  0
       Length:  Any
       Value:  Any
-
-
-
-Ytti                   Expires September 11, 2019               [Page 9]
-
-Internet-Draft                 Proxy Trace                    March 2019
-
-
       Times:  0 or 1
       Implementation:  Mandatory
       Location:  Any
@@ -544,6 +553,15 @@ Internet-Draft                 Proxy Trace                    March 2019
       Location:  Any
       Default:  None
 
+
+
+
+
+Ytti                   Expires September 11, 2019              [Page 10]
+
+Internet-Draft                 Proxy Trace                    March 2019
+
+
    Unsupported TLV:  List of TLV type numbers implementation does not
       support
 
@@ -554,13 +572,6 @@ Internet-Draft                 Proxy Trace                    March 2019
       Implementation:  Mandatory
       Location:  Any
       Default:  None
-
-
-
-Ytti                   Expires September 11, 2019              [Page 10]
-
-Internet-Draft                 Proxy Trace                    March 2019
-
 
    Bad TLV Count:  List of TLV type numbers occurring more or less time
       than expected
@@ -599,17 +610,6 @@ Internet-Draft                 Proxy Trace                    March 2019
 
       Type:  7-59999
 
-   Local Use:
-
-      Type:  60000-65535
-
-
-6.  Proxy Trace Probe Request Payload
-
-
-
-
-
 
 
 
@@ -617,6 +617,13 @@ Ytti                   Expires September 11, 2019              [Page 11]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
+
+   Local Use:
+
+      Type:  60000-65535
+
+
+6.  Proxy Trace Probe Request Payload
 
    0                   1                   2                   3
    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -659,13 +666,6 @@ Internet-Draft                 Proxy Trace                    March 2019
    host sending the Proxy Trace Probe Reply message needs to support
    [RFC4884] for stateless operation to function.  Proxy Trace Server
    using stateless operation has no obligation to function when Proxy
-   Trace Probe Reply message does not facilitate stateless operation,
-   more specifically there is no requirement for stateful operation as a
-   fallback.
-
-
-
-
 
 
 
@@ -673,6 +673,10 @@ Ytti                   Expires September 11, 2019              [Page 12]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
+
+   Trace Probe Reply message does not facilitate stateless operation,
+   more specifically there is no requirement for stateful operation as a
+   fallback.
 
 8.  Timestamp format
 
@@ -696,7 +700,7 @@ Internet-Draft                 Proxy Trace                    March 2019
    o  The Destination Address of the incoming message is a multicast
       address.
 
-   Discard SHOULD happen in the forwarding-plane
+   Discard SHOULD happen in the date-plane
 
    Otherwise, when a node receives an ICMPv4 Proxy Trace Request, it
    MUST format an ICMPv4 Proxy Trace Reply as follows:
@@ -717,11 +721,7 @@ Internet-Draft                 Proxy Trace                    March 2019
 
    o  Copy the Source Address from the Proxy Trace Request message to
       the Destination Address of the Proxy Trace Reply message.
-   o  Copy the Destination Address from the Proxy Trace Request message
-      to the Source Address of the Proxy Trace Reply message.
-   o  Set the ICMP Type to Proxy Trace Reply.
-   o  Copy the Identifier from the Proxy Trace Request message to the
-      Proxy Trace Reply message.
+
 
 
 
@@ -730,6 +730,11 @@ Ytti                   Expires September 11, 2019              [Page 13]
 Internet-Draft                 Proxy Trace                    March 2019
 
 
+   o  Copy the Destination Address from the Proxy Trace Request message
+      to the Source Address of the Proxy Trace Reply message.
+   o  Set the ICMP Type to Proxy Trace Reply.
+   o  Copy the Identifier from the Proxy Trace Request message to the
+      Proxy Trace Reply message.
    o  Copy the Sequence Number from the Proxy Trace Request message to
       the Proxy Trace Reply message.
    o  Set the Code field to 0.
@@ -772,11 +777,6 @@ Internet-Draft                 Proxy Trace                    March 2019
    Allowing the client to set arbitrary Payload will create
    amplification potential.
 
-   Allowing the client to define Protocol, Port and Bit Pattern allows
-   client to craft arbitrary packets enabling it to perform port
-   knocking and trigger packet-of-death bugs.
-
-   Opt-In Request TLVs should only be honored in trusted networks.
 
 
 
@@ -785,6 +785,12 @@ Ytti                   Expires September 11, 2019              [Page 14]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
+
+   Allowing the client to define Protocol, Port and Bit Pattern allows
+   client to craft arbitrary packets enabling it to perform port
+   knocking and trigger packet-of-death bugs.
+
+   Opt-In Request TLVs should only be honored in trusted networks.
 
    By default, unlike ICMP Echo, there is bps attenuation because the
    Proxy Request messages are much larger than the Proxy Trace Probe
@@ -829,18 +835,18 @@ Internet-Draft                 Proxy Trace                    March 2019
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
-   [RFC4443]  Conta, A., Deering, S., and M. Gupta, Ed., "Internet
-              Control Message Protocol (ICMPv6) for the Internet
-              Protocol Version 6 (IPv6) Specification", STD 89,
-              RFC 4443, DOI 10.17487/RFC4443, March 2006,
-              <https://www.rfc-editor.org/info/rfc4443>.
-
 
 
 Ytti                   Expires September 11, 2019              [Page 15]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
+
+   [RFC4443]  Conta, A., Deering, S., and M. Gupta, Ed., "Internet
+              Control Message Protocol (ICMPv6) for the Internet
+              Protocol Version 6 (IPv6) Specification", STD 89,
+              RFC 4443, DOI 10.17487/RFC4443, March 2006,
+              <https://www.rfc-editor.org/info/rfc4443>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
@@ -881,12 +887,6 @@ Author's Address
    NTT Communications
 
    Email: ytti@ntt.net
-
-
-
-
-
-
 
 
 
