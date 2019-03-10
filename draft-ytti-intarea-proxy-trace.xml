@@ -604,7 +604,7 @@
             </t>
         </section>
 
-        <section anchor="reply" title="Proxy Trace Probe Request Payload">
+        <section anchor="proberequestpayload" title="Proxy Trace Probe Request Payload">
             <t>
 <figure anchor="proxytraceproberequestpayload" align="center"><artwork><![CDATA[
 0                   1                   2                   3
