@@ -366,7 +366,8 @@ Internet-Draft                 Proxy Trace                    March 2019
       Implementation:  Optional
       Honor:  Opt-In
       Location:  Any
-      Default:  Ephemeral ([RFC6056])
+      Default:  49200 + hop-limit (49201-49455) from the Ephemeral Port
+         Range ([RFC6056])
 
    Destination Port:  L4 Destination Port number of the Proxy Trace
       Probe Request message.
@@ -378,14 +379,13 @@ Internet-Draft                 Proxy Trace                    March 2019
       Implementation:  Optional
       Honor:  Opt-In
       Location:  Any
-      Default:  33688 + hop-limit (33689 to 33943)
+      Default:  33688 + hop-limit (33689-33943)
 
    Payload Length:  Payload Length in bytes of the Proxy Trace Probe
       Request message.
 
       Type:  7
       Length:  2 Bytes
-      Value:  Any
 
 
 
@@ -394,6 +394,7 @@ Ytti                   Expires September 11, 2019               [Page 7]
 Internet-Draft                 Proxy Trace                    March 2019
 
 
+      Value:  Any
       Times:  0 or 1
       Implementation:  Optional
       Honor:  Opt-In
@@ -441,7 +442,6 @@ Internet-Draft                 Proxy Trace                    March 2019
    an IP header.  The ICMPv4 version of the ICMP Proxy Trace Reply
    message is encapsulated in an IPv4 header, while the ICMPv6 version
    is encapsulated in an IPv6 header.
-
 
 
 

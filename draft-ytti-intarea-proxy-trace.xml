@@ -318,7 +318,7 @@
                             <t hangText="Implementation:">Optional</t>
                             <t hangText="Honor:">Opt-In</t>
                             <t hangText="Location:">Any</t>
-                            <t hangText="Default:">Ephemeral (<xref target="RFC6056" />)</t>
+                            <t hangText="Default:">49200 + hop-limit (49201-49455) from the Ephemeral Port Range (<xref target="RFC6056" />)</t>
                         </list>
                     </t>
                     <t></t>
@@ -333,7 +333,7 @@
                             <t hangText="Implementation:">Optional</t>
                             <t hangText="Honor:">Opt-In</t>
                             <t hangText="Location:">Any</t>
-                            <t hangText="Default:">33688 + hop-limit (33689 to 33943)</t>
+                            <t hangText="Default:">33688 + hop-limit (33689-33943)</t>
                         </list>
                     </t>
                     <t></t>
