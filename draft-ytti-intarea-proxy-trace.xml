@@ -637,7 +637,7 @@
             <t>
                 Implementation MAY choose to do an entirely stateless Proxy Trace Server implementation.
                 The benefit of stateless implementation is that it is friendly towards implementation in the hardware.
-                Stateless implementation MUST use Payload Hash to verify Proxy Trace Probe Request for correctness, otherwise an unsolicited Proxy Trace Probe Request message may create 52B amplification, with hash verification there is 1:4294967296 attenuation for the unsolicited Proxy Trace Probe Request messages.
+                Stateless implementation MUST use Payload Hash to verify Proxy Trace Probe Reply for correctness, otherwise an unsolicited Proxy Trace Probe Reply message may create 52B amplification, with hash verification there is 1:4294967296 attenuation for the unsolicited Proxy Trace Probe Reply messages.
                 Implication of stateless operation is that the Proxy Trace Probe Reply message must contain the original Proxy Trace Probe Request up-to the Source Address, otherwise payload hash verification will fail.
                 This further implies that for IPv4 the host sending the Proxy Trace Probe Reply message needs to support <xref target="RFC4884"/> for stateless operation to function.
                 Proxy Trace Server using stateless operation has no obligation to function when Proxy Trace Probe Reply message does not facilitate stateless operation, more specifically there is no requirement for stateful operation as a fallback.
