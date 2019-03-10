@@ -628,7 +628,7 @@
                    <t hangText="Identifier:">2B Identifier from the Proxy Trace Request Message</t>
                    <t hangText="Sequence Number:">2B Sequence Number from the Proxy Trace Request Message</t>
                    <t hangText="Payload Hash:">4B hash of the Proxy Trace Probe Request Payload Fields + Local Secret</t>
-                   <t hangText="Source Addres">4B or 16B Source Address from the Proxy Trace Request</t>
+                   <t hangText="Source Address">4B or 16B Source Address from the Proxy Trace Request</t>
                 </list>
             </t>
         </section>
