@@ -235,9 +235,12 @@
 
                     <t hangText="Padding:">
                         Client added padding to reach the desired Proxy Trace Request mesages size.
+                        Padding Length is set to 0 both to remove possibility of using it as a packet size verification method and to remove possibility of adding TLV after it.
+                        Length field may be omitted if 2 byte of padding is sufficient.
+                        Implementation being aware of packet size can stop reading after it has read Type value.
                         <list style="hanging">
                             <t hangText="Type:">0</t>
-                            <t hangText="Length:">0, to remove possibility of a) using this as way to verify packet size and b) adding TLV after this</t>
+                            <t hangText="Length:">0</t>
                             <t hangText="Value:">Any</t>
                             <t hangText="Times:">0 or 1</t>
                             <t hangText="Implementation:">Mandatory</t>

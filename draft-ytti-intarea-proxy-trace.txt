@@ -82,12 +82,12 @@ Table of Contents
    10. Implementation Considerations . . . . . . . . . . . . . . . .  14
    11. Error Handling  . . . . . . . . . . . . . . . . . . . . . . .  14
    12. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  14
-   13. Security Considerations . . . . . . . . . . . . . . . . . . .  14
+   13. Security Considerations . . . . . . . . . . . . . . . . . . .  15
    14. References  . . . . . . . . . . . . . . . . . . . . . . . . .  15
      14.1.  Normative References . . . . . . . . . . . . . . . . . .  15
      14.2.  Informative References . . . . . . . . . . . . . . . . .  16
    Appendix A.  Acknowledgments  . . . . . . . . . . . . . . . . . .  16
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  16
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  17
 
 1.  Introduction
 
@@ -290,11 +290,15 @@ Internet-Draft                 Proxy Trace                    March 2019
    TLVs:
 
    Padding:  Client added padding to reach the desired Proxy Trace
-      Request mesages size.
+      Request mesages size.  Padding Length is set to 0 both to remove
+      possibility of using it as a packet size verification method and
+      to remove possibility of adding TLV after it.  Length field may be
+      omitted if 2 byte of padding is sufficient.  Implementation being
+      aware of packet size can stop reading after it has read Type
+      value.
 
       Type:  0
-      Length:  0, to remove possibility of a) using this as way to
-         verify packet size and b) adding TLV after this
+      Length:  0
       Value:  Any
       Times:  0 or 1
       Implementation:  Mandatory
@@ -326,10 +330,6 @@ Internet-Draft                 Proxy Trace                    March 2019
       Location:  Any
       Default:  Source Address of ICMP Proxy Trace Request
 
-   Hop Limit:  Hop Limit of the Proxy Trace Probe Request message.
-
-      Type:  3
-      Length:  1 Byte
 
 
 
@@ -338,6 +338,10 @@ Ytti                   Expires September 13, 2019               [Page 6]
 Internet-Draft                 Proxy Trace                    March 2019
 
 
+   Hop Limit:  Hop Limit of the Proxy Trace Probe Request message.
+
+      Type:  3
+      Length:  1 Byte
       Value:  1-255, NOT 0
       Times:  1
       Implementation:  Mandatory
@@ -381,11 +385,7 @@ Internet-Draft                 Proxy Trace                    March 2019
       Location:  Any
       Default:  33688 + hop-limit (33689-33943)
 
-   Payload Length:  Payload Length in bytes of the Proxy Trace Probe
-      Request message.
 
-      Type:  7
-      Length:  2 Bytes
 
 
 
@@ -394,6 +394,11 @@ Ytti                   Expires September 13, 2019               [Page 7]
 Internet-Draft                 Proxy Trace                    March 2019
 
 
+   Payload Length:  Payload Length in bytes of the Proxy Trace Probe
+      Request message.
+
+      Type:  7
+      Length:  2 Bytes
       Value:  Any
       Times:  0 or 1
       Implementation:  Optional
@@ -437,11 +442,6 @@ Internet-Draft                 Proxy Trace                    March 2019
       Location:  Any
       Default:  0
 
-   Future Use:
-
-      Type:  11-59999
-
-   Local Use:
 
 
 
@@ -449,6 +449,12 @@ Ytti                   Expires September 13, 2019               [Page 8]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
+
+   Future Use:
+
+      Type:  11-59999
+
+   Local Use:
 
       Type:  60000-65535
 
@@ -491,6 +497,15 @@ Internet-Draft                 Proxy Trace                    March 2019
 
    Checksum:  For ICMPv4, see [RFC0792].  For ICMPv6, see [RFC4443].
 
+
+
+
+
+Ytti                   Expires September 13, 2019               [Page 9]
+
+Internet-Draft                 Proxy Trace                    March 2019
+
+
    Identifier:  And Identifier to aid in matching ICMP Proxy Trace
       Replies to ICMP Proxy Trace Requests.  May be 0.  See [RFC0792]
       Echo/Echo Reply.
@@ -498,12 +513,6 @@ Internet-Draft                 Proxy Trace                    March 2019
    Sequence Number:  A Sequence Number to aid in matching ICMP Proxy
       Trace Replies to ICMP Proxy Trace Requests.  May be 0.  See
       [RFC0792] Echo/Echo Reply.
-
-
-
-Ytti                   Expires September 13, 2019               [Page 9]
-
-Internet-Draft                 Proxy Trace                    March 2019
 
 
    TLVs:
@@ -545,15 +554,6 @@ Internet-Draft                 Proxy Trace                    March 2019
    Ignored TLV:  List of TLV type numbers implementation supports but
       chooses to not honor.
 
-      Type:  401
-      Length:  Any
-      Value:  2 bytes per Ignored TLV
-      Times:  0 or 1
-      Implementation:  Mandatory
-      Location:  Any
-      Default:  None
-
-
 
 
 
@@ -561,6 +561,14 @@ Ytti                   Expires September 13, 2019              [Page 10]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
+
+      Type:  401
+      Length:  Any
+      Value:  2 bytes per Ignored TLV
+      Times:  0 or 1
+      Implementation:  Mandatory
+      Location:  Any
+      Default:  None
 
    Unsupported TLV:  List of TLV type numbers implementation does not
       support
@@ -602,14 +610,6 @@ Internet-Draft                 Proxy Trace                    March 2019
       Length:  Any
       Value:  2 bytes per Bad TLV
       Times:  0 or 1
-      Implementation:  Mandatory
-      Location:  Any
-      Default:  None
-
-   Future Use:
-
-      Type:  7-59999
-
 
 
 
@@ -617,6 +617,14 @@ Ytti                   Expires September 13, 2019              [Page 11]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
+
+      Implementation:  Mandatory
+      Location:  Any
+      Default:  None
+
+   Future Use:
+
+      Type:  7-59999
 
    Local Use:
 
@@ -658,14 +666,6 @@ Internet-Draft                 Proxy Trace                    March 2019
    Stateless implementation MUST use Payload Hash to verify Proxy Trace
    Probe Reply for correctness, otherwise an unsolicited Proxy Trace
    Probe Reply message may create 52B amplification, with hash
-   verification there is 1:4294967296 attenuation for the unsolicited
-   Proxy Trace Probe Reply messages.  Implication of stateless operation
-   is that the Proxy Trace Probe Reply message must contain the original
-   Proxy Trace Probe Request up-to the Source Address, otherwise payload
-   hash verification will fail.  This further implies that for IPv4 the
-   host sending the Proxy Trace Probe Reply message needs to support
-   [RFC4884] for stateless operation to function.  Proxy Trace Server
-   using stateless operation has no obligation to function when Proxy
 
 
 
@@ -674,6 +674,14 @@ Ytti                   Expires September 13, 2019              [Page 12]
 Internet-Draft                 Proxy Trace                    March 2019
 
 
+   verification there is 1:4294967296 attenuation for the unsolicited
+   Proxy Trace Probe Reply messages.  Implication of stateless operation
+   is that the Proxy Trace Probe Reply message must contain the original
+   Proxy Trace Probe Request up-to the Source Address, otherwise payload
+   hash verification will fail.  This further implies that for IPv4 the
+   host sending the Proxy Trace Probe Reply message needs to support
+   [RFC4884] for stateless operation to function.  Proxy Trace Server
+   using stateless operation has no obligation to function when Proxy
    Trace Probe Reply message does not facilitate stateless operation,
    more specifically there is no requirement for stateful operation as a
    fallback.
@@ -714,14 +722,6 @@ Internet-Draft                 Proxy Trace                    March 2019
    When a node receives an ICMPv6 Proxy Trace Request, it MUST format an
    ICMPv6 Proxy Trace Reply as follows:
 
-   Hop Limit:  255
-   Next Header:  ICMPv6
-
-   In either case, the responding node MUST do the following:
-
-   o  Copy the Source Address from the Proxy Trace Request message to
-      the Destination Address of the Proxy Trace Reply message.
-
 
 
 
@@ -730,6 +730,13 @@ Ytti                   Expires September 13, 2019              [Page 13]
 Internet-Draft                 Proxy Trace                    March 2019
 
 
+   Hop Limit:  255
+   Next Header:  ICMPv6
+
+   In either case, the responding node MUST do the following:
+
+   o  Copy the Source Address from the Proxy Trace Request message to
+      the Destination Address of the Proxy Trace Reply message.
    o  Copy the Destination Address from the Proxy Trace Request message
       to the Source Address of the Proxy Trace Reply message.
    o  Set the ICMP Type to Proxy Trace Reply.
@@ -772,19 +779,17 @@ Internet-Draft                 Proxy Trace                    March 2019
    "Internet Control Message Protocol version 6 (ICMPv6) Parameters"
    registries under the "Code Fields" group.
 
-13.  Security Considerations
-
-   Allowing the client to set arbitrary Payload will create
-   amplification potential.
-
-
-
 
 
 Ytti                   Expires September 13, 2019              [Page 14]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
+
+13.  Security Considerations
+
+   Allowing the client to set arbitrary Payload will create
+   amplification potential.
 
    Allowing the client to define Protocol, Port and Bit Pattern allows
    client to craft arbitrary packets enabling it to perform port
@@ -830,17 +835,17 @@ Internet-Draft                 Proxy Trace                    March 2019
               RFC 792, DOI 10.17487/RFC0792, September 1981,
               <https://www.rfc-editor.org/info/rfc792>.
 
-   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997,
-              <https://www.rfc-editor.org/info/rfc2119>.
-
 
 
 Ytti                   Expires September 13, 2019              [Page 15]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
 
    [RFC4443]  Conta, A., Deering, S., and M. Gupta, Ed., "Internet
               Control Message Protocol (ICMPv6) for the Internet
@@ -881,6 +886,18 @@ Internet-Draft                 Proxy Trace                    March 2019
 
 Appendix A.  Acknowledgments
 
+
+
+
+
+
+
+
+Ytti                   Expires September 13, 2019              [Page 16]
+
+Internet-Draft                 Proxy Trace                    March 2019
+
+
 Author's Address
 
    Saku Ytti
@@ -893,4 +910,43 @@ Author's Address
 
 
 
-Ytti                   Expires September 13, 2019              [Page 16]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ytti                   Expires September 13, 2019              [Page 17]

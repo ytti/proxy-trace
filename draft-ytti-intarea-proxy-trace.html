@@ -650,11 +650,11 @@
 
 <dl>
 <dt>Padding:</dt>
-<dd style="margin-left: 8">Client added padding to reach the desired Proxy Trace Request mesages size.  <dl>
+<dd style="margin-left: 8">Client added padding to reach the desired Proxy Trace Request mesages size.  Padding Length is set to 0 both to remove possibility of using it as a packet size verification method and to remove possibility of adding TLV after it.  Length field may be omitted if 2 byte of padding is sufficient.  Implementation being aware of packet size can stop reading after it has read Type value.  <dl>
 <dt>Type:</dt>
 <dd style="margin-left: 8">0</dd>
 <dt>Length:</dt>
-<dd style="margin-left: 8">0, to remove possibility of a) using this as way to verify packet size and b) adding TLV after this</dd>
+<dd style="margin-left: 8">0</dd>
 <dt>Value:</dt>
 <dd style="margin-left: 8">Any</dd>
 <dt>Times:</dt>
