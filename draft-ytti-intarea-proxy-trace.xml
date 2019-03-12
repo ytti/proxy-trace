@@ -237,7 +237,7 @@
                         Client added padding to reach the desired Proxy Trace Request mesages size.
                         <list style="hanging">
                             <t hangText="Type:">0</t>
-                            <t hangText="Length:">Any</t>
+                            <t hangText="Length:">0, to remove possibility of a) using this as way to verify packet size and b) adding TLV after this</t>
                             <t hangText="Value:">Any</t>
                             <t hangText="Times:">0 or 1</t>
                             <t hangText="Implementation:">Mandatory</t>
