@@ -4,8 +4,8 @@
 
 intarea                                                          S. Ytti
 Internet-Draft                                                       NTT
-Intended status: Standards Track                          March 10, 2019
-Expires: September 11, 2019
+Intended status: Standards Track                          March 12, 2019
+Expires: September 13, 2019
 
 
 Proxy Trace: A Utility for Programmatic Discovery of Forward and Reverse
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 11, 2019.
+   This Internet-Draft will expire on September 13, 2019.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Ytti                   Expires September 11, 2019               [Page 1]
+Ytti                   Expires September 13, 2019               [Page 1]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Ytti                   Expires September 11, 2019               [Page 2]
+Ytti                   Expires September 13, 2019               [Page 2]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
@@ -165,7 +165,7 @@ Internet-Draft                 Proxy Trace                    March 2019
 
 
 
-Ytti                   Expires September 11, 2019               [Page 3]
+Ytti                   Expires September 13, 2019               [Page 3]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
@@ -221,7 +221,7 @@ Internet-Draft                 Proxy Trace                    March 2019
 
 
 
-Ytti                   Expires September 11, 2019               [Page 4]
+Ytti                   Expires September 13, 2019               [Page 4]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
@@ -277,7 +277,7 @@ Internet-Draft                 Proxy Trace                    March 2019
 
 
 
-Ytti                   Expires September 11, 2019               [Page 5]
+Ytti                   Expires September 13, 2019               [Page 5]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
@@ -293,7 +293,8 @@ Internet-Draft                 Proxy Trace                    March 2019
       Request mesages size.
 
       Type:  0
-      Length:  Any
+      Length:  0, to remove possibility of a) using this as way to
+         verify packet size and b) adding TLV after this
       Value:  Any
       Times:  0 or 1
       Implementation:  Mandatory
@@ -329,15 +330,15 @@ Internet-Draft                 Proxy Trace                    March 2019
 
       Type:  3
       Length:  1 Byte
-      Value:  1-255, NOT 0
 
 
 
-Ytti                   Expires September 11, 2019               [Page 6]
+Ytti                   Expires September 13, 2019               [Page 6]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
 
+      Value:  1-255, NOT 0
       Times:  1
       Implementation:  Mandatory
       Honor:  Yes
@@ -385,15 +386,15 @@ Internet-Draft                 Proxy Trace                    March 2019
 
       Type:  7
       Length:  2 Bytes
-      Value:  Any
 
 
 
-Ytti                   Expires September 11, 2019               [Page 7]
+Ytti                   Expires September 13, 2019               [Page 7]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
 
+      Value:  Any
       Times:  0 or 1
       Implementation:  Optional
       Honor:  Opt-In
@@ -444,8 +445,7 @@ Internet-Draft                 Proxy Trace                    March 2019
 
 
 
-
-Ytti                   Expires September 11, 2019               [Page 8]
+Ytti                   Expires September 13, 2019               [Page 8]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
@@ -501,7 +501,7 @@ Internet-Draft                 Proxy Trace                    March 2019
 
 
 
-Ytti                   Expires September 11, 2019               [Page 9]
+Ytti                   Expires September 13, 2019               [Page 9]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
@@ -557,7 +557,7 @@ Internet-Draft                 Proxy Trace                    March 2019
 
 
 
-Ytti                   Expires September 11, 2019              [Page 10]
+Ytti                   Expires September 13, 2019              [Page 10]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
@@ -613,7 +613,7 @@ Internet-Draft                 Proxy Trace                    March 2019
 
 
 
-Ytti                   Expires September 11, 2019              [Page 11]
+Ytti                   Expires September 13, 2019              [Page 11]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
@@ -669,7 +669,7 @@ Internet-Draft                 Proxy Trace                    March 2019
 
 
 
-Ytti                   Expires September 11, 2019              [Page 12]
+Ytti                   Expires September 13, 2019              [Page 12]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
@@ -725,7 +725,7 @@ Internet-Draft                 Proxy Trace                    March 2019
 
 
 
-Ytti                   Expires September 11, 2019              [Page 13]
+Ytti                   Expires September 13, 2019              [Page 13]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
@@ -781,7 +781,7 @@ Internet-Draft                 Proxy Trace                    March 2019
 
 
 
-Ytti                   Expires September 11, 2019              [Page 14]
+Ytti                   Expires September 13, 2019              [Page 14]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
@@ -837,7 +837,7 @@ Internet-Draft                 Proxy Trace                    March 2019
 
 
 
-Ytti                   Expires September 11, 2019              [Page 15]
+Ytti                   Expires September 13, 2019              [Page 15]
 
 Internet-Draft                 Proxy Trace                    March 2019
 
@@ -893,4 +893,4 @@ Author's Address
 
 
 
-Ytti                   Expires September 11, 2019              [Page 16]
+Ytti                   Expires September 13, 2019              [Page 16]
