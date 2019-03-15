@@ -399,7 +399,7 @@
 
   <meta name="dct.creator" content="Ytti, S." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ytti-intarea-proxy-trace-00" />
-  <meta name="dct.issued" scheme="ISO8601" content="2019-12" />
+  <meta name="dct.issued" scheme="ISO8601" content="2019-15" />
   <meta name="dct.abstract" content="This document describes a network diagnostic tool called Proxy Trace.  Proxy Trace has similarities with PING and TRACEROUTE in that it uses PING style ICMP request to ask the remote host to trigger a single packet TRACEROUTE query and deliver the reply in PING style ICMP reply.  " />
   <meta name="description" content="This document describes a network diagnostic tool called Proxy Trace.  Proxy Trace has similarities with PING and TRACEROUTE in that it uses PING style ICMP request to ask the remote host to trigger a single packet TRACEROUTE query and deliver the reply in PING style ICMP reply.  " />
 
@@ -420,10 +420,10 @@
 </tr>
 <tr>
 <td class="left">Intended status: Standards Track</td>
-<td class="right">March 12, 2019</td>
+<td class="right">March 15, 2019</td>
 </tr>
 <tr>
-<td class="left">Expires: September 13, 2019</td>
+<td class="left">Expires: September 16, 2019</td>
 <td class="right"></td>
 </tr>
 
@@ -442,7 +442,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on September 13, 2019.</p>
+<p>This Internet-Draft will expire on September 16, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2019 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -1028,7 +1028,7 @@
 <dt></dt>
 <dd style="margin-left: 8"></dd>
 <dt>Proxy Trace Probe Reply Timestamp:</dt>
-<dd style="margin-left: 8">Timestamp of Proxy Trace Probe Request arriving at the Proxy Trace Server <dl>
+<dd style="margin-left: 8">Timestamp of Proxy Trace Probe Reply arriving at the Proxy Trace Server <dl>
 <dt>Type:</dt>
 <dd style="margin-left: 8">2</dd>
 <dt>Length:</dt>
@@ -1048,35 +1048,14 @@
 </dd>
 <dt></dt>
 <dd style="margin-left: 8"></dd>
-<dt>Ignored TLV:</dt>
-<dd style="margin-left: 8">List of TLV type numbers implementation supports but chooses to not honor.  <dl>
+<dt>Honored TLV:</dt>
+<dd style="margin-left: 8">If Proxy Trace Request contains one or more TLVs which implementations does not support or does not honor, implementation responds with list of honored TLVs <dl>
 <dt>Type:</dt>
 <dd style="margin-left: 8">401</dd>
 <dt>Length:</dt>
 <dd style="margin-left: 8">Any</dd>
 <dt>Value:</dt>
-<dd style="margin-left: 8">2 bytes per Ignored TLV</dd>
-<dt>Times:</dt>
-<dd style="margin-left: 8">0 or 1</dd>
-<dt>Implementation:</dt>
-<dd style="margin-left: 8">Mandatory</dd>
-<dt>Location:</dt>
-<dd style="margin-left: 8">Any</dd>
-<dt>Default:</dt>
-<dd style="margin-left: 8">None</dd>
-</dl>
-<p> </p>
-</dd>
-<dt></dt>
-<dd style="margin-left: 8"></dd>
-<dt>Unsupported TLV:</dt>
-<dd style="margin-left: 8">List of TLV type numbers implementation does not support <dl>
-<dt>Type:</dt>
-<dd style="margin-left: 8">402</dd>
-<dt>Length:</dt>
-<dd style="margin-left: 8">Any</dd>
-<dt>Value:</dt>
-<dd style="margin-left: 8">2 bytes per Unsupported TLV</dd>
+<dd style="margin-left: 8">2 bytes per Honored TLV</dd>
 <dt>Times:</dt>
 <dd style="margin-left: 8">0 or 1</dd>
 <dt>Implementation:</dt>
@@ -1093,7 +1072,7 @@
 <dt>Bad TLV Count:</dt>
 <dd style="margin-left: 8">List of TLV type numbers occurring more or less time than expected <dl>
 <dt>Type:</dt>
-<dd style="margin-left: 8">403</dd>
+<dd style="margin-left: 8">402</dd>
 <dt>Length:</dt>
 <dd style="margin-left: 8">Any</dd>
 <dt>Value:</dt>
@@ -1114,7 +1093,7 @@
 <dt>Bad TLV Length:</dt>
 <dd style="margin-left: 8">List of TLV type numbers having Length implementation rejects as valid <dl>
 <dt>Type:</dt>
-<dd style="margin-left: 8">404</dd>
+<dd style="margin-left: 8">403</dd>
 <dt>Length:</dt>
 <dd style="margin-left: 8">Any</dd>
 <dt>Value:</dt>
@@ -1135,7 +1114,7 @@
 <dt>Bad TLV Value:</dt>
 <dd style="margin-left: 8">List of TLV type numbers having Value implementation rejects as valid <dl>
 <dt>Type:</dt>
-<dd style="margin-left: 8">405</dd>
+<dd style="margin-left: 8">404</dd>
 <dt>Length:</dt>
 <dd style="margin-left: 8">Any</dd>
 <dt>Value:</dt>

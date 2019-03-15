@@ -522,7 +522,7 @@
                     <t></t>
 
                     <t hangText="Proxy Trace Probe Reply Timestamp:">
-                        Timestamp of Proxy Trace Probe Request arriving at the Proxy Trace Server
+                        Timestamp of Proxy Trace Probe Reply arriving at the Proxy Trace Server
                         <list style="hanging">
                             <t hangText="Type:">2</t>
                             <t hangText="Length:">6 Bytes</t>
@@ -535,26 +535,12 @@
                     </t>
                     <t></t>
 
-                    <t hangText="Ignored TLV:">
-                        List of TLV type numbers implementation supports but chooses to not honor.
+                    <t hangText="Honored TLV:">
+                        If Proxy Trace Request contains one or more TLVs which implementations does not support or does not honor, implementation responds with list of honored TLVs
                         <list style="hanging">
                             <t hangText="Type:">401</t>
                             <t hangText="Length:">Any</t>
-                            <t hangText="Value:">2 bytes per Ignored TLV</t>
-                            <t hangText="Times:">0 or 1</t>
-                            <t hangText="Implementation:">Mandatory</t>
-                            <t hangText="Location:">Any</t>
-                            <t hangText="Default:">None</t>
-                        </list>
-                    </t>
-                    <t></t>
-
-                    <t hangText="Unsupported TLV:">
-                        List of TLV type numbers implementation does not support
-                        <list style="hanging">
-                            <t hangText="Type:">402</t>
-                            <t hangText="Length:">Any</t>
-                            <t hangText="Value:">2 bytes per Unsupported TLV</t>
+                            <t hangText="Value:">2 bytes per Honored TLV</t>
                             <t hangText="Times:">0 or 1</t>
                             <t hangText="Implementation:">Mandatory</t>
                             <t hangText="Location:">Any</t>
@@ -566,7 +552,7 @@
                     <t hangText="Bad TLV Count:">
                         List of TLV type numbers occurring more or less time than expected
                         <list style="hanging">
-                            <t hangText="Type:">403</t>
+                            <t hangText="Type:">402</t>
                             <t hangText="Length:">Any</t>
                             <t hangText="Value:">2 bytes per Bad TLV</t>
                             <t hangText="Times:">0 or 1</t>
@@ -580,7 +566,7 @@
                     <t hangText="Bad TLV Length:">
                         List of TLV type numbers having Length implementation rejects as valid
                         <list style="hanging">
-                            <t hangText="Type:">404</t>
+                            <t hangText="Type:">403</t>
                             <t hangText="Length:">Any</t>
                             <t hangText="Value:">2 bytes per Bad TLV</t>
                             <t hangText="Times:">0 or 1</t>
@@ -594,7 +580,7 @@
                     <t hangText="Bad TLV Value:">
                         List of TLV type numbers having Value implementation rejects as valid
                         <list style="hanging">
-                            <t hangText="Type:">405</t>
+                            <t hangText="Type:">404</t>
                             <t hangText="Length:">Any</t>
                             <t hangText="Value:">2 bytes per Bad TLV</t>
                             <t hangText="Times:">0 or 1</t>
